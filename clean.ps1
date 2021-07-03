@@ -1,1 +1,0 @@
-If (Test-Path out) {Remove-Item -Recurse -Force out}

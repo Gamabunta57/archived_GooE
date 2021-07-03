@@ -5,3 +5,4 @@ out/
 *.sln
 *.vcxproj
 *.vcxproj*
+premake5.exe
