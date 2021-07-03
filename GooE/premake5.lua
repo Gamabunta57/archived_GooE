@@ -16,5 +16,6 @@ project "GooE"
     }
 
     includedirs {
+        "%{prj.location}/src",
         "%{prj.location}/vendor/spdlog/include"
     }

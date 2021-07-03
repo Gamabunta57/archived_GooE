@@ -9,6 +9,7 @@ int main(int argc, char** argv) {
 	GooE::Log::Init();
 	GOOE_CORE_WARN("Log initialized!");
 	GOOE_INFO("Log initialized!");
+
 	auto app = GooE::CreateApplication();
 	app->Run();
 	delete app;

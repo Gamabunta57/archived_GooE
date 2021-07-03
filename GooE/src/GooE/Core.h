@@ -13,3 +13,5 @@
 #else
 	#error Windows only is supported!
 #endif // GOOE_PLATFORM_WINDOWS
+
+#define BIT(x) (1 << x)

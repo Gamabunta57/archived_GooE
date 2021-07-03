@@ -1,6 +1,7 @@
 .vscode/
 .vs/
 out/
+vendor/
 
 *.sln
 *.vcxproj
