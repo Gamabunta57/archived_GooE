@@ -1,2 +1,7 @@
 .vscode/
+.vs/
 out/
+
+*.sln
+*.vcxproj
+*.vcxproj*
