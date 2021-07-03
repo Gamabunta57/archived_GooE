@@ -22,5 +22,6 @@ project "Sandbox"
 	includedirs
 	{
 		"src",
-        "%{prjocation}/../GooE/src"
+        "%{prjocation}/../GooE/src",
+        "%{prj.location}/../GooE/vendor/spdlog/include"
 	}

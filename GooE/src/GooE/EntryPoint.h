@@ -1,13 +1,14 @@
 #pragma once
 #include "Application.h"
-#include <stdio.h>
 
 #ifdef GOOE_PLATFORM_WINDOWS
 
 extern GooE::Application* GooE::CreateApplication();
 
 int main(int argc, char** argv) {
-	printf("GooE Engine Start");
+	GooE::Log::Init();
+	GOOE_CORE_WARN("Log initialized!");
+	GOOE_INFO("Log initialized!");
 	auto app = GooE::CreateApplication();
 	app->Run();
 	delete app;

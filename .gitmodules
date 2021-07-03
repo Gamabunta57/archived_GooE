@@ -1,0 +1,3 @@
+[submodule ".\\GooE\\vendor\\spdlog"]
+	path = .\\GooE\\vendor\\spdlog
+	url = git@github.com:gabime/spdlog

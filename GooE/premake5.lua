@@ -14,3 +14,7 @@ project "GooE"
         "src/**.h",
 		"src/**.cpp",
     }
+
+    includedirs {
+        "%{prj.location}/vendor/spdlog/include"
+    }
