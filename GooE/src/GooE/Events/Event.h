@@ -1,7 +1,5 @@
 #pragma once
-#include <functional>
-#include <string>
-
+#include "gepch.h"
 #include "GooE/Core.h"
 
 namespace GooE {
@@ -14,12 +12,12 @@ namespace GooE {
 	};
 
 	enum EventCategory {
-		None = 0,
-		Application = BIT(0),
-		Input		= BIT(1),
-		Keyboard	= BIT(2),
-		Mouse		= BIT(3),
-		MouseButton = BIT(4),
+		NoneEventCategory        = 0,
+		ApplicationEventCategory = BIT(0),
+		InputEventCategory       = BIT(1),
+		KeyboardEventCategory    = BIT(2),
+		MouseEventCategory       = BIT(3),
+		MouseButtonEventCategory = BIT(4),
 	};
 
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\

@@ -1,7 +1,4 @@
 #pragma once
-
-#include <sstream>
-
 #include "GooE/Core.h"
 #include "Event.h"
 
@@ -20,7 +17,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Application)
+		EVENT_CLASS_CATEGORY(ApplicationEventCategory)
 		EVENT_CLASS_TYPE(WindowResize)
 
 	private:
@@ -37,7 +34,7 @@ namespace GooE {
 			ss << "WindowCloseEvent";
 		}
 
-		EVENT_CLASS_CATEGORY(Application)
+		EVENT_CLASS_CATEGORY(ApplicationEventCategory)
 		EVENT_CLASS_TYPE(WindowClose)
 	};
 
@@ -51,7 +48,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Application)
+		EVENT_CLASS_CATEGORY(ApplicationEventCategory)
 		EVENT_CLASS_TYPE(WindowFocus)
 	};
 		
@@ -65,7 +62,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Application)
+		EVENT_CLASS_CATEGORY(ApplicationEventCategory)
 		EVENT_CLASS_TYPE(WindowLostFocus)
 	};
 	
@@ -79,7 +76,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Application)
+		EVENT_CLASS_CATEGORY(ApplicationEventCategory)
 		EVENT_CLASS_TYPE(WindowMoved)
 
 	private:

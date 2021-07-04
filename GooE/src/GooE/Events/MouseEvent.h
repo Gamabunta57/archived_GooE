@@ -1,6 +1,4 @@
 #pragma once
-
-#include <sstream>
 #include "GooE/Core.h"
 #include "Event.h"
 
@@ -18,7 +16,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Mouse | MouseButton | Input)
+		EVENT_CLASS_CATEGORY(MouseEventCategory | MouseButtonEventCategory | InputEventCategory)
 		EVENT_CLASS_TYPE (MouseButtonPressed)
 
 
@@ -38,7 +36,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Mouse | MouseButton | Input)
+		EVENT_CLASS_CATEGORY(MouseEventCategory | MouseButtonEventCategory | InputEventCategory)
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 
 	private:
@@ -58,7 +56,7 @@ namespace GooE {
 			return ss.str();
 		}
 
-		EVENT_CLASS_CATEGORY(Mouse | Input)
+		EVENT_CLASS_CATEGORY(MouseEventCategory | InputEventCategory)
 		EVENT_CLASS_TYPE(MouseMoved)
 
 	private:
@@ -79,7 +77,7 @@ namespace GooE {
 		inline int GetOffsetX() const { return offsetX; }
 		inline int GetOffsetY() const { return offsetY; }
 
-		EVENT_CLASS_CATEGORY(Mouse | Input)
+		EVENT_CLASS_CATEGORY(MouseEventCategory | InputEventCategory)
 		EVENT_CLASS_TYPE(MouseScrolled)
 
 	private:

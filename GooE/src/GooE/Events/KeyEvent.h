@@ -1,6 +1,4 @@
 #pragma once
-
-#include <sstream>
 #include "Event.h"
 
 namespace GooE {
@@ -9,7 +7,7 @@ namespace GooE {
 	public:
 		inline int GetKeyCode() const { return keyCode; }
 
-		EVENT_CLASS_CATEGORY(Keyboard | Input)
+		EVENT_CLASS_CATEGORY(KeyboardEventCategory | InputEventCategory)
 	protected:
 		KeyEvent(int keyCode) : keyCode(keyCode) {}
 
