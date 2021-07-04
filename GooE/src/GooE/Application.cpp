@@ -25,9 +25,6 @@ namespace GooE {
 			for (Layer* layer : layerStack)
 				layer->OnUpdate();
 
-			auto [x, y] = Input::GetMousePosition();
-			GOOE_CORE_TRACE("{0}, {1}", x, y);
-
 			window->OnUpdate();
 		}
 	}
