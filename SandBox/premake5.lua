@@ -23,5 +23,6 @@ project "Sandbox"
 	{
 		"src",
         "%{prjocation}/../GooE/src",
-        "%{prj.location}/../GooE/vendor/spdlog/include"
+        "%{prj.location}/../GooE/vendor/spdlog/include",
+        "%{vendorInclude.glm}"
 	}

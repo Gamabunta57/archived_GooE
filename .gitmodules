@@ -7,3 +7,6 @@
 [submodule ".\\GooE\\vendor\\imgui"]
 	path = .\\GooE\\vendor\\imgui
 	url = git@github.com:ocornut/imgui
+[submodule ".\\GooE\\vendor\\glm"]
+	path = .\\GooE\\vendor\\glm
+	url = git@github.com:g-truc/glm

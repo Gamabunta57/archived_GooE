@@ -27,7 +27,8 @@ project "GooE"
         "%{prj.location}/vendor/spdlog/include",
         "%{vendorInclude.GLFW}",
         "%{vendorInclude.glad}",
-        "%{vendorInclude.ImGui}"
+        "%{vendorInclude.ImGui}",
+        "%{vendorInclude.glm}"
     }
 
     links {
