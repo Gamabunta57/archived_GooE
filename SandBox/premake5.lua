@@ -1,6 +1,6 @@
 project "Sandbox"
     kind "ConsoleApp"
-    staticruntime "off"
+    staticruntime "on"
 
     targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
@@ -24,5 +24,7 @@ project "Sandbox"
 		"src",
         "%{prjocation}/../GooE/src",
         "%{prj.location}/../GooE/vendor/spdlog/include",
-        "%{vendorInclude.glm}"
+        "%{vendorInclude.glm}",
+        "%{vendorInclude.ImGui}",
+        "%{vendorInclude.ImGui}/.."
 	}

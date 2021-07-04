@@ -1,14 +1,31 @@
 #include <GooE.h>
 
+#include "imgui/imgui.h"
+
+
+class TestLayer : public GooE::Layer {
+public:
+    TestLayer() : Layer("Test") {}
+
+    void OnUpdate() override {
+        if (GooE::Input::IsKeyPressed(GOOE_KEY_TAB))
+            GOOE_TRACE("Tab is pressed!");
+    }
+
+    virtual void OnImGuiRender() override {
+        ImGui::Begin("test");
+        ImGui::Text("Here I am!");
+        ImGui::End();
+    }
+};
+
 class Sandbox : public GooE::Application {
 public:
     Sandbox() {
-        PushOverlay(new GooE::ImGuiLayer());
+        PushLayer(new TestLayer());
     }
 
-    ~Sandbox() {
-
-    }
+    ~Sandbox() {}
 
 };
 

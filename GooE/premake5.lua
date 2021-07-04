@@ -1,6 +1,6 @@
 project "GooE"
     kind "StaticLib"
-	staticruntime "off"
+	staticruntime "on"
 
     targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")

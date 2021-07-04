@@ -33,7 +33,7 @@ project "GLFW"
     location "GooE/vendor/glfw"
 	kind "StaticLib"
 	language "C"
-	staticruntime "off"
+	staticruntime "on"
 
     targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
@@ -109,10 +109,15 @@ project "ImGui"
 	location "GooE/vendor/imgui"
 	kind "StaticLib"
 	language "C++"
-    staticruntime "off"
+    staticruntime "on"
 
 	targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
+
+	defines {
+		"_CRT_SECURE_NO_WARNINGS",
+		"IMGUI_IMPL_OPENGL_LOADER_GLAD"
+	}
 
 	files
 	{
@@ -126,7 +131,17 @@ project "ImGui"
 		"%{prj.location}/imstb_rectpack.h",
 		"%{prj.location}/imstb_textedit.h",
 		"%{prj.location}/imstb_truetype.h",
-		"%{prj.location}/imgui_demo.cpp"
+		"%{prj.location}/imgui_demo.cpp",
+		"%{prj.location}/backends/imgui_impl_opengl3.h",
+		"%{prj.location}/backends/imgui_impl_opengl3.cpp",
+		"%{prj.location}/backends/imgui_impl_glfw.h",
+		"%{prj.location}/backends/imgui_impl_glfw.cpp"
+	}
+
+	includedirs {
+		"%{prj.location}",
+		"%{vendorInclude.glad}",
+		"%{vendorInclude.GLFW}",
 	}
 
 	filter "system:windows"

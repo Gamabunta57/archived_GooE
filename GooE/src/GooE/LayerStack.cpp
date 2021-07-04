@@ -3,9 +3,7 @@
 
 namespace GooE {
 
-	LayerStack::LayerStack() {
-		layerInsert = layers.begin();
-	}
+	LayerStack::LayerStack() {}
 
 	LayerStack::~LayerStack() {
 		for (Layer* layer : layers)
@@ -13,7 +11,8 @@ namespace GooE {
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {
-		layerInsert = layers.emplace(layerInsert, layer);
+		layers.emplace(layers.begin() + layerInsertIndex, layer);
+		layerInsertIndex++;
 		layer->OnAttach();
 	}
 
@@ -27,7 +26,7 @@ namespace GooE {
 		if (it != layers.end()) {
 			layer->OnDetach();
 			layers.erase(it);
-			layerInsert--;
+			layerInsertIndex--;
 		}
 	}
 

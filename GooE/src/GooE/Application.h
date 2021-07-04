@@ -5,6 +5,7 @@
 #include "GooE/Events/ApplicationEvent.h"
 #include "GooE/Layer.h"
 #include "GooE/LayerStack.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace GooE {
 	class GOOE_API Application {
@@ -26,6 +27,7 @@ namespace GooE {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> window;
+		ImGuiLayer* imguiLayer;
 		bool isRunning = true;
 		LayerStack layerStack;
 
