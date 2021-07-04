@@ -19,6 +19,8 @@ namespace GooE {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		inline virtual void* GetNativeWindow() const override { return window; }
+
 	private:
 		virtual void Init(const WindowProperties& properties);
 		virtual void Shutdown();

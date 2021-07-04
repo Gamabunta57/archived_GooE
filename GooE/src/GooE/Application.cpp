@@ -1,6 +1,7 @@
 #include "gepch.h"
 #include "Application.h"
 #include "glad/glad.h"
+#include "Input.h"
 
 namespace GooE {
 	Application* Application::instance = nullptr;
@@ -23,6 +24,9 @@ namespace GooE {
 
 			for (Layer* layer : layerStack)
 				layer->OnUpdate();
+
+			auto [x, y] = Input::GetMousePosition();
+			GOOE_CORE_TRACE("{0}, {1}", x, y);
 
 			window->OnUpdate();
 		}
