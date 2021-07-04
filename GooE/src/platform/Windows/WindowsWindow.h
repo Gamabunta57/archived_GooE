@@ -1,6 +1,7 @@
 #pragma once
-#include <GLFW/glfw3.h>
 #include "GooE/Window.h"
+
+struct GLFWwindow;
 
 namespace GooE {
 

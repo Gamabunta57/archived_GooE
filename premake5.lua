@@ -21,9 +21,11 @@ workspace "GooE"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 vendorInclude = {}
 vendorInclude["GLFW"] = "%{wks.location}/GooE/vendor/glfw/include"
+vendorInclude["glad"] = "%{wks.location}/GooE/vendor/glad/include"
 
 include "GooE"
 include "Sandbox"
+include "GooE/vendor/glad"
 
 project "GLFW"
     location "GooE/vendor/glfw"

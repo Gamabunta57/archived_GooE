@@ -4,6 +4,7 @@
 #include "GooE/Events/ApplicationEvent.h"
 #include "GooE/Events/KeyEvent.h"
 #include "GooE/Events/MouseEvent.h"
+#include "glad/glad.h"
 
 namespace GooE {
 	static bool isGLFWinitialized = false;
@@ -42,6 +43,10 @@ namespace GooE {
 
 		window = glfwCreateWindow((int)data.width, (int)data.height, data.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(window);
+		
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		GOOE_CORE_ASSERT(status, "Failed to initialize Glad!")
+
 		glfwSetWindowUserPointer(window, &data);
 		SetVSync(true);
 

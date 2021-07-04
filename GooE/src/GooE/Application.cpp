@@ -1,6 +1,6 @@
 #include "gepch.h"
 #include "Application.h"
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
 
 namespace GooE {
 
@@ -9,6 +9,9 @@ namespace GooE {
 	Application::Application() {
 		window = std::unique_ptr<Window>(Window::Create());
 		window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		
+		unsigned int id;
+		glGenVertexArrays(1, &id);
 	}
 
 	Application::~Application() {

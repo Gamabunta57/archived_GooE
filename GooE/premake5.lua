@@ -10,7 +10,8 @@ project "GooE"
 
     defines {
         "GOOE_PLATFORM_WINDOWS",
-        "GOOE_BUILD_STATIC"
+        "GOOE_BUILD_STATIC",
+        "GLFW_INCLUDE_NONE"
     }
 
     files {
@@ -21,10 +22,12 @@ project "GooE"
     includedirs {
         "%{prj.location}/src",
         "%{prj.location}/vendor/spdlog/include",
-        "%{vendorInclude.GLFW}"
+        "%{vendorInclude.GLFW}",
+        "%{vendorInclude.glad}"
     }
 
     links {
         "GLFW",
+        "glad",
         "opengl32.lib"
     }
