@@ -22,6 +22,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 vendorInclude = {}
 vendorInclude["GLFW"] = "%{wks.location}/GooE/vendor/glfw/include"
 vendorInclude["glad"] = "%{wks.location}/GooE/vendor/glad/include"
+vendorInclude["ImGui"] = "%{wks.location}/GooE/vendor/imgui"
 
 include "GooE"
 include "Sandbox"
@@ -94,6 +95,48 @@ project "GLFW"
 			"_GLFW_WIN32",
 			"_CRT_SECURE_NO_WARNINGS"
 		}
+
+	filter "configurations:Debug"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "on"
+
+project "ImGui"
+	location "GooE/vendor/imgui"
+	kind "StaticLib"
+	language "C++"
+    staticruntime "off"
+
+	targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.location}/imconfig.h",
+		"%{prj.location}/imgui.h",
+		"%{prj.location}/imgui.cpp",
+		"%{prj.location}/imgui_draw.cpp",
+		"%{prj.location}/imgui_internal.h",
+		"%{prj.location}/imgui_tables.cpp",
+		"%{prj.location}/imgui_widgets.cpp",
+		"%{prj.location}/imstb_rectpack.h",
+		"%{prj.location}/imstb_textedit.h",
+		"%{prj.location}/imstb_truetype.h",
+		"%{prj.location}/imgui_demo.cpp"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		cppdialect "C++17"
+		defines {"_MSC_VER"}
+
+	filter "system:linux"
+		pic "On"
+		systemversion "latest"
+		cppdialect "C++17"
 
 	filter "configurations:Debug"
 		runtime "Debug"

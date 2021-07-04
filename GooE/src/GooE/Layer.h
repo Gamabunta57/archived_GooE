@@ -3,9 +3,7 @@
 #include "GooE/Events/Event.h"
 
 namespace GooE {
-
-	class GOOE_API Layer
-	{
+	class GOOE_API Layer {
 	public:
 		Layer(const std::string & name = "Layer");
 		virtual ~Layer();

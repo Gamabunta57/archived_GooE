@@ -11,23 +11,28 @@ project "GooE"
     defines {
         "GOOE_PLATFORM_WINDOWS",
         "GOOE_BUILD_STATIC",
-        "GLFW_INCLUDE_NONE"
+        "GLFW_INCLUDE_NONE",
+        "IMGUI_IMPL_OPENGL_LOADER_GLAD"
     }
 
     files {
-        "src/**.h",
-		"src/**.cpp",
+        "%{prj.location}/src/**.h",
+		"%{prj.location}/src/**.cpp",
+        "%{prj.location}/src/**.h",
+		"%{prj.location}/src/**.cpp",
     }
 
     includedirs {
         "%{prj.location}/src",
         "%{prj.location}/vendor/spdlog/include",
         "%{vendorInclude.GLFW}",
-        "%{vendorInclude.glad}"
+        "%{vendorInclude.glad}",
+        "%{vendorInclude.ImGui}"
     }
 
     links {
         "GLFW",
         "glad",
+        "ImGui",
         "opengl32.lib"
     }
