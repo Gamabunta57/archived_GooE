@@ -7,3 +7,5 @@ vendor/bin/premake/
 *.vcxproj
 *.vcxproj*
 premake5.exe
+
+imgui.ini

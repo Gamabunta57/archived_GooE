@@ -112,6 +112,12 @@ namespace GooE {
 			}
 		});
 
+		glfwSetCharCallback(window, [](GLFWwindow* window, unsigned int codepoint) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			KeyTypedEvent e(codepoint);
+			data.eventCallback(e);
+		});
+
 		glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			switch (action) {

@@ -3,9 +3,6 @@
 #include "glad/glad.h"
 
 namespace GooE {
-
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
-
 	Application* Application::instance = nullptr;
 
 	Application::Application() {
@@ -13,7 +10,7 @@ namespace GooE {
 		instance = this;
 
 		window = std::unique_ptr<Window>(Window::Create());
-		window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		window->SetEventCallback(GOOE_BIND_EVENT_FN(Application::OnEvent));
 	}
 
 	Application::~Application() {
@@ -33,7 +30,7 @@ namespace GooE {
 
 	void Application::OnEvent(Event& e) {
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(GOOE_BIND_EVENT_FN(Application::OnWindowClose));
 
 		GOOE_CORE_TRACE("{0}", e);
 
