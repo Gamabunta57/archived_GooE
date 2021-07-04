@@ -131,7 +131,6 @@ project "ImGui"
 	filter "system:windows"
 		systemversion "latest"
 		cppdialect "C++17"
-		defines {"_MSC_VER"}
 
 	filter "system:linux"
 		pic "On"
