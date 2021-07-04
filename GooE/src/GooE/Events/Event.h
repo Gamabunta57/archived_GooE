@@ -1,6 +1,7 @@
 #pragma once
 #include "gepch.h"
 #include "GooE/Core.h"
+#include <spdlog/fmt/ostr.h>
 
 namespace GooE {
 	
