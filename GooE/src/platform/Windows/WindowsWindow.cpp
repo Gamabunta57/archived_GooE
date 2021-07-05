@@ -136,13 +136,13 @@ namespace GooE {
 
 		glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			MouseMovedEvent e((float)x, (float)y);
+			MouseMovedEvent e((unsigned int)x, (unsigned int)y);
 			data.eventCallback(e);
 		});
 
 		glfwSetScrollCallback(window, [](GLFWwindow* window, double x, double y) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			MouseScrolledEvent e((float)x, (float)y);
+			MouseScrolledEvent e((unsigned int)x, (unsigned int)y);
 			data.eventCallback(e);
 		});
 

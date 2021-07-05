@@ -1,30 +1,30 @@
 project "Sandbox"
-    kind "ConsoleApp"
-    staticruntime "on"
+	kind "ConsoleApp"
+	staticruntime "on"
 
-    targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
 
-    defines {
-        "GOOE_PLATFORM_WINDOWS",
-        "GOOE_BUILD_STATIC"
-    }
+	defines {
+		"GOOE_PLATFORM_WINDOWS",
+		"GOOE_BUILD_STATIC"
+	}
 
-    files {
-        "src/**.h",
+	files {
+		"src/**.h",
 		"src/**.cpp",
-    }
+	}
 
-    links {
-        "GooE"
-    }
+	links {
+		"GooE"
+	}
 
 	includedirs
 	{
 		"src",
-        "%{prjocation}/../GooE/src",
-        "%{prj.location}/../GooE/vendor/spdlog/include",
-        "%{vendorInclude.glm}",
-        "%{vendorInclude.ImGui}",
-        "%{vendorInclude.ImGui}/.."
+		"%{prjocation}/../GooE/src",
+		"%{prj.location}/../GooE/vendor/spdlog/include",
+		"%{vendorInclude.glm}",
+		"%{vendorInclude.ImGui}",
+		"%{vendorInclude.ImGui}/.."
 	}

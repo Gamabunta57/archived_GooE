@@ -22,7 +22,7 @@ namespace GooE {
 
 	void Application::Run() {
 		while (isRunning) {
-			glClearColor(0.7, 0.3, 0.9, 1);
+			glClearColor(0.7f, 0.3f, 0.9f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (Layer* layer : layerStack)

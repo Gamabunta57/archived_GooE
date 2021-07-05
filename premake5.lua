@@ -1,22 +1,26 @@
 workspace "GooE"
-    language "C++"
-    cppdialect "c++17"
+	language "C++"
+	cppdialect "c++17"
 	startproject "Sandbox"
-    configurations {"Debug", "Release"}
-    platforms {"Win64"}
+	configurations {"Debug", "Release"}
+	platforms {"Win64"}
 
-    filter "configurations:Debug"
-        defines {"DEBUG", "GOOE_ENABLE_ASSERTS"}
+	filter "configurations:Debug"
+		defines {"DEBUG", "GOOE_ENABLE_ASSERTS"}
+		symbols "on"
+		runtime "Debug"
 
-    filter "configurations:Release"
-        defines {"Release"}
-        optimize "On"
+	filter "configurations:Release"
+		defines {"RELEASE"}
+		optimize "on"
+		symbols "off"
+		runtime "Release"
 
-    filter "platforms:Win64"
-        defines {"WIN_64"}
-        system "Windows"
-        architecture "x86_64"
-        systemversion "latest"
+	filter "platforms:Win64"
+		defines {"WIN_64"}
+		system "windows"
+		architecture "x86_64"
+		systemversion "latest"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 vendorInclude = {}
@@ -30,12 +34,12 @@ include "Sandbox"
 include "GooE/vendor/glad"
 
 project "GLFW"
-    location "GooE/vendor/glfw"
+	location "GooE/vendor/glfw"
 	kind "StaticLib"
 	language "C"
 	staticruntime "on"
 
-    targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
 
 	files
@@ -53,7 +57,6 @@ project "GLFW"
 
 	filter "system:linux"
 		pic "On"
-
 		systemversion "latest"
 		
 		files
@@ -76,8 +79,6 @@ project "GLFW"
 		}
 
 	filter "system:windows"
-		systemversion "latest"
-
 		files
 		{
 			"%{prj.location}/src/win32_init.c",
@@ -97,19 +98,12 @@ project "GLFW"
 			"_CRT_SECURE_NO_WARNINGS"
 		}
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
-
 project "ImGui"
 	location "GooE/vendor/imgui"
 	kind "StaticLib"
 	language "C++"
-    staticruntime "on"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
@@ -144,19 +138,5 @@ project "ImGui"
 		"%{vendorInclude.GLFW}",
 	}
 
-	filter "system:windows"
-		systemversion "latest"
-		cppdialect "C++17"
-
 	filter "system:linux"
 		pic "On"
-		systemversion "latest"
-		cppdialect "C++17"
-
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
