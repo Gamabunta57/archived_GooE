@@ -1,5 +1,6 @@
 #pragma once
 #include "GooE/Window.h"
+#include "GooE/Renderer/GraphicsContext.h"
 
 struct GLFWwindow;
 
@@ -27,6 +28,7 @@ namespace GooE {
 
 	private:
 		GLFWwindow* window;
+		GraphicsContext* context;
 
 		struct WindowData {
 			std::string title;

@@ -1,10 +1,11 @@
 #include "gepch.h"
 #include "GLFW/glfw3.h"
+#include "glad/glad.h"
 #include "WindowsWindow.h"
 #include "GooE/Events/ApplicationEvent.h"
 #include "GooE/Events/KeyEvent.h"
 #include "GooE/Events/MouseEvent.h"
-#include "glad/glad.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace GooE {
 	static bool isGLFWinitialized = false;
@@ -42,10 +43,9 @@ namespace GooE {
 		GOOE_CORE_INFO("Initialized window {0} ({1}, {2})", data.title, data.width, data.height);
 
 		window = glfwCreateWindow((int)data.width, (int)data.height, data.title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(window);
 		
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		GOOE_CORE_ASSERT(status, "Failed to initialize Glad!")
+		context = new OpenGLContext(window);
+		context->Init();
 
 		glfwSetWindowUserPointer(window, &data);
 		SetVSync(true);
@@ -156,7 +156,8 @@ namespace GooE {
 
 	void WindowsWindow::OnUpdate() {
 		glfwPollEvents();
-		glfwSwapBuffers(window);
+
+		context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool isEnabled) {
