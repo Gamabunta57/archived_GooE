@@ -31,6 +31,8 @@ namespace GooE {
 		bool isRunning = true;
 		LayerStack layerStack;
 
+		unsigned int vertexArray, vertexBuffer, indexBuffer;
+
 	private:
 		static Application* instance;
 	};
