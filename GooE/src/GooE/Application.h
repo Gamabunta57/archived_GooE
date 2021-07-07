@@ -6,6 +6,7 @@
 #include "GooE/Layer.h"
 #include "GooE/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
+#include <GooE/Renderer/Shader.h>
 
 namespace GooE {
 	class GOOE_API Application {
@@ -32,6 +33,8 @@ namespace GooE {
 		LayerStack layerStack;
 
 		unsigned int vertexArray, vertexBuffer, indexBuffer;
+
+		std::unique_ptr<Shader> shader;
 
 	private:
 		static Application* instance;

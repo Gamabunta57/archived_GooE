@@ -22,11 +22,10 @@ namespace GooE {
 		glGenBuffers(1, &vertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
-		float vertices[3 * 4] = {
-			-0.25f, -0.25f, 0.0f,
-			 0.25f, -0.25f, 0.0f,
-			 0.0f,   0.25f, 0.0f,
-			 0.0f,  -0.75f, 0.0f,
+		float vertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f
 		};
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -37,11 +36,36 @@ namespace GooE {
 		glGenBuffers(1, &indexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-		unsigned int indices[6] = {
-			0, 1 ,2,
-			0, 3, 1
+		unsigned int indices[3] = {
+			0, 1 ,2
 		};
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		std::string vertexSrc = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 position;
+
+			out vec3 vPosition;
+			
+			void main() {
+				vPosition = position;
+				gl_Position = vec4(position, 1.0);
+			}
+		)";
+
+		std::string fragmentSrc = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+			in vec3 vPosition;
+
+			void main() {
+				color = vec4(vPosition * 0.5 + 0.5, 1.0);
+			}
+		)";
+
+		shader.reset(new Shader(vertexSrc, fragmentSrc));
 	}
 
 	Application::~Application() {
@@ -52,6 +76,7 @@ namespace GooE {
 			glClearColor(0.5f, 0.1f, 0.9f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			shader->Bind();
 			glBindVertexArray(vertexArray);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
