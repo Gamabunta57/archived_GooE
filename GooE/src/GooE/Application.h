@@ -6,6 +6,7 @@
 #include "GooE/Layer.h"
 #include "GooE/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
+#include "GooE/Renderer/Buffer.h"
 #include <GooE/Renderer/Shader.h>
 
 namespace GooE {
@@ -32,9 +33,11 @@ namespace GooE {
 		bool isRunning = true;
 		LayerStack layerStack;
 
-		unsigned int vertexArray, vertexBuffer, indexBuffer;
+		unsigned int vertexArray;
 
 		std::unique_ptr<Shader> shader;
+		std::unique_ptr<VertexBuffer> vertexBuffer;
+		std::unique_ptr<IndexBuffer> indexBuffer;
 
 	private:
 		static Application* instance;
