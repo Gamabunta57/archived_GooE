@@ -8,6 +8,7 @@
 #include "ImGui/ImGuiLayer.h"
 #include "GooE/Renderer/Buffer.h"
 #include <GooE/Renderer/Shader.h>
+#include <GooE/Renderer/VertexArray.h>
 
 namespace GooE {
 	class GOOE_API Application {
@@ -33,11 +34,11 @@ namespace GooE {
 		bool isRunning = true;
 		LayerStack layerStack;
 
-		unsigned int vertexArray;
-
-		std::unique_ptr<Shader> shader;
-		std::unique_ptr<VertexBuffer> vertexBuffer;
-		std::unique_ptr<IndexBuffer> indexBuffer;
+		std::shared_ptr<Shader> shader;
+		std::shared_ptr<VertexArray> vertexArray;
+		
+		std::shared_ptr<Shader> squareShader;
+		std::shared_ptr<VertexArray> squareVertexArray;
 
 	private:
 		static Application* instance;
