@@ -1,8 +1,9 @@
 #pragma once
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+
 #include "Core.h"
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace GooE {
 	class GOOE_API Log

@@ -1,8 +1,9 @@
 #include "gepch.h"
 
+#include <Platform/OpenGL/OpenGLVertexArray.h>
+
 #include "VertexArray.h"
 #include "Renderer.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
 
 namespace GooE {
 	VertexArray* VertexArray::Create() {

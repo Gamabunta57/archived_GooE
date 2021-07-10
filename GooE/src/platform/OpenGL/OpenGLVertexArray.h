@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GooE/Renderer/VertexArray.h"
+#include <GooE/Renderer/VertexArray.h>
 
 namespace GooE {
 	class OpenGLVertexArray : public VertexArray {
@@ -22,4 +22,3 @@ namespace GooE {
 		std::shared_ptr<IndexBuffer> indexBuffer;
 	};
 }
-

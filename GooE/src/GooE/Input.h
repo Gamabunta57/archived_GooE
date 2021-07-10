@@ -1,5 +1,5 @@
 #pragma once
-#include "GooE/Core.h"
+#include <GooE/Core.h>
 
 namespace GooE {
 

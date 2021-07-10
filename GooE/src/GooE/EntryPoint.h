@@ -17,4 +17,3 @@ int main(int argc, char** argv) {
 #else
 	#error Windows only is supported!
 #endif
-

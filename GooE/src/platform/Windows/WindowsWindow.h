@@ -1,6 +1,6 @@
 #pragma once
-#include "GooE/Window.h"
-#include "GooE/Renderer/GraphicsContext.h"
+#include <GooE/Window.h>
+#include <GooE/Renderer/GraphicsContext.h>
 
 struct GLFWwindow;
 
@@ -41,4 +41,3 @@ namespace GooE {
 		WindowData data;
 	};
 }
-

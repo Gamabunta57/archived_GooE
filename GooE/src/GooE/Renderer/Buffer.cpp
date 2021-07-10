@@ -1,8 +1,9 @@
 #include "gepch.h"
+
+#include <Platform/OpenGL/OpenGLBuffer.h>
+
 #include "Buffer.h"
 #include "Renderer.h"
-
-#include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace GooE {
 

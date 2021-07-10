@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GooE/Renderer/GraphicsContext.h"
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
+#include <GooE/Renderer/GraphicsContext.h>
 
 namespace GooE {
 

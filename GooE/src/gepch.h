@@ -14,8 +14,6 @@
 
 #include "GooE/Log.h"
 
-
 #ifdef GOOE_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif // GOOE_PLATFORM_WINDOWS
-

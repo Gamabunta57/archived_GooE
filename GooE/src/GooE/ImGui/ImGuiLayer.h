@@ -1,8 +1,8 @@
 #pragma once
-#include "GooE/Layer.h"
-#include "GooE/Events/ApplicationEvent.h"
-#include "GooE/Events/KeyEvent.h"
-#include "GooE/Events/MouseEvent.h"
+#include <GooE/Events/ApplicationEvent.h>
+#include <GooE/Events/KeyEvent.h>
+#include <GooE/Events/MouseEvent.h>
+#include <GooE/Layer.h>
 
 namespace GooE {
 	class GOOE_API ImGuiLayer : public Layer {
@@ -21,4 +21,3 @@ namespace GooE {
 		float time = 0.0f;
 	};
 }
-

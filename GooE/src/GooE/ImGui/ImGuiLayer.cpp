@@ -1,15 +1,16 @@
 #include "gepch.h"
+
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+
+#include <GooE/Application.h>
+
 #include "ImGuiLayer.h"
 
-#include "imgui.h"
-#include "GooE/Application.h"
-
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
-
 //TEMP
-#include "GLFW/glfw3.h"
-#include "glad/glad.h"
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace GooE {
     ImGuiLayer::ImGuiLayer() : Layer("ImGui layer") {}

@@ -1,6 +1,6 @@
 #pragma once
-#include "GooE/Core.h"
-#include "GooE/Events/Event.h"
+#include <GooE/Core.h>
+#include <GooE/Events/Event.h>
 
 namespace GooE {
 	class GOOE_API Layer {

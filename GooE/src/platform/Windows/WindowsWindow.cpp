@@ -1,11 +1,14 @@
 #include "gepch.h"
-#include "GLFW/glfw3.h"
-#include "glad/glad.h"
+
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
+
+#include <GooE/Events/ApplicationEvent.h>
+#include <GooE/Events/KeyEvent.h>
+#include <GooE/Events/MouseEvent.h>
+#include <Platform/OpenGL/OpenGLContext.h>
+
 #include "WindowsWindow.h"
-#include "GooE/Events/ApplicationEvent.h"
-#include "GooE/Events/KeyEvent.h"
-#include "GooE/Events/MouseEvent.h"
-#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace GooE {
 	static bool isGLFWinitialized = false;

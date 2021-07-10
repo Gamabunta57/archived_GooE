@@ -1,8 +1,10 @@
 #include "gepch.h"
+
+#include <GooE/Renderer/Renderer.h>
+#include <GooE/Renderer/RenderCommand.h>
+
 #include "Application.h"
 #include "Input.h"
-#include "GooE/Renderer/Renderer.h"
-#include "GooE/Renderer/RenderCommand.h"
 
 namespace GooE {
 	Application* Application::instance = nullptr;

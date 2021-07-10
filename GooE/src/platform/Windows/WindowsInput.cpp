@@ -1,7 +1,9 @@
 #include "gepch.h"
+
+#include <GLFW/glfw3.h>
+#include <GooE/Application.h>
+
 #include "WindowsInput.h"
-#include "GLFW/glfw3.h"
-#include "GooE/Application.h"
 
 namespace GooE {
 

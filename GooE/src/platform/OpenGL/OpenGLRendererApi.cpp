@@ -1,7 +1,9 @@
 #include "gepch.h"
 
+#include <glad/glad.h>
+
 #include "OpenGLRendererApi.h"
-#include "glad/glad.h"
+
 namespace GooE {
 	void OpenGLRendererApi::SetClearColor(const glm::vec4& color) {
 		glClearColor(color.r, color.g, color.b, color.a);

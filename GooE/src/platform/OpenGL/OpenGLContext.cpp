@@ -1,5 +1,7 @@
 #include "gepch.h"
-#include "glad/glad.h"
+
+#include <glad/glad.h>
+
 #include "OpenGLContext.h"
 
 namespace GooE {

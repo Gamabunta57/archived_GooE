@@ -1,8 +1,6 @@
 #pragma once
 
-#include <cstdint>
-
-#include "GooE/Renderer/Buffer.h"
+#include <GooE/Renderer/Buffer.h>
 
 namespace GooE {
 

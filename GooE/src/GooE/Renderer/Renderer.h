@@ -13,4 +13,3 @@ namespace GooE {
 		inline static RendererApi::Api GetApi() { return RendererApi::GetApi(); }
 	};
 }
-

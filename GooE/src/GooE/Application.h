@@ -1,14 +1,15 @@
 #pragma once
 #include "Window.h"
 
-#include "Core.h"
-#include "GooE/Events/ApplicationEvent.h"
-#include "GooE/Layer.h"
-#include "GooE/LayerStack.h"
-#include "ImGui/ImGuiLayer.h"
-#include "GooE/Renderer/Buffer.h"
+#include <GooE/Events/ApplicationEvent.h>
+#include <GooE/ImGui/ImGuiLayer.h>
+#include <GooE/Layer.h>
+#include <GooE/LayerStack.h>
+#include <GooE/Renderer/Buffer.h>
 #include <GooE/Renderer/Shader.h>
 #include <GooE/Renderer/VertexArray.h>
+
+#include "Core.h"
 
 namespace GooE {
 	class GOOE_API Application {

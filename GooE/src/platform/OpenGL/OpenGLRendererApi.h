@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GooE/Renderer/RendererApi.h"
+#include <GooE/Renderer/RendererApi.h>
 
 namespace GooE {
 	class OpenGLRendererApi : public RendererApi {
