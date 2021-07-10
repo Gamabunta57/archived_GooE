@@ -9,7 +9,7 @@
 namespace GooE {
 	Application* Application::instance = nullptr;
 
-	Application::Application() {
+	Application::Application() : camera(-1.6f, 1.6f, -0.9f, 0.9f) {
 		GOOE_CORE_ASSERT(!instance, "Application already exists!");
 		instance = this;
 
@@ -67,13 +67,16 @@ namespace GooE {
 
 			layout(location = 0) in vec3 position;
 			layout(location = 1) in vec4 color;
+
+			uniform mat4 viewProjection;
+
 			out vec3 vPosition;
 			out vec4 vColor;
 			
 			void main() {
 				vPosition = position;
 				vColor = color;
-				gl_Position = vec4(position, 1.0);
+				gl_Position = viewProjection * vec4(position, 1.0);
 			}
 		)";
 
@@ -95,11 +98,13 @@ namespace GooE {
 
 			layout(location = 0) in vec3 position;
 
+			uniform mat4 viewProjection;
+
 			out vec3 vPosition;
 			
 			void main() {
 				vPosition = position;
-				gl_Position = vec4(position, 1.0);
+				gl_Position = viewProjection * vec4(position, 1.0);
 			}
 		)";
 
@@ -123,17 +128,19 @@ namespace GooE {
 
 	void Application::Run() {
 		RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
-
+		float rotation = 0.0f;
 		while (isRunning) {
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
+			camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+			camera.SetRotation(rotation);
 
-			squareShader->Bind();
-			Renderer::Submit(squareVertexArray);
+			rotation++;
 
-			shader->Bind();
-			Renderer::Submit(vertexArray);
+			Renderer::BeginScene(camera);
+
+			Renderer::Submit(squareShader, squareVertexArray);
+			Renderer::Submit(shader, vertexArray);
 
 			Renderer::EndScene();
 

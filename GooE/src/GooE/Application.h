@@ -8,6 +8,7 @@
 #include <GooE/Renderer/Buffer.h>
 #include <GooE/Renderer/Shader.h>
 #include <GooE/Renderer/VertexArray.h>
+#include <GooE/Renderer/OrthographicCamera.h>
 
 #include "Core.h"
 
@@ -41,6 +42,7 @@ namespace GooE {
 		std::shared_ptr<Shader> squareShader;
 		std::shared_ptr<VertexArray> squareVertexArray;
 
+		OrthographicCamera camera;
 	private:
 		static Application* instance;
 	};
