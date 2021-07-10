@@ -1,17 +1,16 @@
 #pragma once
 
-namespace GooE {
+#include "RendererApi.h"
 
-	enum class RendererApi {
-		None = 0,
-		OpenGl = 1
-	};
+namespace GooE {
 
 	class Renderer {
 	public:
-		inline static RendererApi GetApi() { return rendererApi; }
-		static RendererApi rendererApi;
-	};
+		static void BeginScene();
+		static void EndScene();
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
 
+		inline static RendererApi::Api GetApi() { return RendererApi::GetApi(); }
+	};
 }
 

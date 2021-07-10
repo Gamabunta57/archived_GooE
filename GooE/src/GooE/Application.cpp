@@ -1,7 +1,8 @@
 #include "gepch.h"
 #include "Application.h"
-#include "glad/glad.h"
 #include "Input.h"
+#include "GooE/Renderer/Renderer.h"
+#include "GooE/Renderer/RenderCommand.h"
 
 namespace GooE {
 	Application* Application::instance = nullptr;
@@ -119,17 +120,20 @@ namespace GooE {
 	}
 
 	void Application::Run() {
+		RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+
 		while (isRunning) {
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			squareShader->Bind();
-			squareVertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, squareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(squareVertexArray);
 
 			shader->Bind();
-			vertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(vertexArray);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : layerStack)
 				layer->OnUpdate();

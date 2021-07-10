@@ -8,11 +8,11 @@ namespace GooE {
 
 	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size) {
 		switch (Renderer::GetApi()) {
-			case RendererApi::None: {
+			case RendererApi::Api::None: {
 				GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!");
 				return nullptr;
 			}
-			case RendererApi::OpenGl: {
+			case RendererApi::Api::OpenGl: {
 				return new OpenGLVertexBuffer(vertices, size);
 			}
 		}
@@ -23,11 +23,11 @@ namespace GooE {
 
 	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t size) {
 		switch (Renderer::GetApi()) {
-		case RendererApi::None: {
+		case RendererApi::Api::None: {
 			GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!");
 			return nullptr;
 		}
-		case RendererApi::OpenGl: {
+		case RendererApi::Api::OpenGl: {
 			return new OpenGLIndexBuffer(indices, size);
 		}
 		}
