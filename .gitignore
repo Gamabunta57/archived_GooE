@@ -9,3 +9,5 @@ vendor/bin/premake/
 premake5.exe
 
 imgui.ini
+
+*.png

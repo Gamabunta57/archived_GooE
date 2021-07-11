@@ -18,5 +18,6 @@
 #include <GooE/Renderer/Shader.h>
 #include <GooE/Renderer/Buffer.h>
 #include <GooE/Renderer/OrthographicCamera.h>
+#include <GooE/Renderer/Texture.h>
 
 #include <GooE/EntryPoint.h>

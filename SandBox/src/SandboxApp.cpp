@@ -33,17 +33,18 @@ public:
 		vertexArray->SetIndexBuffer(indexBuffer);
 
 		squareVertexArray.reset(GooE::VertexArray::Create());
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		GooE::Ref<GooE::VertexBuffer> squareVB;
 		squareVB.reset(GooE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
-			{ GooE::ShaderDataType::Float3, "position" }
+			{ GooE::ShaderDataType::Float3, "position" },
+			{ GooE::ShaderDataType::Float2, "texCoords" }
 		});
 		squareVertexArray->AddVertexBuffer(squareVB);
 
@@ -108,8 +109,44 @@ public:
 			}
 		)";
 
+		std::string vertexSrcTex = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 position;
+			layout(location = 1) in vec2 texCoords;
+
+			uniform mat4 viewProjection;
+			uniform mat4 transform;
+
+			out vec2 vTexCoords;
+			
+			void main() {
+				vTexCoords = texCoords;
+				gl_Position = viewProjection * transform * vec4(position, 1.0);
+			}
+		)";
+
+		std::string fragmentSrcTex = R"(
+			#version 330 core
+
+			out vec4 oColor;
+			in vec2 vTexCoords;
+
+			uniform sampler2D _texture;
+
+			void main() {
+				oColor = texture(_texture, vTexCoords);
+			}
+		)";
+
 		squareShader.reset(GooE::Shader::Create(vertexSrc2, fragmentSrc2));
 		shader.reset(GooE::Shader::Create(vertexSrc, fragmentSrc));
+
+		textureShader.reset(GooE::Shader::Create(vertexSrcTex, fragmentSrcTex));
+		texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		std::dynamic_pointer_cast<GooE::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<GooE::OpenGLShader>(textureShader)->UploadUniformInt("_texture", 0);
 	}
 
     void OnUpdate(GooE::Timestep ts) override {
@@ -157,8 +194,11 @@ public:
 			}
 		}
 
-		GooE::Renderer::Submit(shader, vertexArray);
-		GooE::Renderer::Submit(shader, vertexArray, scale);
+		texture->Bind();
+		GooE::Renderer::Submit(textureShader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		//GooE::Renderer::Submit(shader, vertexArray);
+		//GooE::Renderer::Submit(shader, vertexArray, scale);
 
 		GooE::Renderer::EndScene();
     }
@@ -173,8 +213,10 @@ private:
 	GooE::Ref<GooE::Shader> shader;
 	GooE::Ref<GooE::VertexArray> vertexArray;
 
-	GooE::Ref<GooE::Shader> squareShader;
+	GooE::Ref<GooE::Shader> squareShader, textureShader;
 	GooE::Ref<GooE::VertexArray> squareVertexArray;
+
+	GooE::Ref<GooE::Texture2D> texture;
 
 	float cameraMoveSpeed = 10.0f;
 	float cameraRotationSpeed = 90.0f;

@@ -20,6 +20,9 @@ project "GooE"
 		"%{prj.location}/src/**.cpp",
 		"%{prj.location}/src/**.h",
 		"%{prj.location}/src/**.cpp",
+		"%{prj.location}/src/**.cpp",
+		"%{prj.location}/vendor/stb_image/stb_image.h",
+		"%{prj.location}/vendor/stb_image/stb_image.cpp",
 	}
 
 	includedirs {
@@ -28,7 +31,8 @@ project "GooE"
 		"%{vendorInclude.GLFW}",
 		"%{vendorInclude.glad}",
 		"%{vendorInclude.ImGui}",
-		"%{vendorInclude.glm}"
+		"%{vendorInclude.glm}",
+		"%{vendorInclude.stb}",
 	}
 
 	links {
