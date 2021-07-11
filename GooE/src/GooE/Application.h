@@ -9,6 +9,7 @@
 #include <GooE/Renderer/Shader.h>
 #include <GooE/Renderer/VertexArray.h>
 #include <GooE/Renderer/OrthographicCamera.h>
+#include <GooE/Core/Timestep.h>
 
 #include "Core.h"
 
@@ -31,18 +32,13 @@ namespace GooE {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<Window> window;
 		ImGuiLayer* imguiLayer;
 		bool isRunning = true;
 		LayerStack layerStack;
+		float lastFrameTime = 0.0f;
 
-		std::shared_ptr<Shader> shader;
-		std::shared_ptr<VertexArray> vertexArray;
-		
-		std::shared_ptr<Shader> squareShader;
-		std::shared_ptr<VertexArray> squareVertexArray;
-
-		OrthographicCamera camera;
 	private:
 		static Application* instance;
 	};

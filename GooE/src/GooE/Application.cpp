@@ -1,5 +1,7 @@
 #include "gepch.h"
 
+#include <GLFW/glfw3.h>
+
 #include <GooE/Renderer/Renderer.h>
 #include <GooE/Renderer/RenderCommand.h>
 
@@ -9,7 +11,7 @@
 namespace GooE {
 	Application* Application::instance = nullptr;
 
-	Application::Application() : camera(-1.6f, 1.6f, -0.9f, 0.9f) {
+	Application::Application() {
 		GOOE_CORE_ASSERT(!instance, "Application already exists!");
 		instance = this;
 
@@ -17,110 +19,7 @@ namespace GooE {
 		window->SetEventCallback(GOOE_BIND_EVENT_FN(Application::OnEvent));
 
 		imguiLayer = new ImGuiLayer();
-		PushOverlay(imguiLayer);
-
-		vertexArray.reset(VertexArray::Create());
-
-		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.5f, 0.1f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.5f, 0.8f, 0.1f, 1.0f,
-			 0.0f,  0.5f, 0.0f, 0.1f, 0.5f, 0.8f, 1.0f,
-		};
-
-		std::shared_ptr<VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-		BufferLayout layout = {
-			{ ShaderDataType::Float3, "position" },
-			{ ShaderDataType::Float4, "color" },
-		};
-
-		vertexBuffer->SetLayout(layout);
-		vertexArray->AddVertexBuffer(vertexBuffer);
-
-		unsigned int indices[3] = { 0, 1 ,2 };
-		std::shared_ptr<IndexBuffer> indexBuffer;
-		indexBuffer.reset(IndexBuffer::Create(indices, 3));
-		vertexArray->SetIndexBuffer(indexBuffer);
-
-		squareVertexArray.reset(VertexArray::Create());
-		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f
-		};
-
-		std::shared_ptr<VertexBuffer> squareVB;
-		squareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-		squareVB->SetLayout({
-			{ ShaderDataType::Float3, "position" }
-		});
-		squareVertexArray->AddVertexBuffer(squareVB);
-
-		unsigned int squareIndices[6] = { 0, 1 ,2, 2, 3, 0 };
-		std::shared_ptr<IndexBuffer> squareIb;
-		squareIb.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
-		squareVertexArray->SetIndexBuffer(squareIb);
-
-		std::string vertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec4 color;
-
-			uniform mat4 viewProjection;
-
-			out vec3 vPosition;
-			out vec4 vColor;
-			
-			void main() {
-				vPosition = position;
-				vColor = color;
-				gl_Position = viewProjection * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-			in vec3 vPosition;
-			in vec4 vColor;
-
-			void main() {
-				color = vec4(vPosition * 0.5 + 0.5, 1.0);
-				color = vColor;
-			}
-		)";
-		
-		std::string vertexSrc2 = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 position;
-
-			uniform mat4 viewProjection;
-
-			out vec3 vPosition;
-			
-			void main() {
-				vPosition = position;
-				gl_Position = viewProjection * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc2 = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-			in vec3 vPosition;
-
-			void main() {
-				color = vec4(vPosition * 0.5 + 0.5, 1.0);
-			}
-		)";
-
-		squareShader.reset(new Shader(vertexSrc2, fragmentSrc2));
-		shader.reset(new Shader(vertexSrc, fragmentSrc));
+		PushOverlay(imguiLayer);		
 	}
 
 	Application::~Application() {
@@ -128,24 +27,14 @@ namespace GooE {
 
 	void Application::Run() {
 		RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
-		float rotation = 0.0f;
 		while (isRunning) {
-			RenderCommand::Clear();
 
-			camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-			camera.SetRotation(rotation);
-
-			rotation++;
-
-			Renderer::BeginScene(camera);
-
-			Renderer::Submit(squareShader, squareVertexArray);
-			Renderer::Submit(shader, vertexArray);
-
-			Renderer::EndScene();
+			float time = (float) glfwGetTime(); //Should be something like Platfrom::GetTime() instead
+			Timestep timestep = time - lastFrameTime;
+			lastFrameTime = time;
 
 			for (Layer* layer : layerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			imguiLayer->Begin();
 			for (Layer* layer : layerStack)
