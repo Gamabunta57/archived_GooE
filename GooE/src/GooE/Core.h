@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef GOOE_PLATFORM_WINDOWS
 	#ifdef GOOE_BUILD_STATIC
 		#define GOOE_API
@@ -25,3 +27,12 @@
 #define GOOE_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
 #define BIT(x) (1 << x)
+
+namespace GooE {
+
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}

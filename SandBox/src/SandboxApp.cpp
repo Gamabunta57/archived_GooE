@@ -17,7 +17,7 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.1f, 0.5f, 0.8f, 1.0f,
 		};
 
-		std::shared_ptr<GooE::VertexBuffer> vertexBuffer;
+		GooE::Ref<GooE::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(GooE::VertexBuffer::Create(vertices, sizeof(vertices)));
 		GooE::BufferLayout layout = {
 			{ GooE::ShaderDataType::Float3, "position" },
@@ -28,7 +28,7 @@ public:
 		vertexArray->AddVertexBuffer(vertexBuffer);
 
 		unsigned int indices[3] = { 0, 1 ,2 };
-		std::shared_ptr<GooE::IndexBuffer> indexBuffer;
+		GooE::Ref<GooE::IndexBuffer> indexBuffer;
 		indexBuffer.reset(GooE::IndexBuffer::Create(indices, 3));
 		vertexArray->SetIndexBuffer(indexBuffer);
 
@@ -40,7 +40,7 @@ public:
 			-0.5f,  0.5f, 0.0f
 		};
 
-		std::shared_ptr<GooE::VertexBuffer> squareVB;
+		GooE::Ref<GooE::VertexBuffer> squareVB;
 		squareVB.reset(GooE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{ GooE::ShaderDataType::Float3, "position" }
@@ -48,7 +48,7 @@ public:
 		squareVertexArray->AddVertexBuffer(squareVB);
 
 		unsigned int squareIndices[6] = { 0, 1 ,2, 2, 3, 0 };
-		std::shared_ptr<GooE::IndexBuffer> squareIb;
+		GooE::Ref<GooE::IndexBuffer> squareIb;
 		squareIb.reset(GooE::IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
 		squareVertexArray->SetIndexBuffer(squareIb);
 
@@ -170,11 +170,11 @@ public:
     }
 
 private:
-	std::shared_ptr<GooE::Shader> shader;
-	std::shared_ptr<GooE::VertexArray> vertexArray;
+	GooE::Ref<GooE::Shader> shader;
+	GooE::Ref<GooE::VertexArray> vertexArray;
 
-	std::shared_ptr<GooE::Shader> squareShader;
-	std::shared_ptr<GooE::VertexArray> squareVertexArray;
+	GooE::Ref<GooE::Shader> squareShader;
+	GooE::Ref<GooE::VertexArray> squareVertexArray;
 
 	float cameraMoveSpeed = 10.0f;
 	float cameraRotationSpeed = 90.0f;

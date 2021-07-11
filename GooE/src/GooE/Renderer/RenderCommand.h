@@ -16,7 +16,7 @@ namespace GooE {
 			rendererApi->Clear();
 		}
 
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertextArray) {
+		inline static void DrawIndexed(const Ref<VertexArray>& vertextArray) {
 			rendererApi->DrawIndexed(vertextArray);
 		}
 

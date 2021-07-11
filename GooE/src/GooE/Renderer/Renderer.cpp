@@ -19,8 +19,8 @@ namespace GooE {
 	}
 
 	void Renderer::Submit(
-			const std::shared_ptr<Shader>& shader,
-			const std::shared_ptr<VertexArray>& vertexArray,
+			const Ref<Shader>& shader,
+			const Ref<VertexArray>& vertexArray,
 			const glm::mat4& transform) {
 		shader->Bind();
 		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("viewProjection", sceneData->viewProjectionMatrix);
