@@ -53,96 +53,10 @@ public:
 		squareIb.reset(GooE::IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
 		squareVertexArray->SetIndexBuffer(squareIb);
 
-		std::string vertexSrc = R"(
-			#version 330 core
+		squareShader.reset(GooE::Shader::Create("assets/shaders/square.glsl"));
+		shader.reset(GooE::Shader::Create("assets/shaders/default.glsl"));
+		textureShader.reset(GooE::Shader::Create("assets/shaders/texture.glsl"));
 
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec4 color;
-
-			uniform mat4 viewProjection;
-			uniform mat4 transform;
-
-			out vec3 vPosition;
-			out vec4 vColor;
-			
-			void main() {
-				vPosition = position;
-				vColor = color;
-				gl_Position = viewProjection * transform * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-			in vec3 vPosition;
-			in vec4 vColor;
-
-			void main() {
-				color = vec4(vPosition * 0.5 + 0.5, 1.0);
-				color = vColor;
-			}
-		)";
-
-		std::string vertexSrc2 = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 position;
-
-			uniform mat4 viewProjection;
-			uniform mat4 transform;
-			
-			void main() {
-				gl_Position = viewProjection * transform * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc2 = R"(
-			#version 330 core
-
-			layout(location = 0) out vec3 oColor;
-			uniform vec3 color;
-
-			void main() {
-				oColor = color;
-			}
-		)";
-
-		std::string vertexSrcTex = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec2 texCoords;
-
-			uniform mat4 viewProjection;
-			uniform mat4 transform;
-
-			out vec2 vTexCoords;
-			
-			void main() {
-				vTexCoords = texCoords;
-				gl_Position = viewProjection * transform * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrcTex = R"(
-			#version 330 core
-
-			out vec4 oColor;
-			in vec2 vTexCoords;
-
-			uniform sampler2D _texture;
-
-			void main() {
-				oColor = texture(_texture, vTexCoords);
-			}
-		)";
-
-		squareShader.reset(GooE::Shader::Create(vertexSrc2, fragmentSrc2));
-		shader.reset(GooE::Shader::Create(vertexSrc, fragmentSrc));
-
-		textureShader.reset(GooE::Shader::Create(vertexSrcTex, fragmentSrcTex));
 		texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
 		transparentTexture = GooE::Texture2D::Create("assets/textures/transparent.png");
 
@@ -183,12 +97,12 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		squareShader->Bind();
+		std::dynamic_pointer_cast<GooE::OpenGLShader>(squareShader)->Bind();
 		std::dynamic_pointer_cast<GooE::OpenGLShader>(squareShader)->UploadUniformFloat3("color", squareColor);
 
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
-				glm::vec3 pos(x * 0.11f, y * 0.110f, 0.0f);
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
 
 				GooE::Renderer::Submit(squareShader, squareVertexArray, transform);
@@ -201,8 +115,8 @@ public:
 		transparentTexture->Bind();
 		GooE::Renderer::Submit(textureShader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		//GooE::Renderer::Submit(shader, vertexArray);
-		//GooE::Renderer::Submit(shader, vertexArray, scale);
+		GooE::Renderer::Submit(shader, vertexArray);
+		GooE::Renderer::Submit(shader, vertexArray, scale);
 
 		GooE::Renderer::EndScene();
     }

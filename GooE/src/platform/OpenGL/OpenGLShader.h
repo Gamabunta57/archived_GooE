@@ -5,9 +5,12 @@
 #include <glm/glm.hpp>
 #include <GooE/Renderer/Shader.h>
 
+typedef unsigned int GLenum;
+
 namespace GooE {
 	class OpenGLShader : public Shader {
 	public:
+		OpenGLShader(const std::string& path);
 		OpenGLShader(const std::string& verstexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
@@ -25,6 +28,9 @@ namespace GooE {
 		void UploadUniformMat4(const std::string name, const glm::mat4& value);
 
 	private:
+		std::string ReadFile(const std::string& file);
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 		const int GetUniformLocation(const std::string name);
 
 	private:
