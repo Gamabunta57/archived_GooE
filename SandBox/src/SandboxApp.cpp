@@ -144,6 +144,7 @@ public:
 
 		textureShader.reset(GooE::Shader::Create(vertexSrcTex, fragmentSrcTex));
 		texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
+		transparentTexture = GooE::Texture2D::Create("assets/textures/transparent.png");
 
 		std::dynamic_pointer_cast<GooE::OpenGLShader>(textureShader)->Bind();
 		std::dynamic_pointer_cast<GooE::OpenGLShader>(textureShader)->UploadUniformInt("_texture", 0);
@@ -197,6 +198,9 @@ public:
 		texture->Bind();
 		GooE::Renderer::Submit(textureShader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
+		transparentTexture->Bind();
+		GooE::Renderer::Submit(textureShader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
 		//GooE::Renderer::Submit(shader, vertexArray);
 		//GooE::Renderer::Submit(shader, vertexArray, scale);
 
@@ -216,7 +220,7 @@ private:
 	GooE::Ref<GooE::Shader> squareShader, textureShader;
 	GooE::Ref<GooE::VertexArray> squareVertexArray;
 
-	GooE::Ref<GooE::Texture2D> texture;
+	GooE::Ref<GooE::Texture2D> texture, transparentTexture;
 
 	float cameraMoveSpeed = 10.0f;
 	float cameraRotationSpeed = 90.0f;

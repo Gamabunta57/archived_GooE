@@ -8,6 +8,10 @@ namespace GooE {
 	class RenderCommand {
 	public:
 
+		inline static void Init() {
+			rendererApi->Init();
+		}
+
 		inline static void SetClearColor(const glm::vec4& color) {
 			rendererApi->SetClearColor(color);
 		}

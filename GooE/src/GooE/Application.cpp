@@ -18,6 +18,8 @@ namespace GooE {
 		window = std::unique_ptr<Window>(Window::Create());
 		window->SetEventCallback(GOOE_BIND_EVENT_FN(Application::OnEvent));
 
+		Renderer::Init();
+
 		imguiLayer = new ImGuiLayer();
 		PushOverlay(imguiLayer);		
 	}
