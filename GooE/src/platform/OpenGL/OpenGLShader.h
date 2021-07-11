@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
 #include <glm/glm.hpp>
 #include <GooE/Renderer/Shader.h>
 
@@ -23,6 +25,10 @@ namespace GooE {
 		void UploadUniformMat4(const std::string name, const glm::mat4& value);
 
 	private:
+		const int GetUniformLocation(const std::string name);
+
+	private:
 		uint32_t rendererId;
+		std::unordered_map<std::string, int> uniformLocationsCache;
 	};
 }

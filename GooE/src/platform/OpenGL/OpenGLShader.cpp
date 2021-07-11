@@ -132,37 +132,42 @@ namespace GooE {
 	}
 
 	void OpenGLShader::UploadUniformInt(const std::string name, const int value) {
-		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniform1i(location, value);
+		glUniform1i(GetUniformLocation(name.c_str()), value);
 	}
 
 	void OpenGLShader::UploadUniformFloat(const std::string name, const float value) {
-		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniform1f(location, value);
+		glUniform1f(GetUniformLocation(name.c_str()), value);
 	}
 
 	void OpenGLShader::UploadUniformFloat2(const std::string name, const glm::vec3& value) {
-		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniform2f(location, value.x, value.y);
+		glUniform2f(GetUniformLocation(name.c_str()), value.x, value.y);
 	}
 
 	void OpenGLShader::UploadUniformFloat3(const std::string name, const glm::vec3& value) {
-		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniform3f(location, value.x, value.y, value.z);
+		glUniform3f(GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::UploadUniformFloat4(const std::string name, const glm::vec4& value) {
-		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniform4f(location, value.x, value.y, value.z, value.w);
+		glUniform4f(GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::UploadUniformMat3(const std::string name, const glm::mat3& value) {
-		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
+		glUniformMatrix3fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
 	void OpenGLShader::UploadUniformMat4(const std::string name, const glm::mat4& value) {
+		glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	const int OpenGLShader::GetUniformLocation(const std::string name) {
+		if (uniformLocationsCache.find(name) != uniformLocationsCache.end())
+			return uniformLocationsCache[name];
+
 		GLint location = glGetUniformLocation(rendererId, name.c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+		uniformLocationsCache[name] = location;
+
+		if (location == -1) GOOE_CORE_WARN("Uniform '{0}' doesn't exist!");
+
+		return location;
 	}
 }
