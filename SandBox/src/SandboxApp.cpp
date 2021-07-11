@@ -1,10 +1,11 @@
 #include <imgui/imgui.h>
 
 #include <GooE.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 class TestLayer : public GooE::Layer {
 public:
-    TestLayer() : Layer("Test"), camera(-1.6f, 1.6f, -0.9f, 0.9f) {
+	TestLayer() : Layer("Test"), camera(-1.6f, 1.6f, -0.9f, 0.9f), squarePosition({0.0f}) {
 		vertexArray.reset(GooE::VertexArray::Create());
 
 		float vertices[3 * 7] = {
@@ -30,10 +31,10 @@ public:
 
 		squareVertexArray.reset(GooE::VertexArray::Create());
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 
 		std::shared_ptr<GooE::VertexBuffer> squareVB;
@@ -55,6 +56,7 @@ public:
 			layout(location = 1) in vec4 color;
 
 			uniform mat4 viewProjection;
+			uniform mat4 transform;
 
 			out vec3 vPosition;
 			out vec4 vColor;
@@ -62,7 +64,7 @@ public:
 			void main() {
 				vPosition = position;
 				vColor = color;
-				gl_Position = viewProjection * vec4(position, 1.0);
+				gl_Position = viewProjection * transform * vec4(position, 1.0);
 			}
 		)";
 
@@ -85,12 +87,13 @@ public:
 			layout(location = 0) in vec3 position;
 
 			uniform mat4 viewProjection;
+			uniform mat4 transform;
 
 			out vec3 vPosition;
 			
 			void main() {
 				vPosition = position;
-				gl_Position = viewProjection * vec4(position, 1.0);
+				gl_Position = viewProjection * transform * vec4(position, 1.0);
 			}
 		)";
 
@@ -140,8 +143,19 @@ public:
 
 		GooE::Renderer::BeginScene(camera);
 
-		GooE::Renderer::Submit(squareShader, squareVertexArray);
+		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+		for (int y = 0; y < 20; y++) {
+			for (int x = 0; x < 20; x++) {
+				glm::vec3 pos(x * 0.11f, y * 0.110f, 0.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+
+				GooE::Renderer::Submit(squareShader, squareVertexArray, transform);
+			}
+		}
+
 		GooE::Renderer::Submit(shader, vertexArray);
+		GooE::Renderer::Submit(shader, vertexArray, scale);
 
 		GooE::Renderer::EndScene();
     }
@@ -160,8 +174,10 @@ private:
 	float cameraRotationSpeed = 90.0f;
 	float rotation = 0.0f;
 	glm::vec3 position = {0.0f, 0.0f ,0.0f };
-
 	GooE::OrthographicCamera camera;
+
+	glm::vec3 squarePosition;
+	float squareMoveSpeed = 3.0f;
 };
 
 class Sandbox : public GooE::Application {
