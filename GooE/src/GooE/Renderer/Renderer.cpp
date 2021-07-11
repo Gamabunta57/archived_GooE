@@ -1,5 +1,7 @@
 #include "gepch.h"
 
+#include <Platform/OpenGL/OpenGLShader.h>
+
 #include "Renderer.h"
 #include "RenderCommand.h"
 #include "Shader.h"
@@ -21,8 +23,8 @@ namespace GooE {
 			const std::shared_ptr<VertexArray>& vertexArray,
 			const glm::mat4& transform) {
 		shader->Bind();
-		shader->UploadUniformMat4("viewProjection", sceneData->viewProjectionMatrix);
-		shader->UploadUniformMat4("transform", transform);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("viewProjection", sceneData->viewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("transform", transform);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

@@ -1,7 +1,10 @@
 #include <imgui/imgui.h>
 
-#include <GooE.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <Platform/OpenGL/OpenGLShader.h>
+#include <GooE.h>
 
 class TestLayer : public GooE::Layer {
 public:
@@ -88,11 +91,8 @@ public:
 
 			uniform mat4 viewProjection;
 			uniform mat4 transform;
-
-			out vec3 vPosition;
 			
 			void main() {
-				vPosition = position;
 				gl_Position = viewProjection * transform * vec4(position, 1.0);
 			}
 		)";
@@ -100,16 +100,16 @@ public:
 		std::string fragmentSrc2 = R"(
 			#version 330 core
 
-			layout(location = 0) out vec4 color;
-			in vec3 vPosition;
+			layout(location = 0) out vec3 oColor;
+			uniform vec3 color;
 
 			void main() {
-				color = vec4(vPosition * 0.5 + 0.5, 1.0);
+				oColor = color;
 			}
 		)";
 
-		squareShader.reset(new GooE::Shader(vertexSrc2, fragmentSrc2));
-		shader.reset(new GooE::Shader(vertexSrc, fragmentSrc));
+		squareShader.reset(GooE::Shader::Create(vertexSrc2, fragmentSrc2));
+		shader.reset(GooE::Shader::Create(vertexSrc, fragmentSrc));
 	}
 
     void OnUpdate(GooE::Timestep ts) override {
@@ -145,6 +145,9 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		squareShader->Bind();
+		std::dynamic_pointer_cast<GooE::OpenGLShader>(squareShader)->UploadUniformFloat3("color", squareColor);
+
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::vec3 pos(x * 0.11f, y * 0.110f, 0.0f);
@@ -161,6 +164,9 @@ public:
     }
 
     virtual void OnImGuiRender() override {
+		ImGui::Begin("Color");
+		ImGui::ColorEdit3("Square color", glm::value_ptr(squareColor));
+		ImGui::End();
     }
 
 private:
@@ -178,6 +184,8 @@ private:
 
 	glm::vec3 squarePosition;
 	float squareMoveSpeed = 3.0f;
+
+	glm::vec3 squareColor = { 0.3f, 0.6f, 0.4f };
 };
 
 class Sandbox : public GooE::Application {

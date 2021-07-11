@@ -26,7 +26,7 @@ namespace GooE {
 	}
 
 	void Application::Run() {
-		RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		while (isRunning) {
 
 			float time = (float) glfwGetTime(); //Should be something like Platfrom::GetTime() instead
