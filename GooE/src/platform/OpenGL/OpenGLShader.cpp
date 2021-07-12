@@ -83,9 +83,10 @@ namespace GooE {
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
+		GOOE_CORE_ASSERT(shaderSources.size() <= 2, "Only 2 shaders at maximum are supported for now!");
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIds;
-		glShaderIds.reserve(shaderSources.size());
+		std::array<GLenum, 2> glShaderIds;
+		int glShaderIdIndex = 0;
 
 		for (auto& kv : shaderSources) {
 			GLenum shaderType = kv.first;
@@ -122,7 +123,7 @@ namespace GooE {
 			}
 
 			glAttachShader(program, shader);
-			glShaderIds.push_back(shader);
+			glShaderIds[glShaderIdIndex++] = shader;
 		}
 
 		rendererId = program;
