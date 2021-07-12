@@ -11,11 +11,13 @@ namespace GooE {
 	class OpenGLShader : public Shader {
 	public:
 		OpenGLShader(const std::string& path);
-		OpenGLShader(const std::string& verstexSrc, const std::string& fragmentSrc);
+		OpenGLShader(const std::string& name, const std::string& verstexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual const std::string GetName() const override { return name; }
 
 		void UploadUniformInt(const std::string name, const int value);
 
@@ -34,6 +36,7 @@ namespace GooE {
 		const int GetUniformLocation(const std::string name);
 
 	private:
+		std::string name;
 		uint32_t rendererId;
 		std::unordered_map<std::string, int> uniformLocationsCache;
 	};

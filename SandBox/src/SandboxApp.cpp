@@ -53,14 +53,14 @@ public:
 		squareIb.reset(GooE::IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
 		squareVertexArray->SetIndexBuffer(squareIb);
 
-		squareShader.reset(GooE::Shader::Create("assets/shaders/square.glsl"));
-		shader.reset(GooE::Shader::Create("assets/shaders/default.glsl"));
-		textureShader.reset(GooE::Shader::Create("assets/shaders/texture.glsl"));
+		shaderLibrary.Load("assets/shaders/square.glsl");
+		shaderLibrary.Load("assets/shaders/default.glsl");
+		auto textureShader = shaderLibrary.Load("assets/shaders/texture.glsl");
 
 		texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
 		transparentTexture = GooE::Texture2D::Create("assets/textures/transparent.png");
 
-		std::dynamic_pointer_cast<GooE::OpenGLShader>(textureShader)->Bind();
+		textureShader->Bind();
 		std::dynamic_pointer_cast<GooE::OpenGLShader>(textureShader)->UploadUniformInt("_texture", 0);
 	}
 
@@ -97,8 +97,9 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		std::dynamic_pointer_cast<GooE::OpenGLShader>(squareShader)->Bind();
-		std::dynamic_pointer_cast<GooE::OpenGLShader>(squareShader)->UploadUniformFloat3("color", squareColor);
+		auto squareShader = std::dynamic_pointer_cast<GooE::OpenGLShader>(shaderLibrary.Get("square"));
+		squareShader->Bind();
+		squareShader->UploadUniformFloat3("color", squareColor);
 
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
@@ -109,14 +110,17 @@ public:
 			}
 		}
 
+		auto textureShader = shaderLibrary.Get("texture");
+		auto defaultShader = shaderLibrary.Get("default");
+
 		texture->Bind();
 		GooE::Renderer::Submit(textureShader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		transparentTexture->Bind();
 		GooE::Renderer::Submit(textureShader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		GooE::Renderer::Submit(shader, vertexArray);
-		GooE::Renderer::Submit(shader, vertexArray, scale);
+		GooE::Renderer::Submit(defaultShader, vertexArray);
+		GooE::Renderer::Submit(defaultShader, vertexArray, scale);
 
 		GooE::Renderer::EndScene();
     }
@@ -128,10 +132,9 @@ public:
     }
 
 private:
-	GooE::Ref<GooE::Shader> shader;
-	GooE::Ref<GooE::VertexArray> vertexArray;
+	GooE::ShaderLibrary shaderLibrary;
 
-	GooE::Ref<GooE::Shader> squareShader, textureShader;
+	GooE::Ref<GooE::VertexArray> vertexArray;
 	GooE::Ref<GooE::VertexArray> squareVertexArray;
 
 	GooE::Ref<GooE::Texture2D> texture, transparentTexture;
