@@ -84,7 +84,9 @@ namespace GooE {
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIds(shaderSources.size());
+		std::vector<GLenum> glShaderIds;
+		glShaderIds.reserve(shaderSources.size());
+
 		for (auto& kv : shaderSources) {
 			GLenum shaderType = kv.first;
 			const std::string& source = kv.second;
@@ -158,8 +160,6 @@ namespace GooE {
 		// Always detach shaders after a successful link.
 		for (auto id : glShaderIds)
 			glDetachShader(rendererId, id);
-
-		rendererId = program;
 	}
 
 	void OpenGLShader::Bind() const {
