@@ -40,7 +40,7 @@ namespace GooE {
 
 	std::string OpenGLShader::ReadFile(const std::string& file) {
 		std::string result;
-		std::ifstream in(file, std::ios::in, std::ios::binary);
+		std::ifstream in(file, std::ios::in | std::ios::binary);
 		if (in) {
 			in.seekg(0, std::ios::end);
 			result.resize(in.tellg());
