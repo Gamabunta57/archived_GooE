@@ -31,11 +31,13 @@ namespace GooE {
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
 		std::unique_ptr<Window> window;
 		ImGuiLayer* imguiLayer;
 		bool isRunning = true;
+		bool minimized = false;
 		LayerStack layerStack;
 		float lastFrameTime = 0.0f;
 

@@ -35,8 +35,10 @@ namespace GooE {
 			Timestep timestep = time - lastFrameTime;
 			lastFrameTime = time;
 
-			for (Layer* layer : layerStack)
-				layer->OnUpdate(timestep);
+			if (!minimized) {
+				for (Layer* layer : layerStack)
+					layer->OnUpdate(timestep);
+			}
 
 			imguiLayer->Begin();
 			for (Layer* layer : layerStack)
@@ -50,6 +52,7 @@ namespace GooE {
 	void Application::OnEvent(Event& e) {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(GOOE_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(GOOE_BIND_EVENT_FN(Application::OnWindowResize));
 
 		for (auto it = layerStack.end(); it != layerStack.begin();) {
 			(*--it)->OnEvent(e);
@@ -68,5 +71,16 @@ namespace GooE {
 	bool Application::OnWindowClose(WindowCloseEvent &e) {
 		isRunning = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e) {
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+			minimized = true;
+			return false;
+		}
+
+		minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+		return false;
 	}
 }

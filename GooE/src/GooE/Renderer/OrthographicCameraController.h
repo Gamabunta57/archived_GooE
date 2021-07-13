@@ -19,6 +19,8 @@ namespace GooE {
 		OrthographicCamera& GetCamera() { return camera; }
 		const OrthographicCamera& GetCamera() const { return camera; }
 
+		float GetZoomLevel() const { return zoomLevel; }
+		void SetZoomLevel(float zoomLevel) { this->zoomLevel = zoomLevel; }
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
