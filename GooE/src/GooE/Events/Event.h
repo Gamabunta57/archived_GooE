@@ -2,7 +2,7 @@
 #include "gepch.h"
 
 #include <spdlog/fmt/ostr.h>
-#include <GooE/Core.h>
+#include <GooE/Core/Core.h>
 
 namespace GooE {
 	

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "GooE/Core.h"
+#include <GooE/Core/Core.h>
 
 namespace GooE {
 	class Texture {

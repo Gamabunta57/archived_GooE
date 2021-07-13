@@ -1,13 +1,14 @@
+# IDEs
 .vscode/
 .vs/
-out/
-vendor/bin/premake/
-
 *.sln
 *.vcxproj
 *.vcxproj*
-premake5.exe
 
+#project
+out/
+vendor/bin/premake/
+premake5.exe
 imgui.ini
 
 *.png

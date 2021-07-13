@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GooE/Core.h>
+#include <GooE/Core/Core.h>
 #include <GooE/Events/Event.h>
 
 namespace GooE {

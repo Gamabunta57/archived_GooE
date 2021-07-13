@@ -1,14 +1,14 @@
 #pragma once
 
-#include <GooE/Application.h>
-#include <GooE/Log.h>
-#include <GooE/Layer.h>
+#include <GooE/Core/Application.h>
+#include <GooE/Core/Log.h>
+#include <GooE/Core/Layer.h>
 
 #include <GooE/Core/Timestep.h>
 
-#include <GooE/Input.h>
-#include <GooE/KeyCodes.h>
-#include <GooE/MouseButtonCodes.h>
+#include <GooE/Core/Input.h>
+#include <GooE/Core/KeyCodes.h>
+#include <GooE/Core/MouseButtonCodes.h>
 
 #include <GooE/ImGui/ImGuiLayer.h>
 
@@ -21,4 +21,4 @@
 #include <GooE/Renderer/OrthographicCameraController.h>
 #include <GooE/Renderer/Texture.h>
 
-#include <GooE/EntryPoint.h>
+#include <GooE/Core/EntryPoint.h>

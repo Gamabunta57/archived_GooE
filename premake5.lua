@@ -2,7 +2,7 @@ workspace "GooE"
 	language "C++"
 	cppdialect "c++17"
 	startproject "Sandbox"
-	configurations {"Debug", "Release"}
+	configurations {"Debug", "Release", "Dist"}
 	platforms {"Win64"}
 
 	filter "configurations:Debug"
@@ -11,7 +11,13 @@ workspace "GooE"
 		runtime "Debug"
 
 	filter "configurations:Release"
-		defines {"RELEASE"}
+		defines {"RELEASE", "GOOE_ENABLE_ASSERTS"}
+		optimize "on"
+		symbols "on"
+		runtime "Release"
+	
+	filter "configurations:DIST"
+		defines {"DIST"}
 		optimize "on"
 		symbols "off"
 		runtime "Release"

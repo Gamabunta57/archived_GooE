@@ -1,7 +1,7 @@
 #include "gepch.h"
 
-#include <GooE/KeyCodes.h>
-#include <GooE/Input.h>
+#include <GooE/Core/KeyCodes.h>
+#include <GooE/Core/Input.h>
 
 #include "OrthographicCameraController.h"
 

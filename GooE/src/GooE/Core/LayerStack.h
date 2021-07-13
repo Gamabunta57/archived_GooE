@@ -1,6 +1,6 @@
 #pragma once
-#include <GooE/Core.h>
-#include <GooE/Layer.h>
+#include <GooE/Core/Core.h>
+#include <GooE/Core/Layer.h>
 
 namespace GooE {
 

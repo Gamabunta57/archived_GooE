@@ -1,5 +1,5 @@
 #pragma once
-#include <GooE/Window.h>
+#include <GooE/Core/Window.h>
 #include <GooE/Renderer/GraphicsContext.h>
 
 struct GLFWwindow;

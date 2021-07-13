@@ -3,8 +3,8 @@
 
 #include <GooE/Events/ApplicationEvent.h>
 #include <GooE/ImGui/ImGuiLayer.h>
-#include <GooE/Layer.h>
-#include <GooE/LayerStack.h>
+#include <GooE/Core/Layer.h>
+#include <GooE/Core/LayerStack.h>
 #include <GooE/Renderer/Buffer.h>
 #include <GooE/Renderer/Shader.h>
 #include <GooE/Renderer/VertexArray.h>

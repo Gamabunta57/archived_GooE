@@ -2,7 +2,7 @@
 #include <GooE/Events/ApplicationEvent.h>
 #include <GooE/Events/KeyEvent.h>
 #include <GooE/Events/MouseEvent.h>
-#include <GooE/Layer.h>
+#include <GooE/Core/Layer.h>
 
 namespace GooE {
 	class GOOE_API ImGuiLayer : public Layer {

@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "GooE/Log.h"
+#include "GooE/Core/Log.h"
 
 #ifdef GOOE_PLATFORM_WINDOWS
 	#include <Windows.h>

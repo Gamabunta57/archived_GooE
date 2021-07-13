@@ -1,7 +1,7 @@
 #include "gepch.h"
 
 #include <GLFW/glfw3.h>
-#include <GooE/Application.h>
+#include <GooE/Core/Application.h>
 
 #include "WindowsInput.h"
 

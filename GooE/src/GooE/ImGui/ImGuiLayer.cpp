@@ -4,7 +4,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-#include <GooE/Application.h>
+#include <GooE/Core/Application.h>
 
 #include "ImGuiLayer.h"
 
