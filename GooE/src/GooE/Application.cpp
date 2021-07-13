@@ -51,8 +51,6 @@ namespace GooE {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(GOOE_BIND_EVENT_FN(Application::OnWindowClose));
 
-		GOOE_CORE_TRACE("{0}", e);
-
 		for (auto it = layerStack.end(); it != layerStack.begin();) {
 			(*--it)->OnEvent(e);
 			if (e.isHandled) break;

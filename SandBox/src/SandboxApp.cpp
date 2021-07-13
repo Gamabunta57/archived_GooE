@@ -8,7 +8,7 @@
 
 class TestLayer : public GooE::Layer {
 public:
-	TestLayer() : Layer("Test"), camera(-1.6f, 1.6f, -0.9f, 0.9f), squarePosition({0.0f}) {
+	TestLayer() : Layer("Test"), cameraController(1.6f / 0.9f, true), squarePosition({0.0f}) {
 		vertexArray.reset(GooE::VertexArray::Create());
 
 		float vertices[3 * 7] = {
@@ -65,35 +65,10 @@ public:
 	}
 
     void OnUpdate(GooE::Timestep ts) override {
-
-		GOOE_TRACE("Delta time: {0}s ({1}ms))", ts.GetSeconds(), ts.GetMilliseconds());
-
-		if (GooE::Input::IsKeyPressed(GOOE_KEY_A)) {
-			position.x -= cameraMoveSpeed * ts;
-		} else if (GooE::Input::IsKeyPressed(GOOE_KEY_D)) {
-			position.x += cameraMoveSpeed * ts;
-		}
-
-		if (GooE::Input::IsKeyPressed(GOOE_KEY_W)) {
-			position.y += cameraMoveSpeed * ts;
-		}
-		else if (GooE::Input::IsKeyPressed(GOOE_KEY_S)) {
-			position.y -= cameraMoveSpeed * ts;
-		}
-
-		if (GooE::Input::IsKeyPressed(GOOE_KEY_Q)) {
-			rotation += cameraRotationSpeed * ts;
-		}
-		else if (GooE::Input::IsKeyPressed(GOOE_KEY_E)) {
-			rotation -= cameraRotationSpeed * ts;
-		}
+		cameraController.OnUpdate(ts);
 
 		GooE::RenderCommand::Clear();
-
-		camera.SetPosition(position);
-		camera.SetRotation(rotation);
-
-		GooE::Renderer::BeginScene(camera);
+		GooE::Renderer::BeginScene(cameraController.GetCamera());
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -125,6 +100,10 @@ public:
 		GooE::Renderer::EndScene();
     }
 
+	void OnEvent(GooE::Event& e) override {
+		cameraController.OnEvent(e);
+	}
+
     virtual void OnImGuiRender() override {
 		ImGui::Begin("Color");
 		ImGui::ColorEdit3("Square color", glm::value_ptr(squareColor));
@@ -139,15 +118,9 @@ private:
 
 	GooE::Ref<GooE::Texture2D> texture, transparentTexture;
 
-	float cameraMoveSpeed = 10.0f;
-	float cameraRotationSpeed = 90.0f;
-	float rotation = 0.0f;
-	glm::vec3 position = {0.0f, 0.0f ,0.0f };
-	GooE::OrthographicCamera camera;
+	GooE::OrthographicCameraController cameraController;
 
 	glm::vec3 squarePosition;
-	float squareMoveSpeed = 3.0f;
-
 	glm::vec3 squareColor = { 0.3f, 0.6f, 0.4f };
 };
 
