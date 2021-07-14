@@ -15,6 +15,7 @@
 #include <GooE/Renderer/RenderCommand.h>
 #include <GooE/Renderer/RendererApi.h>
 #include <GooE/Renderer/Renderer.h>
+#include <GooE/Renderer/Renderer2D.h>
 #include <GooE/Renderer/Shader.h>
 #include <GooE/Renderer/Buffer.h>
 #include <GooE/Renderer/OrthographicCamera.h>

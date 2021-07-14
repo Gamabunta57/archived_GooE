@@ -42,13 +42,10 @@ void Sandbox2D::OnUpdate(GooE::Timestep ts) {
 	cameraController.OnUpdate(ts);
 
 	GooE::RenderCommand::Clear();
-	GooE::Renderer::BeginScene(cameraController.GetCamera());
 
-	shader->Bind();
-	std::dynamic_pointer_cast<GooE::OpenGLShader>(shader)->UploadUniformFloat4("color", color);
-
-	GooE::Renderer::Submit(shader, squareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
-	GooE::Renderer::EndScene();
+	GooE::Renderer2D::BeginScene(cameraController.GetCamera());
+	GooE::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, color);
+	GooE::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnEvent(GooE::Event& e) {
