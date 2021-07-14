@@ -47,7 +47,7 @@ namespace GooE {
 
 		window = glfwCreateWindow((int)data.width, (int)data.height, data.title.c_str(), nullptr, nullptr);
 		
-		context = new OpenGLContext(window);
+		context = CreateScope<OpenGLContext>(window);
 		context->Init();
 
 		glfwSetWindowUserPointer(window, &data);

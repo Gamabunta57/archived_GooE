@@ -27,6 +27,11 @@ namespace GooE {
 			else if (Input::IsKeyPressed(GOOE_KEY_E))
 				cameraRotation -= cameraRotationSpeed * ts;
 
+			if (cameraRotation > 180.0f)
+				cameraRotation -= 360.0f;
+			else if (cameraRotation < -180.0f)
+				cameraRotation += 360.0f;
+
 			camera.SetRotation(cameraRotation);
 		}
 

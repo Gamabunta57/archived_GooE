@@ -19,7 +19,7 @@ namespace GooE {
 		virtual float GetMouseYImpl() = 0;
 
 	private:
-		static Input* instance;
+		static Scope<Input> instance;
 	};
 
 }

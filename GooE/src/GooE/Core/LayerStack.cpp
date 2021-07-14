@@ -7,8 +7,10 @@ namespace GooE {
 	LayerStack::LayerStack() {}
 
 	LayerStack::~LayerStack() {
-		for (Layer* layer : layers)
+		for (Layer* layer : layers) {
+			layer->OnDetach();
 			delete layer;
+		}
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {

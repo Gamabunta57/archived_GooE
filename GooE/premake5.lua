@@ -9,7 +9,6 @@ project "GooE"
 	pchsource "src/gepch.cpp"
 
 	defines {
-		"GOOE_PLATFORM_WINDOWS",
 		"GOOE_BUILD_STATIC",
 		"GLFW_INCLUDE_NONE",
 		"IMGUI_IMPL_OPENGL_LOADER_GLAD"

@@ -29,6 +29,6 @@ namespace GooE {
 		}
 
 	private:
-		static RendererApi* rendererApi;
+		static Scope<RendererApi> rendererApi;
 	};
 }

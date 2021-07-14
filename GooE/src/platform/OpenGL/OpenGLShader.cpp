@@ -80,6 +80,7 @@ namespace GooE {
 			GOOE_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
 
 			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			GOOE_CORE_ASSERT(nextLinePos != std::string::npos, "Shader syntax error!");
 			pos = source.find(typeToken, nextLinePos);
 			shaderSources[ShaderTypeFromString(type)] = source.substr(
 				nextLinePos,
@@ -167,8 +168,10 @@ namespace GooE {
 		}
 
 		// Always detach shaders after a successful link.
-		for (auto id : glShaderIds)
+		for (auto id : glShaderIds) {
 			glDetachShader(rendererId, id);
+			glDeleteShader(id);
+		}
 	}
 
 	void OpenGLShader::Bind() const {

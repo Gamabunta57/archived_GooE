@@ -8,7 +8,7 @@
 
 namespace GooE {
 
-	Renderer::SceneData* Renderer::sceneData = new Renderer::SceneData;
+	Scope<Renderer::SceneData> Renderer::sceneData = CreateScope<Renderer::SceneData>();
 
 	void Renderer::Init() {
 		RenderCommand::Init();

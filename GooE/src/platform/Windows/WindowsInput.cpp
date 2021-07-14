@@ -7,7 +7,7 @@
 
 namespace GooE {
 
-	Input* Input::instance = new WindowsInput();
+	Scope<Input> Input::instance = CreateScope<WindowsInput>();
 	
 	bool WindowsInput::IsKeyPressedImpl(int keyCode) {
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());

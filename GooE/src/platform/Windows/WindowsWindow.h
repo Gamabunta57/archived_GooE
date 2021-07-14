@@ -28,7 +28,7 @@ namespace GooE {
 
 	private:
 		GLFWwindow* window;
-		GraphicsContext* context;
+		Scope<GraphicsContext> context;
 
 		struct WindowData {
 			std::string title;

@@ -6,7 +6,6 @@ project "Sandbox"
 	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
 
 	defines {
-		"GOOE_PLATFORM_WINDOWS",
 		"GOOE_BUILD_STATIC"
 	}
 

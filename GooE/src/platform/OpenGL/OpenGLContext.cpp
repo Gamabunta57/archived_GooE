@@ -19,6 +19,15 @@ namespace GooE {
 		GOOE_CORE_INFO("  Vendor:   {0}", glGetString(GL_VENDOR));
 		GOOE_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
 		GOOE_CORE_INFO("  Version:  {0}", glGetString(GL_VERSION));
+
+		#ifdef GOOE_ENABLE_ASSERT
+		int versionMajor;
+		int versionMinor;
+		glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+		glGetIntegerv(GL_MINOR_VERSION, &versionMajor);
+
+		GOOE_CORE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 5), "GooE requires at lest OpenGL version 4.5 to run!");
+		#endif
 	}
 
 	void OpenGLContext::SwapBuffers() {
