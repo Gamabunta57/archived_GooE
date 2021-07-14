@@ -21,5 +21,3 @@
 #include <GooE/Renderer/OrthographicCameraController.h>
 #include <GooE/Renderer/Texture.h>
 #include <GooE/Renderer/VertexArray.h>
-
-#include <GooE/Core/EntryPoint.h>
