@@ -44,7 +44,8 @@ void Sandbox2D::OnUpdate(GooE::Timestep ts) {
 	GooE::RenderCommand::Clear();
 
 	GooE::Renderer2D::BeginScene(cameraController.GetCamera());
-	GooE::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, color);
+	GooE::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, color);
+	GooE::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, {1.0f, 1.0f, 1.0f, 1.0f});
 	GooE::Renderer2D::EndScene();
 }
 

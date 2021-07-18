@@ -182,6 +182,18 @@ namespace GooE {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value) {
+		glUniform4f(GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
+	}
+
+	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value) {
+		glUniform3f(GetUniformLocation(name.c_str()), value.x, value.y, value.z);
+	}
+
+	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value) {
+		glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
 	void OpenGLShader::UploadUniformInt(const std::string name, const int value) {
 		glUniform1i(GetUniformLocation(name.c_str()), value);
 	}

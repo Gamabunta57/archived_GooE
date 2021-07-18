@@ -1,6 +1,6 @@
 #include "gepch.h"
 
-#include <Platform/OpenGL/OpenGLShader.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "RenderCommand.h"
 #include "Renderer2D.h"
@@ -48,8 +48,7 @@ namespace GooE {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
 		data->shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->UploadUniformMat4("viewProjection", camera.GetViewProjectionMatrix());
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->UploadUniformMat4("transform", glm::mat4(1.0f));
+		data->shader->SetMat4("viewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene() {
@@ -62,7 +61,12 @@ namespace GooE {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		data->shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(data->shader)->UploadUniformFloat4("color", color);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		data->shader->SetMat4("transform", transform);
+		data->shader->SetFloat4("color", color);
 
 		data->vertexArray->Bind();
 		RenderCommand::DrawIndexed(data->vertexArray);
