@@ -16,11 +16,9 @@ public:
 	virtual void OnImGuiRender() override;
 
 private:
-	GooE::Ref<GooE::Shader> shader;
 	GooE::OrthographicCameraController cameraController;
 
-	GooE::Ref<GooE::VertexArray> vertexArray;
-	GooE::Ref<GooE::VertexArray> squareVertexArray;
+	GooE::Ref<GooE::Texture2D> texture;
 
 	glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 };

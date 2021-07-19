@@ -190,6 +190,10 @@ namespace GooE {
 		glUniform3f(GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
+	void OpenGLShader::SetInt(const std::string& name, const int& value) {
+		glUniform1i(GetUniformLocation(name.c_str()), value);
+	}
+
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value) {
 		glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
@@ -229,7 +233,7 @@ namespace GooE {
 		GLint location = glGetUniformLocation(rendererId, name.c_str());
 		uniformLocationsCache[name] = location;
 
-		if (location == -1) GOOE_CORE_WARN("Uniform '{0}' doesn't exist!");
+		if (location == -1) GOOE_CORE_WARN("Uniform {0} doesn't exist!", name.c_str());
 
 		return location;
 	}

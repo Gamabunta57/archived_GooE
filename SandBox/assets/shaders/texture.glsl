@@ -21,7 +21,8 @@ out vec4 oColor;
 in vec2 vTexCoords;
 
 uniform sampler2D _texture;
+uniform vec4 _tint;
 
 void main() {
-	oColor = texture(_texture, vTexCoords);
+	oColor = texture(_texture, vTexCoords * 10) * _tint;
 }
