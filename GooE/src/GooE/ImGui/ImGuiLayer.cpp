@@ -48,11 +48,6 @@ namespace GooE {
         ImGui_ImplOpenGL3_Init("#version 410");
     }
 
-    void ImGuiLayer::OnImGuiRender() {
-        bool show = true;
-        ImGui::ShowDemoWindow(&show);
-    }
-
     void ImGuiLayer::OnDetach() {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
