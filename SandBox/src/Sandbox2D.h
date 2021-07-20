@@ -25,7 +25,5 @@ private:
 		float time;
 	};
 
-	std::vector<ProfileResult> profileResults;
-
 	glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 };

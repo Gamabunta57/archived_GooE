@@ -13,6 +13,7 @@
 #include <unordered_set>
 
 #include "GooE/Core/Log.h"
+#include "GooE/Debug/Instrumentor.h"
 
 #ifdef GOOE_PLATFORM_WINDOWS
 	#include <Windows.h>

@@ -11,4 +11,6 @@ vendor/bin/premake/
 premake5.exe
 imgui.ini
 
+GooEProfile*
+
 *.png
