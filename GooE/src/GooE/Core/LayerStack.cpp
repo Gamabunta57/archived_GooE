@@ -16,12 +16,10 @@ namespace GooE {
 	void LayerStack::PushLayer(Layer* layer) {
 		layers.emplace(layers.begin() + layerInsertIndex, layer);
 		layerInsertIndex++;
-		layer->OnAttach();
 	}
 
 	void LayerStack::PushOverlay(Layer* overlay) {
 		layers.emplace_back(overlay);
-		overlay->OnAttach();
 	}
 
 	void LayerStack::PopLayer(Layer* layer) {

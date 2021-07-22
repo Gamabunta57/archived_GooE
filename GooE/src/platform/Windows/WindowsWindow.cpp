@@ -22,14 +22,19 @@ namespace GooE {
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProperties& properties) {
+		GOOE_PROFILE_FUNCTION();
+
 		Init(properties);
 	}
 
 	WindowsWindow::~WindowsWindow() {
+		GOOE_PROFILE_FUNCTION();
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowProperties& properties) {
+		GOOE_PROFILE_FUNCTION();
+
 		data.title = properties.title;
 		data.width = properties.width;
 		data.height = properties.height;
@@ -37,6 +42,7 @@ namespace GooE {
 		GOOE_CORE_INFO("Initializing window {0} ({1}, {2})", data.title, data.width, data.height);
 
 		if (!isGLFWinitialized) {
+			GOOE_PROFILE_SCOPE("GLFW Init");
 			int success = glfwInit();
 			GOOE_CORE_ASSERT(success, "GLFW has not been initialized!");
 			glfwSetErrorCallback(GLFWErrorCallback);
@@ -45,7 +51,10 @@ namespace GooE {
 
 		GOOE_CORE_INFO("Initialized window {0} ({1}, {2})", data.title, data.width, data.height);
 
-		window = glfwCreateWindow((int)data.width, (int)data.height, data.title.c_str(), nullptr, nullptr);
+		{
+			GOOE_PROFILE_SCOPE("GLFW Create Window");
+			window = glfwCreateWindow((int)data.width, (int)data.height, data.title.c_str(), nullptr, nullptr);
+		}
 		
 		context = CreateScope<OpenGLContext>(window);
 		context->Init();
@@ -153,17 +162,22 @@ namespace GooE {
 	}
 
 	void WindowsWindow::Shutdown() {
+		GOOE_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(window);
 		window = nullptr;
 	}
 
 	void WindowsWindow::OnUpdate() {
-		glfwPollEvents();
+		GOOE_PROFILE_FUNCTION();
 
+		glfwPollEvents();
 		context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool isEnabled) {
+		GOOE_PROFILE_FUNCTION();
+
 		glfwSwapInterval(isEnabled ? 1 : 0);
 		data.vSync = isEnabled;
 	}

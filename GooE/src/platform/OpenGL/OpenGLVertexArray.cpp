@@ -29,22 +29,32 @@ namespace GooE {
 	}
 
 	OpenGLVertexArray::OpenGLVertexArray() {
+		GOOE_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &rendererId);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray() {
+		GOOE_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &rendererId);
 	}
 
 	void OpenGLVertexArray::Bind() const {
+		GOOE_PROFILE_FUNCTION();
+
 		glBindVertexArray(rendererId);
 	}
 
 	void OpenGLVertexArray::Unbind() const {
+		GOOE_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const GooE::Ref<VertexBuffer>& vertexBuffer) {
+		GOOE_PROFILE_FUNCTION();
+
 		glBindVertexArray(rendererId);
 		vertexBuffer->Bind();
 
@@ -69,6 +79,8 @@ namespace GooE {
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
+		GOOE_PROFILE_FUNCTION();
+
 		glBindVertexArray(rendererId);
 		indexBuffer->Bind();
 

@@ -17,6 +17,8 @@ namespace GooE {
     ImGuiLayer::~ImGuiLayer() {}
 
     void ImGuiLayer::OnAttach() {
+        GOOE_PROFILE_FUNCTION();
+
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -49,18 +51,24 @@ namespace GooE {
     }
 
     void ImGuiLayer::OnDetach() {
+        GOOE_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
 
     void ImGuiLayer::Begin() {
+        GOOE_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
     };
 
     void ImGuiLayer::End() {
+        GOOE_PROFILE_FUNCTION();
+
         Application& app = Application::Get();
         GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
         ImGuiIO& io = ImGui::GetIO();

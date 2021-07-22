@@ -11,6 +11,8 @@ namespace GooE {
 	}
 
 	void OpenGLContext::Init() {
+		GOOE_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(window);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		GOOE_CORE_ASSERT(status, "Failed to initialize Glad!")
@@ -31,6 +33,8 @@ namespace GooE {
 	}
 
 	void OpenGLContext::SwapBuffers() {
+		GOOE_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(window);
 	}
 }

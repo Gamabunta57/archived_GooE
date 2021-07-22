@@ -12,6 +12,8 @@ namespace GooE {
 	Scope<Renderer::SceneData> Renderer::sceneData = CreateScope<Renderer::SceneData>();
 
 	void Renderer::Init() {
+		GOOE_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}

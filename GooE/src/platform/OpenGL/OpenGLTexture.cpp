@@ -7,10 +7,15 @@
 
 namespace GooE {
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : path(path) {
+		GOOE_PROFILE_FUNCTION();
+
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-
+		stbi_uc* data = nullptr;
+		{
+			GOOE_PROFILE_SCOPE("OpenGLTexture2D::OpenGLTexture2D (const std::string&) - stbi_load");
+			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		}
 		GOOE_CORE_ASSERT(data, "Failed to load image: {0}", path);
 		this->width = width;
 		this->height = height;
@@ -42,10 +47,14 @@ namespace GooE {
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D() {
+		GOOE_PROFILE_FUNCTION();
+
 		glDeleteTextures(1, &rendererId);
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const {
+		GOOE_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, rendererId);
 	}
 }

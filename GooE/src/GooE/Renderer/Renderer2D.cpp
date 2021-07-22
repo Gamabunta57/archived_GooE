@@ -18,6 +18,8 @@ namespace GooE {
 	static Renderer2DData* data;
 
 	void Renderer2D::Init() {
+		GOOE_PROFILE_FUNCTION();
+
 		data = new Renderer2DData();
 		data->vertexArray = VertexArray::Create();
 
@@ -48,10 +50,14 @@ namespace GooE {
 	}
 
 	void Renderer2D::Shutdown() {
+		GOOE_PROFILE_FUNCTION();
+
 		delete data;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
+		GOOE_PROFILE_FUNCTION();
+
 		data->shader->Bind();
 		data->shader->SetMat4("viewProjection", camera.GetViewProjectionMatrix());
 
@@ -68,6 +74,8 @@ namespace GooE {
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
+		GOOE_PROFILE_FUNCTION();
+
 		data->shader->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -85,6 +93,8 @@ namespace GooE {
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint) {
+		GOOE_PROFILE_FUNCTION();
+
 		data->textureShader->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)

@@ -9,6 +9,8 @@
 namespace GooE {
 
 	static GLenum ShaderTypeFromString(const std::string& type) {
+		GOOE_PROFILE_FUNCTION();
+
 		if (type == "vertex") return GL_VERTEX_SHADER;
 		if (type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
 		if (type == "pixel") return GL_FRAGMENT_SHADER;
@@ -19,6 +21,8 @@ namespace GooE {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& path) {
+		GOOE_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(path);
 		auto shaders = PreProcess(source);
 		Compile(shaders);
@@ -34,6 +38,7 @@ namespace GooE {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : name(name) {
+		GOOE_PROFILE_FUNCTION();
 
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -43,10 +48,14 @@ namespace GooE {
 	}
 
 	OpenGLShader::~OpenGLShader() {
+		GOOE_PROFILE_FUNCTION();
+
 		glDeleteProgram(rendererId);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& file) {
+		GOOE_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(file, std::ios::in | std::ios::binary);
 		if (in) {
@@ -65,6 +74,8 @@ namespace GooE {
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source) {
+		GOOE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -92,6 +103,8 @@ namespace GooE {
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
+		GOOE_PROFILE_FUNCTION();
+
 		GOOE_CORE_ASSERT(shaderSources.size() <= 2, "Only 2 shaders at maximum are supported for now!");
 		GLuint program = glCreateProgram();
 		std::array<GLenum, 2> glShaderIds;
@@ -175,26 +188,38 @@ namespace GooE {
 	}
 
 	void OpenGLShader::Bind() const {
+		GOOE_PROFILE_FUNCTION();
+
 		glUseProgram(rendererId);
 	}
 
 	void OpenGLShader::Unbind() const {
+		GOOE_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value) {
+		GOOE_PROFILE_FUNCTION();
+
 		glUniform4f(GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value) {
+		GOOE_PROFILE_FUNCTION();
+
 		glUniform3f(GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::SetInt(const std::string& name, const int& value) {
+		GOOE_PROFILE_FUNCTION();
+
 		glUniform1i(GetUniformLocation(name.c_str()), value);
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value) {
+		GOOE_PROFILE_FUNCTION();
+
 		glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
@@ -227,6 +252,8 @@ namespace GooE {
 	}
 
 	const int OpenGLShader::GetUniformLocation(const std::string name) {
+		GOOE_PROFILE_FUNCTION();
+
 		if (uniformLocationsCache.find(name) != uniformLocationsCache.end())
 			return uniformLocationsCache[name];
 
