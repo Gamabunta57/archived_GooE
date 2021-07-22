@@ -199,6 +199,12 @@ namespace GooE {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetFloat(const std::string& name, const float value) {
+		GOOE_PROFILE_FUNCTION();
+
+		glUniform1f(GetUniformLocation(name.c_str()), value);
+	}
+
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value) {
 		GOOE_PROFILE_FUNCTION();
 
@@ -211,7 +217,7 @@ namespace GooE {
 		glUniform3f(GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
-	void OpenGLShader::SetInt(const std::string& name, const int& value) {
+	void OpenGLShader::SetInt(const std::string& name, const int value) {
 		GOOE_PROFILE_FUNCTION();
 
 		glUniform1i(GetUniformLocation(name.c_str()), value);

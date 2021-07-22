@@ -88,11 +88,11 @@ namespace GooE {
 		RenderCommand::DrawIndexed(data->vertexArray);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint) {
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tint);
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tint, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint) {
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
 		GOOE_PROFILE_FUNCTION();
 
 		data->textureShader->Bind();
@@ -102,6 +102,50 @@ namespace GooE {
 
 		data->textureShader->SetMat4("transform", transform);
 		data->textureShader->SetFloat4("_tint", tint);
+		data->textureShader->SetFloat("_tilingFactor", tilingFactor);
+
+		texture->Bind();
+
+		data->vertexArray->Bind();
+		RenderCommand::DrawIndexed(data->vertexArray);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const glm::vec4& color) {
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, color);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color) {
+		GOOE_PROFILE_FUNCTION();
+
+		data->shader->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		data->shader->SetMat4("transform", transform);
+		data->shader->SetFloat4("color", color);
+
+		data->vertexArray->Bind();
+		RenderCommand::DrawIndexed(data->vertexArray);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tint, tilingFactor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
+		GOOE_PROFILE_FUNCTION();
+
+		data->textureShader->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		data->textureShader->SetMat4("transform", transform);
+		data->textureShader->SetFloat4("_tint", tint);
+		data->textureShader->SetFloat("_tilingFactor", tilingFactor);
 
 		texture->Bind();
 
