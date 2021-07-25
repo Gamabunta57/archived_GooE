@@ -27,7 +27,7 @@ namespace GooE {
 		virtual ~OpenGLIndexBuffer();
 		virtual void Bind() const;
 		virtual void Unbind() const;
-		virtual uint32_t GetCount() const;
+		virtual uint32_t GetCount() const { return count; };
 
 	private:
 		uint32_t renderedId;

@@ -22,8 +22,7 @@ namespace GooE {
 		EVENT_CLASS_TYPE(WindowResize)
 
 	private:
-		unsigned int width;
-		unsigned int height;
+		unsigned int width, height;
 	};
 
 	class GOOE_API WindowCloseEvent : public Event {

@@ -60,8 +60,4 @@ namespace GooE {
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
-
-	uint32_t OpenGLIndexBuffer::GetCount() const {
-		return count;
-	}
 }

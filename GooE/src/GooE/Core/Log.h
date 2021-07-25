@@ -20,7 +20,7 @@ namespace GooE {
 }
 
 #ifndef DIST
-	#define GOOE_CORE_FATAL(...) ::GooE::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+	#define GOOE_CORE_CRITICAL(...) ::GooE::Log::GetCoreLogger()->critical(__VA_ARGS__)
 	#define GOOE_CORE_ERROR(...) ::GooE::Log::GetCoreLogger()->error(__VA_ARGS__)
 	#define GOOE_CORE_WARN(...)  ::GooE::Log::GetCoreLogger()->warn(__VA_ARGS__)
 	#define GOOE_CORE_INFO(...)  ::GooE::Log::GetCoreLogger()->info(__VA_ARGS__)

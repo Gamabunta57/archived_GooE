@@ -39,7 +39,7 @@ namespace GooE {
 		uint32_t size;
 		bool normalized;
 
-		BufferElement() {}
+		BufferElement() = default;
 
 		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false) :type(type), name(name), size(ShaderDataTypeSize(type)), offset(0), normalized(normalized) {}
 

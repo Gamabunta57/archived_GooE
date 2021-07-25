@@ -9,7 +9,7 @@ namespace GooE {
 	Ref<VertexArray> VertexArray::Create() {
 		switch (Renderer::GetApi()) {
 			case RendererApi::Api::None: GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!") return nullptr;
-			case RendererApi::Api::OpenGl: return CreateRef<OpenGLVertexArray>();
+			case RendererApi::Api::OpenGL: return CreateRef<OpenGLVertexArray>();
 		}
 
 		GOOE_CORE_ASSERT(false, "Unknown RendererApi")

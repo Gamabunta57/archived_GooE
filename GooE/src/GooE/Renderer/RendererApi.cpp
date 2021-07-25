@@ -4,5 +4,5 @@
 
 namespace GooE {
 
-	RendererApi::Api RendererApi::api = RendererApi::Api::OpenGl;
+	RendererApi::Api RendererApi::api = RendererApi::Api::OpenGL;
 }

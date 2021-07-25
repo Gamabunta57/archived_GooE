@@ -18,6 +18,7 @@ namespace GooE {
 		virtual const Ref<IndexBuffer>& GetIndexBuffer() const override { return indexBuffer; }
 	private:
 		uint32_t rendererId;
+		uint32_t vertexBufferIndex = 0;
 		std::vector<Ref<VertexBuffer>> vertexBuffers;
 		Ref<IndexBuffer> indexBuffer;
 	};

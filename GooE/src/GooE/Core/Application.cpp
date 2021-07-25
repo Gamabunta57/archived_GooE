@@ -27,6 +27,9 @@ namespace GooE {
 	}
 
 	Application::~Application() {
+		GOOE_PROFILE_FUNCTION();
+
+		Renderer::Shutdown();
 	}
 
 	void Application::Run() {

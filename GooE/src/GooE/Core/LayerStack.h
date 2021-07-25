@@ -6,7 +6,7 @@ namespace GooE {
 
 	class GOOE_API LayerStack {
 	public:
-		LayerStack();
+		LayerStack() = default;
 		~LayerStack();
 
 		void PushLayer(Layer* layer);

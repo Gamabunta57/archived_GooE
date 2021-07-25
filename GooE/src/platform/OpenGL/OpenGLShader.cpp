@@ -13,7 +13,6 @@ namespace GooE {
 
 		if (type == "vertex") return GL_VERTEX_SHADER;
 		if (type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
-		if (type == "pixel") return GL_FRAGMENT_SHADER;
 
 		GOOE_CORE_ERROR("Unknown shader type: {0}", type);
 		GOOE_CORE_ASSERT(false, "Unknown shader type!");
@@ -60,13 +59,16 @@ namespace GooE {
 		std::ifstream in(file, std::ios::in | std::ios::binary);
 		if (in) {
 			in.seekg(0, std::ios::end);
-			result.resize(in.tellg());
-
-			in.seekg(0, std::ios::beg);
-			in.read(&result[0], result.size());
-			in.close();
-		}
-		else {
+			size_t size = in.tellg();
+			if (size != -1) {
+				result.resize(size);
+				in.seekg(0, std::ios::beg);
+				in.read(&result[0], result.size());
+				in.close();
+			} else {
+				GOOE_CORE_ERROR("Could not read from file: {0}", file);
+			}
+		} else {
 			GOOE_CORE_ERROR("Could not open file: {0}", file);
 		}
 

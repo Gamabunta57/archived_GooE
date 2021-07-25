@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GooE/Core/Core.h>
+
 #include <GooE/Core/Application.h>
 #include <GooE/Core/Log.h>
 #include <GooE/Core/Layer.h>

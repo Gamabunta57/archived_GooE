@@ -13,7 +13,7 @@ namespace GooE {
 				GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!");
 				return nullptr;
 			}
-			case RendererApi::Api::OpenGl: {
+			case RendererApi::Api::OpenGL: {
 				return new OpenGLVertexBuffer(vertices, size);
 			}
 		}
@@ -28,7 +28,7 @@ namespace GooE {
 			GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!");
 			return nullptr;
 		}
-		case RendererApi::Api::OpenGl: {
+		case RendererApi::Api::OpenGL: {
 			return new OpenGLIndexBuffer(indices, size);
 		}
 		}

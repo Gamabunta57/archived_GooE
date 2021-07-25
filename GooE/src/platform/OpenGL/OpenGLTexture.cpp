@@ -6,6 +6,23 @@
 #include "OpenGLTexture.h"
 
 namespace GooE {
+
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) : width(width), height(height) {
+		GOOE_PROFILE_FUNCTION();
+
+		internalFormat = GL_RGBA8;
+		dataFormat = GL_RGBA;
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &rendererId);
+		glTextureStorage2D(rendererId, 1, internalFormat, width, height);
+
+		glTextureParameteri(rendererId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(rendererId, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(rendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(rendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : path(path) {
 		GOOE_PROFILE_FUNCTION();
 
@@ -20,17 +37,17 @@ namespace GooE {
 		this->width = width;
 		this->height = height;
 
-		GLenum internalFormat = 0, format = 0;
+		GLenum internalFormat = 0, dataFormat = 0;
 		if (channels == 4) {
 			internalFormat = GL_RGBA8;
-			format = GL_RGBA;
+			dataFormat = GL_RGBA;
 		} else if (channels == 3) {
 			internalFormat = GL_RGB8;
-			format = GL_RGB;
+			dataFormat = GL_RGB;
 		}
 
 		GOOE_CORE_ASSERT(internalFormat, "Format not supported");
-		GOOE_CORE_ASSERT(format, "Format not supported");
+		GOOE_CORE_ASSERT(dataFormat, "Format not supported");
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &rendererId);
 		glTextureStorage2D(rendererId, 1, internalFormat, this->width, this->height);
@@ -41,7 +58,7 @@ namespace GooE {
 		glTextureParameteri(rendererId, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(rendererId, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTextureSubImage2D(rendererId, 0, 0, 0, this->width, this->height, format, GL_UNSIGNED_BYTE, data);
+		glTextureSubImage2D(rendererId, 0, 0, 0, this->width, this->height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
 	}
@@ -50,6 +67,14 @@ namespace GooE {
 		GOOE_PROFILE_FUNCTION();
 
 		glDeleteTextures(1, &rendererId);
+	}
+
+	void OpenGLTexture2D::SetData(void* data, uint32_t size) {
+		GOOE_PROFILE_FUNCTION();
+
+		uint32_t bpp = dataFormat == GL_RGBA ? 4 : 3;
+		GOOE_CORE_ASSERT(size == width * height * bpp, "Data must fulfill the entire texture!");
+		glTextureSubImage2D(rendererId, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const {

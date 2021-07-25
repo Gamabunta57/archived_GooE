@@ -10,7 +10,7 @@ namespace GooE {
 
 		enum class Api {
 			None = 0,
-			OpenGl = 1
+			OpenGL = 1
 		};
 
 	public:

@@ -4,8 +4,6 @@
 
 namespace GooE {
 
-	LayerStack::LayerStack() {}
-
 	LayerStack::~LayerStack() {
 		for (Layer* layer : layers) {
 			layer->OnDetach();

@@ -10,7 +10,7 @@ namespace GooE {
 	Ref<Shader> Shader::Create(const std::string& path) {
 		switch (Renderer::GetApi()) {
 			case RendererApi::Api::None: GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!") return nullptr;
-			case RendererApi::Api::OpenGl: return std::make_shared<OpenGLShader>(path);
+			case RendererApi::Api::OpenGL: return std::make_shared<OpenGLShader>(path);
 		}
 
 		GOOE_CORE_ASSERT(false, "Unknown RendererApi")
@@ -20,7 +20,7 @@ namespace GooE {
 	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) {
 		switch (Renderer::GetApi()) {
 			case RendererApi::Api::None: GOOE_CORE_ASSERT(false, "RendererApi::None is not supported!") return nullptr;
-			case RendererApi::Api::OpenGl: return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			case RendererApi::Api::OpenGL: return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		GOOE_CORE_ASSERT(false, "Unknown RendererApi")
@@ -56,5 +56,9 @@ namespace GooE {
 		GOOE_CORE_ASSERT(shaders.find(name) != shaders.end(), "Shader doesn't exist!");
 
 		return shaders[name];
+	}
+
+	bool ShaderLibrary::Exists(const std::string& name) const {
+		return shaders.find(name) != shaders.end();
 	}
 }
