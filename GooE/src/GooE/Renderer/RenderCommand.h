@@ -28,6 +28,10 @@ namespace GooE {
 			rendererApi->DrawIndexed(vertextArray);
 		}
 
+		inline static void DrawIndexed(const Ref<VertexArray>& vertextArray, const uint32_t count) {
+			rendererApi->DrawIndexed(vertextArray, count);
+		}
+
 	private:
 		static Scope<RendererApi> rendererApi;
 	};

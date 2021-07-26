@@ -2,28 +2,33 @@
 #version 330 core
 
 layout(location = 0) in vec3 position;
-layout(location = 1) in vec2 texCoords;
+layout(location = 1) in vec4 color;
+layout(location = 2) in vec2 texCoords;
 
 uniform mat4 viewProjection;
-uniform mat4 transform;
 
 out vec2 vTexCoords;
+out vec4 vColor;
 			
 void main() {
 	vTexCoords = texCoords;
-	gl_Position = viewProjection * transform * vec4(position, 1.0);
+	vColor = color;
+	gl_Position = viewProjection * vec4(position, 1.0);
 }
 
 #pragma #type fragment
 #version 330 core
 
-out vec4 oColor;
+in vec4 vColor;
 in vec2 vTexCoords;
+
+out vec4 oColor;
 
 uniform sampler2D _texture;
 uniform float _tilingFactor;
 uniform vec4 _tint;
 
 void main() {
-	oColor = texture(_texture, vTexCoords * _tilingFactor) * _tint;
+	//oColor = texture(_texture, vTexCoords * _tilingFactor) * color;
+	oColor = vColor;
 }

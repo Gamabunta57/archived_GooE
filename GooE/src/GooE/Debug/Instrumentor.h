@@ -169,7 +169,6 @@ namespace GooE {
     };
 }
 
-#define GOOE_PROFILE 1
 #if GOOE_PROFILE
     #define GOOE_PROFILE_BEGIN_SESSION(name, filepath) ::GooE::Instrumentor::Get().BeginSession(name, filepath)
     #define GOOE_PROFILE_END_SESSION() ::GooE::Instrumentor::Get().EndSession()

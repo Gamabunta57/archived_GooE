@@ -17,7 +17,7 @@ public:
 		};
 
 		GooE::Ref<GooE::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(GooE::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = GooE::VertexBuffer::Create(vertices, sizeof(vertices));
 		GooE::BufferLayout layout = {
 			{ GooE::ShaderDataType::Float3, "position" },
 			{ GooE::ShaderDataType::Float4, "color" },
@@ -28,7 +28,7 @@ public:
 
 		unsigned int indices[3] = { 0, 1 ,2 };
 		GooE::Ref<GooE::IndexBuffer> indexBuffer;
-		indexBuffer.reset(GooE::IndexBuffer::Create(indices, 3));
+		indexBuffer = GooE::IndexBuffer::Create(indices, 3);
 		vertexArray->SetIndexBuffer(indexBuffer);
 
 		squareVertexArray = GooE::VertexArray::Create();
@@ -40,7 +40,7 @@ public:
 		};
 
 		GooE::Ref<GooE::VertexBuffer> squareVB;
-		squareVB.reset(GooE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = GooE::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ GooE::ShaderDataType::Float3, "position" },
 			{ GooE::ShaderDataType::Float2, "texCoords" }
@@ -49,7 +49,7 @@ public:
 
 		unsigned int squareIndices[6] = { 0, 1 ,2, 2, 3, 0 };
 		GooE::Ref<GooE::IndexBuffer> squareIb;
-		squareIb.reset(GooE::IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
+		squareIb = GooE::IndexBuffer::Create(squareIndices, sizeof(squareIndices));
 		squareVertexArray->SetIndexBuffer(squareIb);
 
 		shaderLibrary.Load("assets/shaders/square.glsl");

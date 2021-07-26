@@ -49,7 +49,12 @@ namespace GooE {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	};
 
-	void OpenGLRendererApi::DrawIndexed(const Ref<VertexArray>& vertexArray) {
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+	void OpenGLRendererApi::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) {
+		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 	};
+
+	void OpenGLRendererApi::DrawIndexed(const Ref<VertexArray>& vertexArray) {
+		DrawIndexed(vertexArray, vertexArray->GetIndexBuffer()->GetCount());
+	};
+
 }

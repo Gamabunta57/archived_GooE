@@ -9,64 +9,95 @@
 
 namespace GooE {
 
-	struct Renderer2DData {
-		Ref<VertexArray> vertexArray;
-		Ref<Shader> shader;
-		Ref<Shader> textureShader;
+	struct QuadVertex {
+		glm::vec3 position;
+		glm::vec4 color;
+		glm::vec2 texCoords;
+		// color, texId
 	};
 
-	static Renderer2DData* data;
+	struct Renderer2DData {
+		const uint32_t MaxQuads = 10000;
+		const uint32_t MaxVertices = MaxQuads * 4;
+		const uint32_t MaxIndices = MaxQuads * 6;
+
+		Ref<VertexArray> quadVertexArray;
+		Ref<VertexBuffer> quadVertexBuffer;
+		Ref<Shader> textureShader;
+		Ref<Texture2D> whiteTexture;
+
+		uint32_t quandIndexCount = 0;
+		QuadVertex* quadVertexBufferBase = nullptr;
+		QuadVertex* quadVertexBufferPointer = nullptr;
+	};
+
+	static Renderer2DData data;
 
 	void Renderer2D::Init() {
 		GOOE_PROFILE_FUNCTION();
 
-		data = new Renderer2DData();
-		data->vertexArray = VertexArray::Create();
+		data.quadVertexArray = VertexArray::Create();
 
-		float squareVertices[5 * 4] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-		};
-
-		Ref<VertexBuffer> squareVB;
-		squareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-		squareVB->SetLayout({
+		data.quadVertexBuffer = VertexBuffer::Create(data.MaxVertices * sizeof(QuadVertex));
+		data.quadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, "position" },
+			{ ShaderDataType::Float4, "color" },
 			{ ShaderDataType::Float2, "texCoords" },
-		});
-		data->vertexArray->AddVertexBuffer(squareVB);
+			});
+		data.quadVertexArray->AddVertexBuffer(data.quadVertexBuffer);
 
-		unsigned int squareIndices[6] = { 0, 1 ,2, 2, 3, 0 };
-		Ref<IndexBuffer> squareIb;
-		squareIb.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
-		data->vertexArray->SetIndexBuffer(squareIb);
+		data.quadVertexBufferBase = new QuadVertex[data.MaxVertices];
 
-		data->shader = Shader::Create("assets/shaders/flatColor.glsl");
-		data->textureShader = Shader::Create("assets/shaders/texture.glsl");
-		data->textureShader->Bind();
-		data->textureShader->SetInt("_texture", 0);
+		uint32_t* quadIndices = new uint32_t[data.MaxIndices];
+
+		for (uint32_t i = 0, offset = 0; i < data.MaxIndices; i += 6, offset += 4) {
+			quadIndices[i + 0] = offset + 0;
+			quadIndices[i + 1] = offset + 1;
+			quadIndices[i + 2] = offset + 2;
+
+			quadIndices[i + 3] = offset + 2;
+			quadIndices[i + 4] = offset + 3;
+			quadIndices[i + 5] = offset + 0;
+		}
+
+		Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices, data.MaxIndices);
+		data.quadVertexArray->SetIndexBuffer(quadIB);
+		delete[] quadIndices;
+		
+		data.whiteTexture = Texture2D::Create(1, 1);
+		uint32_t whiteTextureData = 0xffffffff;
+		data.whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+		data.textureShader = Shader::Create("assets/shaders/texture.glsl");
+		data.textureShader->Bind();
+		data.textureShader->SetInt("_texture", 0);
 	}
 
 	void Renderer2D::Shutdown() {
 		GOOE_PROFILE_FUNCTION();
-
-		delete data;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
 		GOOE_PROFILE_FUNCTION();
 
-		data->shader->Bind();
-		data->shader->SetMat4("viewProjection", camera.GetViewProjectionMatrix());
+		data.textureShader->Bind();
+		data.textureShader->SetMat4("viewProjection", camera.GetViewProjectionMatrix());
 
-		data->textureShader->Bind();
-		data->textureShader->SetMat4("viewProjection", camera.GetViewProjectionMatrix());
+		data.quandIndexCount = 0;
+		data.quadVertexBufferPointer = data.quadVertexBufferBase;
 	}
 
 	void Renderer2D::EndScene() {
 		GOOE_PROFILE_FUNCTION();
+
+		uint32_t dataSize = (uint8_t*)data.quadVertexBufferPointer - (uint8_t*)data.quadVertexBufferBase;
+		data.quadVertexBuffer->SetData(data.quadVertexBufferBase, dataSize);
+
+		Flush();
+	}
+
+	void Renderer2D::Flush() {
+		RenderCommand::DrawIndexed(data.quadVertexArray, data.quandIndexCount);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) {
@@ -76,16 +107,27 @@ namespace GooE {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		GOOE_PROFILE_FUNCTION();
 
-		data->shader->Bind();
+		data.quadVertexBufferPointer->position = position;
+		data.quadVertexBufferPointer->color = color;
+		data.quadVertexBufferPointer->texCoords = { 0.0f, 0.0f };
+		data.quadVertexBufferPointer++;
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		data.quadVertexBufferPointer->position = { position.x + size.x, position.y, position.z };
+		data.quadVertexBufferPointer->color = color;
+		data.quadVertexBufferPointer->texCoords = { 1.0f, 0.0f };
+		data.quadVertexBufferPointer++;
 
-		data->shader->SetMat4("transform", transform);
-		data->shader->SetFloat4("color", color);
+		data.quadVertexBufferPointer->position = { position.x + size.x, position.y + size.y, position.z };
+		data.quadVertexBufferPointer->color = color;
+		data.quadVertexBufferPointer->texCoords = { 1.0f, 1.0f };
+		data.quadVertexBufferPointer++;
 
-		data->vertexArray->Bind();
-		RenderCommand::DrawIndexed(data->vertexArray);
+		data.quadVertexBufferPointer->position = { position.x, position.y + size.y, position.z };
+		data.quadVertexBufferPointer->color = color;
+		data.quadVertexBufferPointer->texCoords = { 0.0f, 1.0f };
+		data.quadVertexBufferPointer++;
+
+		data.quandIndexCount += 6;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
@@ -95,19 +137,19 @@ namespace GooE {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
 		GOOE_PROFILE_FUNCTION();
 
-		data->textureShader->Bind();
+		data.textureShader->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		data->textureShader->SetMat4("transform", transform);
-		data->textureShader->SetFloat4("_tint", tint);
-		data->textureShader->SetFloat("_tilingFactor", tilingFactor);
+		data.textureShader->SetMat4("transform", transform);
+		data.textureShader->SetFloat4("_tint", tint);
+		data.textureShader->SetFloat("_tilingFactor", tilingFactor);
 
 		texture->Bind();
 
-		data->vertexArray->Bind();
-		RenderCommand::DrawIndexed(data->vertexArray);
+		data.quadVertexArray->Bind();
+		RenderCommand::DrawIndexed(data.quadVertexArray);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const glm::vec4& color) {
@@ -117,17 +159,17 @@ namespace GooE {
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color) {
 		GOOE_PROFILE_FUNCTION();
 
-		data->shader->Bind();
+		data.textureShader->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		data->shader->SetMat4("transform", transform);
-		data->shader->SetFloat4("color", color);
+		data.textureShader->SetMat4("transform", transform);
+		data.textureShader->SetFloat4("color", color);
 
-		data->vertexArray->Bind();
-		RenderCommand::DrawIndexed(data->vertexArray);
+		data.quadVertexArray->Bind();
+		RenderCommand::DrawIndexed(data.quadVertexArray);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
@@ -137,19 +179,19 @@ namespace GooE {
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
 		GOOE_PROFILE_FUNCTION();
 
-		data->textureShader->Bind();
+		data.textureShader->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		data->textureShader->SetMat4("transform", transform);
-		data->textureShader->SetFloat4("_tint", tint);
-		data->textureShader->SetFloat("_tilingFactor", tilingFactor);
+		data.textureShader->SetMat4("transform", transform);
+		data.textureShader->SetFloat4("_tint", tint);
+		data.textureShader->SetFloat("_tilingFactor", tilingFactor);
 
 		texture->Bind();
 
-		data->vertexArray->Bind();
-		RenderCommand::DrawIndexed(data->vertexArray);
+		data.quadVertexArray->Bind();
+		RenderCommand::DrawIndexed(data.quadVertexArray);
 	}
 }

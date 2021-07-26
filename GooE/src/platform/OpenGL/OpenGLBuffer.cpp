@@ -7,6 +7,14 @@ namespace GooE {
 
 	// VertexBuffer ---------------
 
+	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) {
+		GOOE_PROFILE_FUNCTION();
+
+		glCreateBuffers(1, &renderedId);
+		glBindBuffer(GL_ARRAY_BUFFER, renderedId);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	}
+
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) {
 		GOOE_PROFILE_FUNCTION();
 
@@ -31,6 +39,11 @@ namespace GooE {
 		GOOE_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size) {
+		glBindBuffer(GL_ARRAY_BUFFER, renderedId);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
 	// IndexBuffer ---------------

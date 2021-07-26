@@ -6,6 +6,7 @@ workspace "GooE"
 	platforms {"Win64"}
 
 	filter "configurations:Debug"
+-- For profiling add GOOE_PROFILE=1
 		defines {"DEBUG", "GOOE_ENABLE_ASSERTS"}
 		symbols "on"
 		runtime "Debug"
