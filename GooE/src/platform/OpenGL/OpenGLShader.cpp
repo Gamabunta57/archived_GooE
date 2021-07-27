@@ -219,6 +219,12 @@ namespace GooE {
 		glUniform3f(GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, const int* values, const uint32_t count) {
+		GOOE_PROFILE_FUNCTION();
+
+		glUniform1iv(GetUniformLocation(name.c_str()), count, values);
+	}
+
 	void OpenGLShader::SetInt(const std::string& name, const int value) {
 		GOOE_PROFILE_FUNCTION();
 

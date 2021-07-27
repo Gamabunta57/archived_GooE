@@ -18,6 +18,10 @@ namespace GooE {
 
 		virtual void Bind(uint32_t slot = 0) const override;
 
+		virtual bool operator==(const Texture& other) const override {
+			return rendererId == ((OpenGLTexture2D&)other).rendererId;
+		}
+
 	private:
 		std::string path;
 		uint32_t width, height;
