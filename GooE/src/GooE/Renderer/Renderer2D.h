@@ -23,5 +23,19 @@ namespace GooE {
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint = { 1.0f, 1.0f, 1.0f, 1.0f }, const float tilingFactor = 1.0f);
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint = { 1.0f, 1.0f, 1.0f, 1.0f }, const float tilingFactor = 1.0f);
+
+		struct Statistics {
+			uint32_t drawCalls = 0;
+			uint32_t quadCount = 0;
+
+			uint32_t GetTotalVertexCount() { return quadCount * 4; }
+			uint32_t GetTotalIndexCount() { return quadCount * 6; }
+		};
+
+		static void ResetStats();
+		static Statistics GetStats();
+
+	private:
+		static void FlushAndReset();
 	};
 }

@@ -18,9 +18,9 @@ namespace GooE {
 	};
 
 	struct Renderer2DData {
-		const uint32_t MaxQuads = 10000;
-		const uint32_t MaxVertices = MaxQuads * 4;
-		const uint32_t MaxIndices = MaxQuads * 6;
+		static const uint32_t MaxQuads = 10000;
+		static const uint32_t MaxVertices = MaxQuads * 4;
+		static const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 32; //TODO: RenderCaps
 
 		Ref<VertexArray> quadVertexArray;
@@ -28,7 +28,7 @@ namespace GooE {
 		Ref<Shader> textureShader;
 		Ref<Texture2D> whiteTexture;
 
-		uint32_t quandIndexCount = 0;
+		uint32_t quadIndexCount = 0;
 		QuadVertex* quadVertexBufferBase = nullptr;
 		QuadVertex* quadVertexBufferPointer = nullptr;
 
@@ -36,6 +36,8 @@ namespace GooE {
 		uint32_t textureSlotIndex = 1; // 0 should be our white texture;
 
 		glm::vec4 quadVertexPositions[4];
+
+		Renderer2D::Statistics stats;
 	};
 
 	static Renderer2DData data;
@@ -102,7 +104,7 @@ namespace GooE {
 		data.textureShader->Bind();
 		data.textureShader->SetMat4("viewProjection", camera.GetViewProjectionMatrix());
 
-		data.quandIndexCount = 0;
+		data.quadIndexCount = 0;
 		data.quadVertexBufferPointer = data.quadVertexBufferBase;
 
 		data.textureSlotIndex = 1;
@@ -121,7 +123,17 @@ namespace GooE {
 		for (uint32_t i = 0; i < data.textureSlotIndex; i++)
 			data.textureSlots[i]->Bind(i);
 
-		RenderCommand::DrawIndexed(data.quadVertexArray, data.quandIndexCount);
+		RenderCommand::DrawIndexed(data.quadVertexArray, data.quadIndexCount);
+		data.stats.drawCalls++;
+	}
+
+	void Renderer2D::FlushAndReset() {
+		EndScene();
+
+		data.quadIndexCount = 0;
+		data.quadVertexBufferPointer = data.quadVertexBufferBase;
+
+		data.textureSlotIndex = 1;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) {
@@ -130,6 +142,9 @@ namespace GooE {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		GOOE_PROFILE_FUNCTION();
+
+		if (data.quadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		const float textureIndex = 0.0f; // white texture
 		const float tilingFactor = 1.0f;
@@ -165,7 +180,9 @@ namespace GooE {
 		data.quadVertexBufferPointer->tilingFactor = tilingFactor;
 		data.quadVertexBufferPointer++;
 
-		data.quandIndexCount += 6;
+		data.quadIndexCount += 6;
+
+		data.stats.quadCount++;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
@@ -174,6 +191,9 @@ namespace GooE {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
 		GOOE_PROFILE_FUNCTION();
+
+		if (data.quadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -222,7 +242,9 @@ namespace GooE {
 		data.quadVertexBufferPointer->tilingFactor = tilingFactor;
 		data.quadVertexBufferPointer++;
 
-		data.quandIndexCount += 6;
+		data.quadIndexCount += 6;
+
+		data.stats.quadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const glm::vec4& color) {
@@ -231,6 +253,9 @@ namespace GooE {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const glm::vec4& color) {
 		GOOE_PROFILE_FUNCTION();
+
+		if (data.quadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		const float textureIndex = 0.0f; // white texture
 		const float tilingFactor = 1.0f;
@@ -266,6 +291,10 @@ namespace GooE {
 		data.quadVertexBufferPointer->texIndex = textureIndex;
 		data.quadVertexBufferPointer->tilingFactor = tilingFactor;
 		data.quadVertexBufferPointer++;
+
+		data.quadIndexCount += 6;
+
+		data.stats.quadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
@@ -274,6 +303,9 @@ namespace GooE {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const float rotation, const Ref<Texture2D>& texture, const glm::vec4& tint, const float tilingFactor) {
 		GOOE_PROFILE_FUNCTION();
+
+		if (data.quadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -324,6 +356,16 @@ namespace GooE {
 		data.quadVertexBufferPointer->tilingFactor = tilingFactor;
 		data.quadVertexBufferPointer++;
 
-		data.quandIndexCount += 6;
+		data.quadIndexCount += 6;
+
+		data.stats.quadCount++;
+	}
+
+	void Renderer2D::ResetStats() {
+		memset(&data.stats, 0, sizeof(Renderer2D::Statistics));
+	}
+
+	Renderer2D::Statistics Renderer2D::GetStats() {
+		return data.stats;
 	}
 }
