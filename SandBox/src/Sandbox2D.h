@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GooE.h>
+#include "ParticleSystem.h"
 
 class Sandbox2D : public GooE::Layer {
 public:
@@ -26,4 +27,7 @@ private:
 	};
 
 	glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
+
+	ParticleProps particle;
+	ParticleSystem particleSystem;
 };

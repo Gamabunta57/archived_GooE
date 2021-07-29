@@ -9,6 +9,16 @@
 #include <GooE/Events/ApplicationEvent.h>
 
 namespace GooE {
+
+	struct OrthographicCameraBounds
+	{
+		float Left, Right;
+		float Bottom, Top;
+
+		float GetWidth() { return Right - Left; }
+		float GetHeight() { return Top - Bottom; }
+	};
+
 	class OrthographicCameraController {
 	public:
 		OrthographicCameraController(float aspectRatio, bool rotation = false);
@@ -21,6 +31,8 @@ namespace GooE {
 
 		float GetZoomLevel() const { return zoomLevel; }
 		void SetZoomLevel(float zoomLevel) { this->zoomLevel = zoomLevel; }
+
+		const OrthographicCameraBounds& GetBounds() const { return bounds; }
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
@@ -31,6 +43,7 @@ namespace GooE {
 		bool rotation;
 		float cameraTranslationSpeed = 5.0f, cameraRotationSpeed = 180.0f;
 		float cameraRotation = 0.0f;
+		OrthographicCameraBounds bounds;
 		glm::vec3 cameraPosition = { 0.0f, 0.0f, 0.0f };
 
 		OrthographicCamera camera;

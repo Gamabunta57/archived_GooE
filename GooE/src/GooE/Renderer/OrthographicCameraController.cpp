@@ -7,7 +7,7 @@
 
 namespace GooE {
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation) 
-		: aspectRatio(aspectRatio), camera(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel), rotation(rotation) {
+		: aspectRatio(aspectRatio), bounds({ -aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel }), camera(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top), rotation(rotation) {
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep ts) {
@@ -54,7 +54,8 @@ namespace GooE {
 
 		zoomLevel -= e.GetOffsetY() * zoomSpeed;
 		zoomLevel = std::max(zoomLevel, 0.25f);
-		camera.SetProjection(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
+		bounds = { -aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel };
+		camera.SetProjection(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top);
 		return false;
 	}
 
@@ -62,7 +63,9 @@ namespace GooE {
 		GOOE_PROFILE_FUNCTION();
 
 		aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		camera.SetProjection(-aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel);
+
+		bounds = { -aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel };
+		camera.SetProjection(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top);
 		return false;
 	}
 }
