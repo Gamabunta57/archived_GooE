@@ -25,6 +25,7 @@ private:
 	GooE::Ref<GooE::Texture2D> texture;
 	GooE::Ref<GooE::Texture2D> spriteSheet;
 	GooE::Ref<GooE::SubTexture2D> barrel;
+	GooE::Ref<GooE::FrameBuffer> frameBuffer;
 
 	struct ProfileResult {
 		const char* name;
