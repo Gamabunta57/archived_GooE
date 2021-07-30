@@ -23,4 +23,5 @@
 #include <GooE/Renderer/OrthographicCamera.h>
 #include <GooE/Renderer/OrthographicCameraController.h>
 #include <GooE/Renderer/Texture.h>
+#include <GooE/Renderer/SubTexture2D.h>
 #include <GooE/Renderer/VertexArray.h>

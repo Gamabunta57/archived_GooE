@@ -17,6 +17,10 @@ void Sandbox2D::OnAttach() {
 	texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
 	spriteSheet = GooE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 
+	stairs = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 7.0f, 6.0f }, { 128.0f, 128.0f });
+	barrel = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 8.0f, 2.0f }, { 128.0f, 128.0f });
+	tree = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 2.0f, 1.0f }, { 128.0f, 128.0f }, {1, 2});
+
 	particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 	particle.SizeBegin = 0.5f, particle.SizeVariation = 0.3f, particle.SizeEnd = 0.0f;
@@ -86,7 +90,9 @@ void Sandbox2D::OnUpdate(GooE::Timestep ts) {
 #endif
 
 	GooE::Renderer2D::BeginScene(cameraController.GetCamera());
-	GooE::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, spriteSheet);
+	GooE::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, stairs);
+	GooE::Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, barrel);
+	GooE::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.0f }, { 1.0f, 2.0f }, tree);
 	GooE::Renderer2D::EndScene();
 
 }

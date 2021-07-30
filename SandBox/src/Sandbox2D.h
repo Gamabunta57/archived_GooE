@@ -21,6 +21,9 @@ private:
 
 	GooE::Ref<GooE::Texture2D> texture;
 	GooE::Ref<GooE::Texture2D> spriteSheet;
+	GooE::Ref<GooE::SubTexture2D> stairs;
+	GooE::Ref<GooE::SubTexture2D> barrel;
+	GooE::Ref<GooE::SubTexture2D> tree;
 
 	struct ProfileResult {
 		const char* name;
