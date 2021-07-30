@@ -1,7 +1,7 @@
 workspace "GooE"
 	language "C++"
 	cppdialect "c++17"
-	startproject "Sandbox"
+	startproject "Editoor"
 	configurations {"Debug", "Release", "Dist"}
 	platforms {"Win64"}
 
@@ -38,6 +38,7 @@ vendorInclude["glm"] = "%{wks.location}/GooE/vendor/glm"
 vendorInclude["stb"] = "%{wks.location}/GooE/vendor/stb_image"
 
 include "GooE"
+include "Editoor"
 include "Sandbox"
 include "GooE/vendor/glad"
 

@@ -5,7 +5,7 @@
 
 class Sandbox : public GooE::Application {
 public:
-    Sandbox() : Application() {
+    Sandbox() : Application("Sandbox") {
 		//PushLayer(new TestLayer());		
 		PushLayer(new Sandbox2D());
     }

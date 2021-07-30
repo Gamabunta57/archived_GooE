@@ -11,13 +11,13 @@
 namespace GooE {
 	Application* Application::instance = nullptr;
 
-	Application::Application() {
+	Application::Application(const std::string& name) {
 		GOOE_PROFILE_FUNCTION();
 
 		GOOE_CORE_ASSERT(!instance, "Application already exists!");
 		instance = this;
 
-		window = std::unique_ptr<Window>(Window::Create());
+		window = std::unique_ptr<Window>(Window::Create(WindowProperties(name)));
 		window->SetEventCallback(GOOE_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();

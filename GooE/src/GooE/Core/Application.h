@@ -15,7 +15,7 @@
 namespace GooE {
 	class GOOE_API Application {
 	public:
-		Application();
+		Application(const std::string& name = "GooE Game");
 		virtual ~Application();
 
 		void Run();
