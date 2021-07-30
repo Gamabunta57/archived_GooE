@@ -27,6 +27,8 @@ namespace GooE {
 		inline static Application& Get() { return *instance; }
 		inline Window& GetWindow() { return *window; }
 
+		void Close();
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);

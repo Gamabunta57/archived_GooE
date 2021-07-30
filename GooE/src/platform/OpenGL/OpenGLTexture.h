@@ -13,6 +13,7 @@ namespace GooE {
 
 		virtual uint32_t GetWidth() const override { return width; }
 		virtual uint32_t GetHeight() const override { return height; }
+		virtual uint32_t GetRendererID() const override { return rendererId; }
 		
 		virtual void SetData(void* data, uint32_t size) override;
 
