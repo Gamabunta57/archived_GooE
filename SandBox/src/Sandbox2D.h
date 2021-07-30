@@ -20,6 +20,7 @@ private:
 	GooE::OrthographicCameraController cameraController;
 
 	GooE::Ref<GooE::Texture2D> texture;
+	GooE::Ref<GooE::Texture2D> spriteSheet;
 
 	struct ProfileResult {
 		const char* name;

@@ -15,6 +15,7 @@ void Sandbox2D::OnAttach() {
 	GOOE_PROFILE_FUNCTION();
 
 	texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
+	spriteSheet = GooE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 
 	particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -43,6 +44,7 @@ void Sandbox2D::OnUpdate(GooE::Timestep ts) {
 	}
 	static float rotation = 0.0f;
 	rotation += ts * 2.0f;
+#if 0
 	{
 		GOOE_PROFILE_SCOPE("Renderer draw");
 		GooE::Renderer2D::BeginScene(cameraController.GetCamera());
@@ -81,6 +83,12 @@ void Sandbox2D::OnUpdate(GooE::Timestep ts) {
 		particleSystem.OnUpdate(ts);
 		particleSystem.OnRender(cameraController.GetCamera());
 	}
+#endif
+
+	GooE::Renderer2D::BeginScene(cameraController.GetCamera());
+	GooE::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, spriteSheet);
+	GooE::Renderer2D::EndScene();
+
 }
 
 void Sandbox2D::OnEvent(GooE::Event& e) {
