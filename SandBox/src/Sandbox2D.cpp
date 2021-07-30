@@ -8,18 +8,40 @@
 
 #include "Sandbox2D.h"
 
+static const uint32_t MAP_WIDTH = 24;
+static const char* mapTiles =
+"wwwwwwwwwwwwwwwwwwwwwwww"
+"wwwwwwwdddddddwwwwwwwwww"
+"wwwwwwddddddddddwwwwwwww"
+"wwwwddddddddddddddwwwwww"
+"wwdddddddddwddddddddwwww"
+"wwdddddddwwwddddddddddww"
+"wwdddddddwwvwwddddddddww"
+"wdddddddddwwdddddddddwww"
+"wdddddddddwddddddddwwwww"
+"wwwdddddddddddddddwwwwww"
+"wwwwwdddddddddddwwwwwwww"
+"wwwwwwwwdddddwwwwwwwwwww"
+"wwwwwwwwwwwwwwwwwwwwwwww"
+"wwwwwwwwwwwwwwwwwwwwwwww"
+;
+
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), cameraController(16.0f / 9.0f, true) {
 }
 
 void Sandbox2D::OnAttach() {
 	GOOE_PROFILE_FUNCTION();
 
+	mapWidth = MAP_WIDTH;
+	mapHeight = strlen(mapTiles) / mapWidth;
+
 	texture = GooE::Texture2D::Create("assets/textures/Checkerboard.png");
 	spriteSheet = GooE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 
-	stairs = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 7.0f, 6.0f }, { 128.0f, 128.0f });
-	barrel = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 8.0f, 2.0f }, { 128.0f, 128.0f });
-	tree = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 2.0f, 1.0f }, { 128.0f, 128.0f }, {1, 2});
+	textureMap['w'] = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 11.0f, 11.0f }, { 128.0f, 128.0f });
+	textureMap['d'] = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 6.0f, 11.0f }, { 128.0f, 128.0f });
+
+	barrel = GooE::SubTexture2D::CreateFromCoords(spriteSheet, { 8.0f, 1.0f }, { 128.0f, 128.0f });
 
 	particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
@@ -28,11 +50,12 @@ void Sandbox2D::OnAttach() {
 	particle.Velocity = { 0.0f, 0.0f };
 	particle.VelocityVariation = { 3.0f, 1.0f };
 	particle.Position = { 0.0f, 0.0f };
+
+	cameraController.SetZoomLevel(7.0f);
 }
 
 void Sandbox2D::OnDetach() {
 	GOOE_PROFILE_FUNCTION();
-
 }
 
 void Sandbox2D::OnUpdate(GooE::Timestep ts) {
@@ -90,9 +113,17 @@ void Sandbox2D::OnUpdate(GooE::Timestep ts) {
 #endif
 
 	GooE::Renderer2D::BeginScene(cameraController.GetCamera());
-	GooE::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, stairs);
-	GooE::Renderer2D::DrawQuad({ 1.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, barrel);
-	GooE::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.0f }, { 1.0f, 2.0f }, tree);
+	for (uint32_t y = 0; y < mapHeight; y++) {
+		for (uint32_t x = 0; x < mapWidth; x++) {
+			char tile = mapTiles[x + y * mapWidth];
+			GooE::Ref<GooE::SubTexture2D> texture;
+			if (textureMap.find(tile) == textureMap.end())
+				texture = barrel;
+			else
+				texture = textureMap[tile];
+			GooE::Renderer2D::DrawQuad({ x,y }, { 1,1 }, texture);
+		}
+	}
 	GooE::Renderer2D::EndScene();
 
 }

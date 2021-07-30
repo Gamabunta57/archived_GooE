@@ -30,10 +30,12 @@ namespace GooE {
 		const OrthographicCamera& GetCamera() const { return camera; }
 
 		float GetZoomLevel() const { return zoomLevel; }
-		void SetZoomLevel(float zoomLevel) { this->zoomLevel = zoomLevel; }
+		void SetZoomLevel(float zoomLevel) { this->zoomLevel = zoomLevel; CalculateView(); }
 
 		const OrthographicCameraBounds& GetBounds() const { return bounds; }
 	private:
+		void CalculateView();
+
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
 	private:

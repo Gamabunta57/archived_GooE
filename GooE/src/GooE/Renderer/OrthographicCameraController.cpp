@@ -54,8 +54,8 @@ namespace GooE {
 
 		zoomLevel -= e.GetOffsetY() * zoomSpeed;
 		zoomLevel = std::max(zoomLevel, 0.25f);
-		bounds = { -aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel };
-		camera.SetProjection(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top);
+
+		CalculateView();
 		return false;
 	}
 
@@ -64,8 +64,12 @@ namespace GooE {
 
 		aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 
+		CalculateView();
+		return false;
+	}
+
+	void OrthographicCameraController::CalculateView() {
 		bounds = { -aspectRatio * zoomLevel, aspectRatio * zoomLevel, -zoomLevel, zoomLevel };
 		camera.SetProjection(bounds.Left, bounds.Right, bounds.Bottom, bounds.Top);
-		return false;
 	}
 }

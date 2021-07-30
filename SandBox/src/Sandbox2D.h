@@ -17,13 +17,14 @@ public:
 	virtual void OnImGuiRender() override;
 
 private:
+
+	uint32_t mapWidth, mapHeight;
+
 	GooE::OrthographicCameraController cameraController;
 
 	GooE::Ref<GooE::Texture2D> texture;
 	GooE::Ref<GooE::Texture2D> spriteSheet;
-	GooE::Ref<GooE::SubTexture2D> stairs;
 	GooE::Ref<GooE::SubTexture2D> barrel;
-	GooE::Ref<GooE::SubTexture2D> tree;
 
 	struct ProfileResult {
 		const char* name;
@@ -34,4 +35,6 @@ private:
 
 	ParticleProps particle;
 	ParticleSystem particleSystem;
+
+	std::unordered_map<char, GooE::Ref<GooE::SubTexture2D>> textureMap;
 };
