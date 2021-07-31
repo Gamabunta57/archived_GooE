@@ -51,9 +51,8 @@ namespace GooE {
 		cameraController.SetZoomLevel(7.0f);
 
 		activeScene = CreateRef<Scene>();
-		square = activeScene->CreateEntity();
-		activeScene->GetRegistry().emplace<TransformComponent>(square);
-		activeScene->GetRegistry().emplace<SpriteRendererComponent>(square, glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
+		square = activeScene->CreateEntity("square");
+		square.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
 	}
 
 	void EditoorLayer::OnDetach() {
@@ -162,8 +161,12 @@ namespace GooE {
 			ImGui::Text("  Vertices: %d", stat.GetTotalVertexCount());
 			ImGui::Text("  Indices: %d", stat.GetTotalIndexCount());
 
-			auto& color = activeScene->GetRegistry().get<SpriteRendererComponent>(square).color;
-			ImGui::ColorEdit4("Color", glm::value_ptr(color));
+			if (square) {
+				ImGui::Separator();
+				ImGui::Text("%s", square.GetComponent<TagComponent>().tag.c_str());
+				auto& color = square.GetComponent<SpriteRendererComponent>().color;
+				ImGui::ColorEdit4("Color", glm::value_ptr(color));
+			}
 
 			ImGui::End();
 

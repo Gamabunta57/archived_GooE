@@ -5,7 +5,7 @@
 
 #include "Scene.h"
 #include "Components.h"
-
+#include "Entity.h"
 
 namespace GooE {
 
@@ -14,8 +14,15 @@ namespace GooE {
 	Scene::~Scene() {
 	}
 
-	entt::entity Scene::CreateEntity() {
-		return registry.create();
+	Entity Scene::CreateEntity(const std::string& name) {
+		Entity entity = { registry.create(), this };
+		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<TagComponent>(name.empty() 
+			? "Entity"
+			: name
+		);
+
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep ts) {

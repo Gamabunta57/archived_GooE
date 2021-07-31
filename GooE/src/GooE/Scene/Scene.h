@@ -4,17 +4,17 @@
 #include <GooE/Core/Timestep.h>
 
 namespace GooE {
+	class Entity;
+
 	class Scene {
+		friend Entity;
 	public:
 		Scene();
 		~Scene();
 
-		entt::entity CreateEntity();
+		Entity CreateEntity(const std::string& name = std::string());
 
 		void OnUpdate(Timestep ts);
-
-		//TMP
-		entt::registry& GetRegistry() { return registry; }
 
 	private:
 		entt::registry registry;
