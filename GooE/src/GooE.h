@@ -14,6 +14,9 @@
 
 #include <GooE/ImGui/ImGuiLayer.h>
 
+#include <GooE/Scene/Scene.h>
+#include <GooE/Scene/Components.h>
+
 #include <GooE/Renderer/RenderCommand.h>
 #include <GooE/Renderer/RendererApi.h>
 #include <GooE/Renderer/Renderer.h>

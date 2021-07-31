@@ -36,6 +36,7 @@ vendorInclude["glad"] = "%{wks.location}/GooE/vendor/glad/include"
 vendorInclude["ImGui"] = "%{wks.location}/GooE/vendor/imgui"
 vendorInclude["glm"] = "%{wks.location}/GooE/vendor/glm"
 vendorInclude["stb"] = "%{wks.location}/GooE/vendor/stb_image"
+vendorInclude["entt"] = "%{wks.location}/GooE/vendor/entt/single_include"
 
 include "GooE"
 include "Editoor"

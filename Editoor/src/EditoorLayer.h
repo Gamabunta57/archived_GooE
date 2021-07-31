@@ -23,6 +23,7 @@ namespace GooE {
 		glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 		bool viewportFocused = false;
 		bool viewportHovered = false;
+		entt::entity square;
 
 		OrthographicCameraController cameraController;
 
@@ -30,6 +31,8 @@ namespace GooE {
 		Ref<Texture2D> spriteSheet;
 		Ref<SubTexture2D> barrel;
 		Ref<FrameBuffer> frameBuffer;
+
+		Ref<Scene> activeScene;
 
 		struct ProfileResult {
 			const char* name;

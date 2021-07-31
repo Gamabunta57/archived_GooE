@@ -25,5 +25,6 @@ project "Sandbox"
 		"%{prj.location}/../GooE/vendor/spdlog/include",
 		"%{vendorInclude.glm}",
 		"%{vendorInclude.ImGui}",
-		"%{vendorInclude.ImGui}/.."
+		"%{vendorInclude.ImGui}/..",
+		"%{vendorInclude.entt}",
 	}

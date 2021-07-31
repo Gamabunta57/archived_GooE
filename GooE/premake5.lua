@@ -32,6 +32,7 @@ project "GooE"
 		"%{vendorInclude.ImGui}",
 		"%{vendorInclude.glm}",
 		"%{vendorInclude.stb}",
+		"%{vendorInclude.entt}",
 	}
 
 	links {

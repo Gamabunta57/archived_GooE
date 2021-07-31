@@ -10,3 +10,6 @@
 [submodule ".\\GooE\\vendor\\glm"]
 	path = .\\GooE\\vendor\\glm
 	url = git@github.com:g-truc/glm
+[submodule ".\\GooE\\vendor\\entt"]
+	path = .\\GooE\\vendor\\entt
+	url = git@github.com:skypjack/entt

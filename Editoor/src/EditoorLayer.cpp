@@ -49,6 +49,11 @@ namespace GooE {
 		frameBuffer = GooE::FrameBuffer::Create(fbSpec);
 
 		cameraController.SetZoomLevel(7.0f);
+
+		activeScene = CreateRef<Scene>();
+		square = activeScene->CreateEntity();
+		activeScene->GetRegistry().emplace<TransformComponent>(square);
+		activeScene->GetRegistry().emplace<SpriteRendererComponent>(square, glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
 	}
 
 	void EditoorLayer::OnDetach() {
@@ -62,36 +67,15 @@ namespace GooE {
 			cameraController.OnUpdate(ts);
 
 		GooE::Renderer2D::ResetStats();
+		frameBuffer->Bind();
+		GooE::RenderCommand::Clear();
+	
 
-		{
-			GOOE_PROFILE_SCOPE("Renderer clear");
-			frameBuffer->Bind();
-			GooE::RenderCommand::Clear();
-		}
-		{
-			static float rotation = 0.0f;
-			rotation += ts * 2.0f;
+		GooE::Renderer2D::BeginScene(cameraController.GetCamera());
+		activeScene->OnUpdate(ts);
+		GooE::Renderer2D::EndScene();
 
-			GOOE_PROFILE_SCOPE("Renderer draw");
-			GooE::Renderer2D::BeginScene(cameraController.GetCamera());
-			GooE::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, rotation, color);
-			GooE::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, color);
-			GooE::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.5f, 1.0f, 1.0f, 1.0f });
-			GooE::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, glm::radians(-45.0f), texture, color, 10.0f);
-			GooE::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, -0.01f }, { 1.0f, 1.0f }, glm::radians(-45.0f), texture, color, 10.0f);
-			GooE::Renderer2D::EndScene();
-
-			GooE::Renderer2D::BeginScene(cameraController.GetCamera());
-			for (float y = -5.0f; y < 5.0f; y += 0.5f) {
-				for (float x = -5.0f; x < 5.0f; x += 0.5f) {
-					glm::vec4 rb = { (x + 5.0f) / 10.0f, 0.5f, (y + 5.0f) / 10.0f, 0.7f};
-					GooE::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, rb);
-				}
-			}
-
-			GooE::Renderer2D::EndScene();
-			frameBuffer->Unbind();
-		}
+		frameBuffer->Unbind();
 	}
 
 	void EditoorLayer::OnEvent(GooE::Event& e) {
@@ -178,6 +162,7 @@ namespace GooE {
 			ImGui::Text("  Vertices: %d", stat.GetTotalVertexCount());
 			ImGui::Text("  Indices: %d", stat.GetTotalIndexCount());
 
+			auto& color = activeScene->GetRegistry().get<SpriteRendererComponent>(square).color;
 			ImGui::ColorEdit4("Color", glm::value_ptr(color));
 
 			ImGui::End();
