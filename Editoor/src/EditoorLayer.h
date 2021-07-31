@@ -21,6 +21,8 @@ namespace GooE {
 		uint32_t mapWidth, mapHeight;
 		glm::vec2 viewportSize = { 0.0f, 0.0f };
 		glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
+		bool viewportFocused = false;
+		bool viewportHovered = false;
 
 		OrthographicCameraController cameraController;
 

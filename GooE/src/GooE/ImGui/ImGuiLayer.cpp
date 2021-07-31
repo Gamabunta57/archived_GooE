@@ -58,6 +58,15 @@ namespace GooE {
         ImGui::DestroyContext();
     }
 
+    void ImGuiLayer::OnEvent(Event& e) {
+        if (blockEvents) {
+            e.isHandled = true;
+            ImGuiIO& io = ImGui::GetIO();
+            e.isHandled |= e.IsInCategory(MouseEventCategory) & io.WantCaptureMouse;
+            e.isHandled |= e.IsInCategory(KeyboardEventCategory) & io.WantCaptureKeyboard;
+        }
+    }
+
     void ImGuiLayer::Begin() {
         GOOE_PROFILE_FUNCTION();
 

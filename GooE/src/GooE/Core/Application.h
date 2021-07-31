@@ -29,6 +29,8 @@ namespace GooE {
 
 		void Close();
 
+		ImGuiLayer* GetImGuiLayer() { return imguiLayer; }
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);

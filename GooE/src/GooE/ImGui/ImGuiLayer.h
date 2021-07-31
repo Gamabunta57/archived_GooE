@@ -12,11 +12,14 @@ namespace GooE {
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
+		virtual void OnEvent(Event& event) override;
 
 		void Begin();
 		void End();
+		void SetBlockEvents(bool blockEvents) { this->blockEvents = blockEvents; }
 
 	private:
+		bool blockEvents = true;
 		float time = 0.0f;
 	};
 }

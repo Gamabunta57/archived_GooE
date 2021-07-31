@@ -70,8 +70,8 @@ namespace GooE {
 		dispatcher.Dispatch<WindowResizeEvent>(GOOE_BIND_EVENT_FN(Application::OnWindowResize));
 
 		for (auto it = layerStack.end(); it != layerStack.begin();) {
-			(*--it)->OnEvent(e);
 			if (e.isHandled) break;
+			(*--it)->OnEvent(e);
 		}
 	}
 

@@ -58,7 +58,8 @@ namespace GooE {
 	void EditoorLayer::OnUpdate(GooE::Timestep ts) {
 		GOOE_PROFILE_FUNCTION();
 
-		cameraController.OnUpdate(ts);
+		if (viewportFocused)
+			cameraController.OnUpdate(ts);
 
 		GooE::Renderer2D::ResetStats();
 
@@ -183,6 +184,10 @@ namespace GooE {
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 			ImGui::Begin("viewport");
+			viewportFocused = ImGui::IsWindowFocused();
+			viewportHovered = ImGui::IsWindowHovered();
+			Application::Get().GetImGuiLayer()->SetBlockEvents(!viewportFocused || !viewportHovered);
+
 			ImVec2 panelSize = ImGui::GetContentRegionAvail();
 			if (viewportSize != *((glm::vec2*)&panelSize)) {
 				viewportSize = { panelSize.x, panelSize.y };
