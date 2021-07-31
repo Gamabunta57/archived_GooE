@@ -189,7 +189,7 @@ namespace GooE {
 			Application::Get().GetImGuiLayer()->SetBlockEvents(!viewportFocused || !viewportHovered);
 
 			ImVec2 panelSize = ImGui::GetContentRegionAvail();
-			if (viewportSize != *((glm::vec2*)&panelSize)) {
+			if (viewportSize != *((glm::vec2*)&panelSize) && panelSize.x > 0 && panelSize.y > 0) {
 				viewportSize = { panelSize.x, panelSize.y };
 				frameBuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 

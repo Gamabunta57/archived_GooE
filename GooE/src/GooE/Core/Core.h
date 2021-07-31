@@ -41,6 +41,7 @@
 		#else
 			#define GOOE_API  __declspec(dllimport)
 		#endif
+		#error "Building GooE as DLL is not supported yet!"
 	#endif
 #else
 	#error "Windows only is supported at the moment!"

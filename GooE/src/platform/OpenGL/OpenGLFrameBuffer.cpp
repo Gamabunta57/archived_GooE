@@ -5,6 +5,9 @@
 #include "OpenGLFrameBuffer.h"
 
 namespace GooE {
+
+	static const uint32_t maxFrameBufferSize = 8192;
+
 	OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification& specification) : specification(specification) {
 		Invalidate();
 	}
@@ -54,7 +57,12 @@ namespace GooE {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height){
+	void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height) {
+		if (width < 1 || height < 1 || width > maxFrameBufferSize || height > maxFrameBufferSize) {
+			GOOE_CORE_WARN("Attempt to resize a framebuffer to: {0}, {1}", width, height);
+			return;
+		}
+
 		specification.width = width;
 		specification.height = height;
 
