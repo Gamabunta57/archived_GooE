@@ -19,6 +19,8 @@ namespace GooE {
 	private:
 
 		uint32_t mapWidth, mapHeight;
+		glm::vec2 viewportSize = { 0.0f, 0.0f };
+		glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 
 		OrthographicCameraController cameraController;
 
@@ -31,8 +33,6 @@ namespace GooE {
 			const char* name;
 			float time;
 		};
-
-		glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 
 		std::unordered_map<char, Ref<SubTexture2D>> textureMap;
 	};

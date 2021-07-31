@@ -49,6 +49,13 @@ namespace GooE {
 		dispatcher.Dispatch<MouseScrolledEvent>(GOOE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 	}
 
+	void OrthographicCameraController::Resize(float width, float height) {
+		GOOE_PROFILE_FUNCTION();
+
+		aspectRatio = width / height;
+		CalculateView();
+	}
+
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e) {
 		GOOE_PROFILE_FUNCTION();
 
@@ -62,9 +69,8 @@ namespace GooE {
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e) {
 		GOOE_PROFILE_FUNCTION();
 
-		aspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
+		Resize((float)e.GetWidth(), (float)e.GetHeight());
 
-		CalculateView();
 		return false;
 	}
 

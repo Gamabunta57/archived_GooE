@@ -178,10 +178,24 @@ namespace GooE {
 			ImGui::Text("  Indices: %d", stat.GetTotalIndexCount());
 
 			ImGui::ColorEdit4("Color", glm::value_ptr(color));
-			uint32_t textureId = frameBuffer->GetColorAttachmentRendererID();
-			ImGui::Image((void*)textureId, ImVec2{ 1280, 720 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
 			ImGui::End();
 
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+			ImGui::Begin("viewport");
+			ImVec2 panelSize = ImGui::GetContentRegionAvail();
+			if (viewportSize != *((glm::vec2*)&panelSize)) {
+				viewportSize = { panelSize.x, panelSize.y };
+				frameBuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+
+				cameraController.Resize(viewportSize.x, viewportSize.y);
+			}
+
+			viewportSize = { panelSize.x, panelSize.y };
+			uint32_t textureId = frameBuffer->GetColorAttachmentRendererID();
+			ImGui::Image((void*)textureId, { viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImGui::End();
+			ImGui::PopStyleVar();
 			ImGui::End();
 		}
 	}

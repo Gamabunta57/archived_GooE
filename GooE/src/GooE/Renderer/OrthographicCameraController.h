@@ -26,6 +26,8 @@ namespace GooE {
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 
+		void Resize(float width, float height);
+
 		OrthographicCamera& GetCamera() { return camera; }
 		const OrthographicCamera& GetCamera() const { return camera; }
 
