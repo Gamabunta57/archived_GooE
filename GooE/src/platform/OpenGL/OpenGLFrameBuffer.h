@@ -6,7 +6,7 @@ namespace GooE {
 	class OpenGLFrameBuffer : public FrameBuffer {
 	public:
 		OpenGLFrameBuffer(const FrameBufferSpecification& specification);
-		virtual ~OpenGLFrameBuffer();
+		virtual ~OpenGLFrameBuffer() override;
 
 		void Invalidate();
 		virtual void Bind() override;
