@@ -7,7 +7,8 @@ namespace GooE {
 	class Entity;
 
 	class Scene {
-		friend Entity;
+		friend class Entity;
+		friend class SceneHierarchyPanel;
 	public:
 		Scene();
 		~Scene();

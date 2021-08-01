@@ -32,9 +32,10 @@ namespace GooE {
 			scene->registry.remove<T>(entityId);
 		}
 
-		operator bool() const { 
-			return entityId != entt::null;
-		}
+		operator bool() const { return entityId != entt::null; }
+		operator uint32_t() const { return (uint32_t)entityId; }
+		bool operator==(const Entity& other) const { return entityId == other.entityId && scene == other.scene; }
+		bool operator!=(const Entity& other) const { return !(*this == other); }
 
 	private:
 		entt::entity entityId{ entt::null };

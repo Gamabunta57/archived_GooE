@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GooE.h>
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace GooE {
 	class EditoorLayer : public Layer {
@@ -42,5 +43,7 @@ namespace GooE {
 		};
 
 		std::unordered_map<char, Ref<SubTexture2D>> textureMap;
+
+		SceneHierarchyPanel sceneHierarchyPanel;
 	};
 }

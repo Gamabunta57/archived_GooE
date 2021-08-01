@@ -90,6 +90,8 @@ namespace GooE {
 
 		cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		secondCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+		sceneHierarchyPanel.SetContext(activeScene);
 	}
 
 	void EditoorLayer::OnDetach() {
@@ -194,6 +196,8 @@ namespace GooE {
 				}
 				ImGui::EndMenuBar();
 			}
+
+			sceneHierarchyPanel.OnImGuiRender();
 
 			auto stat = GooE::Renderer2D::GetStats();
 			ImGui::Begin("Info");
