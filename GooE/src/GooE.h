@@ -17,6 +17,7 @@
 #include <GooE/Scene/Scene.h>
 #include <GooE/Scene/Components.h>
 #include <GooE/Scene/Entity.h>
+#include <GooE/Scene/ScriptableEntity.h>
 
 #include <GooE/Renderer/RenderCommand.h>
 #include <GooE/Renderer/RendererApi.h>

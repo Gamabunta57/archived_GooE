@@ -26,6 +26,19 @@ namespace GooE {
 	}
 
 	void Scene::OnUpdate(Timestep ts) {
+		//Update scripts
+		{
+			registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+				if (!nsc.instance){
+					nsc.InstantiateFunction();
+					nsc.instance->entity = Entity{ entity, this };
+
+					nsc.OnCreateFunction(nsc.instance);
+				}
+
+				nsc.OnUpdateFunction(nsc.instance, ts);
+			});
+		}
 
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
