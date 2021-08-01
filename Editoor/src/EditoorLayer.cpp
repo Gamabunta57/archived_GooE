@@ -64,6 +64,8 @@ namespace GooE {
 		class CameraController : public ScriptableEntity {
 		public:
 			void OnCreate() {
+				auto& transform = GetComponent<TransformComponent>().transform;
+				transform[3][0] = rand() % 10 - 5.0f;
 			}
 
 			void OnDestroy() {
@@ -85,7 +87,9 @@ namespace GooE {
 					transform[3][1] -= speed * ts;
 			}
 		};
+
 		cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+		secondCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 	}
 
 	void EditoorLayer::OnDetach() {

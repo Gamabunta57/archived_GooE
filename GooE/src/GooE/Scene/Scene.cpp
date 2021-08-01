@@ -29,14 +29,15 @@ namespace GooE {
 		//Update scripts
 		{
 			registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+				//TODO: move to Scene::OnScenePlay
 				if (!nsc.instance){
-					nsc.InstantiateFunction();
+					nsc.instance = nsc.InstantiateScript();
 					nsc.instance->entity = Entity{ entity, this };
 
-					nsc.OnCreateFunction(nsc.instance);
+					nsc.instance->OnCreate();
 				}
 
-				nsc.OnUpdateFunction(nsc.instance, ts);
+				nsc.instance->OnUpdate(ts);
 			});
 		}
 
@@ -45,7 +46,7 @@ namespace GooE {
 		{
 			auto group = registry.group<CameraComponent, TransformComponent>();
 			for (auto entity : group) {
-				auto& [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
+				auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
 				if (camera.primary) {
 					mainCamera = &camera.camera;
 					cameraTransform = &transform.transform;
@@ -59,7 +60,7 @@ namespace GooE {
 			{
 				auto group = registry.group<SpriteRendererComponent>(entt::get<TransformComponent>);
 				for (auto entity : group) {
-					auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
 					Renderer2D::DrawQuad(transform, sprite.color);
 				}
