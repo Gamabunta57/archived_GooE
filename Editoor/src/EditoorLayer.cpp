@@ -55,10 +55,10 @@ namespace GooE {
 		squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
 
 		cameraEntity = activeScene->CreateEntity("camera");
-		cameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		cameraEntity.AddComponent<CameraComponent>();
 
 		secondCameraEntity = activeScene->CreateEntity("2nd camera");
-		secondCameraEntity.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
+		secondCameraEntity.AddComponent<CameraComponent>();
 		secondCameraEntity.GetComponent<CameraComponent>().primary = false;
 	}
 
@@ -66,8 +66,16 @@ namespace GooE {
 		GOOE_PROFILE_FUNCTION();
 	}
 
-	void EditoorLayer::OnUpdate(GooE::Timestep ts) {
+	void EditoorLayer::OnUpdate(Timestep ts) {
 		GOOE_PROFILE_FUNCTION();
+
+		FrameBufferSpecification spec = frameBuffer->GetSpecification();
+		if (viewportSize.x > 0.0f && viewportSize.y > 0.0f && (spec.width != viewportSize.x || spec.height != viewportSize.y)) {
+			frameBuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+			cameraController.Resize(viewportSize.x, viewportSize.y);
+
+			activeScene->SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+		}
 
 		if (viewportFocused)
 			cameraController.OnUpdate(ts);
@@ -81,7 +89,7 @@ namespace GooE {
 		frameBuffer->Unbind();
 	}
 
-	void EditoorLayer::OnEvent(GooE::Event& e) {
+	void EditoorLayer::OnEvent(Event& e) {
 		GOOE_PROFILE_FUNCTION();
 
 		cameraController.OnEvent(e);
@@ -184,6 +192,10 @@ namespace GooE {
 				ImGui::Text("%s", secondCameraEntity.GetComponent<TagComponent>().tag.c_str());
 
 				ImGui::DragFloat3("Camera 2 transform", glm::value_ptr(secondCameraEntity.GetComponent<TransformComponent>().transform[3]));
+				auto& camera = secondCameraEntity.GetComponent<CameraComponent>().camera;
+				float orthoSize = camera.GetOrthographicSize();
+				if (ImGui::DragFloat("Ortho size", &orthoSize))
+					camera.SetOrthographicSize(orthoSize);
 			}
 
 			bool* is1Main = &cameraEntity.GetComponent<CameraComponent>().primary;
@@ -200,13 +212,6 @@ namespace GooE {
 			Application::Get().GetImGuiLayer()->SetBlockEvents(!viewportFocused || !viewportHovered);
 
 			ImVec2 panelSize = ImGui::GetContentRegionAvail();
-			if (viewportSize != *((glm::vec2*)&panelSize) && panelSize.x > 0 && panelSize.y > 0) {
-				viewportSize = { panelSize.x, panelSize.y };
-				frameBuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-
-				cameraController.Resize(viewportSize.x, viewportSize.y);
-			}
-
 			viewportSize = { panelSize.x, panelSize.y };
 			uint32_t textureId = frameBuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureId, { viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -215,5 +220,4 @@ namespace GooE {
 			ImGui::End();
 		}
 	}
-
 }

@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <GooE/Renderer/Camera.h>
+#include <GooE/Scene/SceneCamera.h>
 
 namespace GooE {
 
@@ -34,11 +34,11 @@ namespace GooE {
 	};
 
 	struct CameraComponent {
-		Camera camera;
+		SceneCamera camera;
 		bool primary = true;
+		bool fixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const Camera& camera) : camera(camera) {};
 	};
 }

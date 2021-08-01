@@ -54,4 +54,17 @@ namespace GooE {
 			Renderer2D::EndScene();
 		}
 	}
+
+	void Scene::SetViewportSize(uint32_t width, uint32_t height) {
+		viewportWidth = width;
+		viewportHeight = height;
+
+		auto view = registry.view<CameraComponent>();
+		for (auto entity : view) {
+			auto& cameraComponent = view.get<CameraComponent>(entity);
+			if (!cameraComponent.fixedAspectRatio) {
+				cameraComponent.camera.SetViewportSize(width, height);
+			}
+		}
+	}
 }

@@ -15,8 +15,10 @@ namespace GooE {
 		Entity CreateEntity(const std::string& name = std::string());
 
 		void OnUpdate(Timestep ts);
+		void SetViewportSize(uint32_t width, uint32_t height);
 
 	private:
 		entt::registry registry;
+		uint32_t viewportWidth, viewportHeight;
 	};
 }

@@ -5,11 +5,13 @@
 namespace GooE {
 	class Camera {
 	public:
+		Camera() = default;
 		Camera(const glm::mat4& projection) : projection(projection) {}
+		virtual ~Camera() = default;
 
 		const glm::mat4& GetProjection() const { return projection; }
 
-	private:
-		glm::mat4 projection;
+	protected:
+		glm::mat4 projection = glm::mat4(1.0f);
 	};
 }
