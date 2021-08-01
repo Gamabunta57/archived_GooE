@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GooE/Core/Log.h>
+#include <GooE/Core/Core.h>
 #include <entt/entt.hpp>
 #include "Scene.h"
 
@@ -12,20 +14,20 @@ namespace GooE {
 
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args) {
-			//GOOE_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
+			GOOE_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
 			return scene->registry.emplace<T>(entityId, std::forward<Args>(args)...);
 		}
 
 		template<typename T>
 		T& GetComponent() {
-			//GOOE_CORE_ASSERT(HasComponent<T>(), "Entity doesn't have component!");
+			GOOE_CORE_ASSERT(HasComponent<T>(), "Entity doesn't have component!");
 			return scene->registry.get<T>(entityId);
 		}
 
-		//template<typename T>
-		//bool HasComponent() {
-		//	return scene->registry.has<T>(entityId);
-		//}
+		template<typename T>
+		bool HasComponent() {
+			return scene->registry.any_of<T>(entityId);
+		}
 
 		template<typename T>
 		void RemoveComponent() {
