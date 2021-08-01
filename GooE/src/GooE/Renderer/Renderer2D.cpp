@@ -110,6 +110,20 @@ namespace GooE {
 		data.textureSlotIndex = 1;
 	}
 
+	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform) {
+		GOOE_PROFILE_FUNCTION();
+
+		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
+
+		data.textureShader->Bind();
+		data.textureShader->SetMat4("viewProjection", viewProj);
+
+		data.quadIndexCount = 0;
+		data.quadVertexBufferPointer = data.quadVertexBufferBase;
+
+		data.textureSlotIndex = 1;
+	}
+
 	void Renderer2D::EndScene() {
 		GOOE_PROFILE_FUNCTION();
 

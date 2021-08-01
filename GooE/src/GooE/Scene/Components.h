@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <GooE/Renderer/Camera.h>
+
 namespace GooE {
 
 	struct TagComponent {
@@ -29,5 +31,14 @@ namespace GooE {
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& color) : color(color) {};
+	};
+
+	struct CameraComponent {
+		Camera camera;
+		bool primary = true;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const Camera& camera) : camera(camera) {};
 	};
 }

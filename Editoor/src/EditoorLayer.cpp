@@ -51,8 +51,15 @@ namespace GooE {
 		cameraController.SetZoomLevel(7.0f);
 
 		activeScene = CreateRef<Scene>();
-		square = activeScene->CreateEntity("square");
-		square.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
+		squareEntity = activeScene->CreateEntity("square");
+		squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
+
+		cameraEntity = activeScene->CreateEntity("camera");
+		cameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+
+		secondCameraEntity = activeScene->CreateEntity("2nd camera");
+		secondCameraEntity.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
+		secondCameraEntity.GetComponent<CameraComponent>().primary = false;
 	}
 
 	void EditoorLayer::OnDetach() {
@@ -69,10 +76,7 @@ namespace GooE {
 		frameBuffer->Bind();
 		GooE::RenderCommand::Clear();
 	
-
-		GooE::Renderer2D::BeginScene(cameraController.GetCamera());
 		activeScene->OnUpdate(ts);
-		GooE::Renderer2D::EndScene();
 
 		frameBuffer->Unbind();
 	}
@@ -161,12 +165,31 @@ namespace GooE {
 			ImGui::Text("  Vertices: %d", stat.GetTotalVertexCount());
 			ImGui::Text("  Indices: %d", stat.GetTotalIndexCount());
 
-			if (square) {
+			if (squareEntity) {
 				ImGui::Separator();
-				ImGui::Text("%s", square.GetComponent<TagComponent>().tag.c_str());
-				auto& color = square.GetComponent<SpriteRendererComponent>().color;
+				ImGui::Text("%s", squareEntity.GetComponent<TagComponent>().tag.c_str());
+				auto& color = squareEntity.GetComponent<SpriteRendererComponent>().color;
 				ImGui::ColorEdit4("Color", glm::value_ptr(color));
 			}
+
+			if (cameraEntity) {
+				ImGui::Separator();
+				ImGui::Text("%s", cameraEntity.GetComponent<TagComponent>().tag.c_str());
+
+				ImGui::DragFloat3("Camera 1 transform", glm::value_ptr(cameraEntity.GetComponent<TransformComponent>().transform[3]));
+			}
+
+			if (secondCameraEntity) {
+				ImGui::Separator();
+				ImGui::Text("%s", secondCameraEntity.GetComponent<TagComponent>().tag.c_str());
+
+				ImGui::DragFloat3("Camera 2 transform", glm::value_ptr(secondCameraEntity.GetComponent<TransformComponent>().transform[3]));
+			}
+
+			bool* is1Main = &cameraEntity.GetComponent<CameraComponent>().primary;
+			ImGui::Checkbox("Display Camera 1", is1Main);
+
+			secondCameraEntity.GetComponent<CameraComponent>().primary = !(*is1Main);
 
 			ImGui::End();
 

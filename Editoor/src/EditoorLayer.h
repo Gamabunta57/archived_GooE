@@ -23,7 +23,9 @@ namespace GooE {
 		glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 		bool viewportFocused = false;
 		bool viewportHovered = false;
-		Entity square;
+		Entity squareEntity;
+		Entity cameraEntity;
+		Entity secondCameraEntity;
 
 		OrthographicCameraController cameraController;
 

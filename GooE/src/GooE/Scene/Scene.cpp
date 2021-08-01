@@ -26,13 +26,32 @@ namespace GooE {
 	}
 
 	void Scene::OnUpdate(Timestep ts) {
-		auto group = registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
-		for (auto entity : group) {
-			auto& [transform, sprite]= group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-			Renderer2D::DrawQuad(transform, sprite.color);
+		Camera* mainCamera = nullptr;
+		glm::mat4* cameraTransform = nullptr;
+		{
+			auto group = registry.group<CameraComponent, TransformComponent>();
+			for (auto entity : group) {
+				auto& [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
+				if (camera.primary) {
+					mainCamera = &camera.camera;
+					cameraTransform = &transform.transform;
+					break;
+				}
+			}
+		}
+
+		if (mainCamera) {
+			Renderer2D::BeginScene(mainCamera->GetProjection(), *cameraTransform);
+			{
+				auto group = registry.group<SpriteRendererComponent>(entt::get<TransformComponent>);
+				for (auto entity : group) {
+					auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+					Renderer2D::DrawQuad(transform, sprite.color);
+				}
+			}
+			Renderer2D::EndScene();
 		}
 	}
-
-
 }

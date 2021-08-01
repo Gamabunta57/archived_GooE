@@ -33,12 +33,11 @@ namespace GooE {
 		}
 
 		operator bool() const { 
-			GOOE_CORE_ASSERT(scene, "Scene must be initialized!");
-			return scene->registry.valid(entityId); 
+			return entityId != entt::null;
 		}
 
 	private:
-		entt::entity entityId{ 0 };
+		entt::entity entityId{ entt::null };
 		Scene* scene = nullptr;
 	};
 }
