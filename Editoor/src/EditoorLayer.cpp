@@ -211,36 +211,6 @@ namespace GooE {
 			ImGui::Text("  Vertices: %d", stat.GetTotalVertexCount());
 			ImGui::Text("  Indices: %d", stat.GetTotalIndexCount());
 
-			if (squareEntity) {
-				ImGui::Separator();
-				ImGui::Text("%s", squareEntity.GetComponent<TagComponent>().tag.c_str());
-				auto& color = squareEntity.GetComponent<SpriteRendererComponent>().color;
-				ImGui::ColorEdit4("Color", glm::value_ptr(color));
-			}
-
-			if (cameraEntity) {
-				ImGui::Separator();
-				ImGui::Text("%s", cameraEntity.GetComponent<TagComponent>().tag.c_str());
-
-				ImGui::DragFloat3("Camera 1 transform", glm::value_ptr(cameraEntity.GetComponent<TransformComponent>().transform[3]));
-			}
-
-			if (secondCameraEntity) {
-				ImGui::Separator();
-				ImGui::Text("%s", secondCameraEntity.GetComponent<TagComponent>().tag.c_str());
-
-				ImGui::DragFloat3("Camera 2 transform", glm::value_ptr(secondCameraEntity.GetComponent<TransformComponent>().transform[3]));
-				auto& camera = secondCameraEntity.GetComponent<CameraComponent>().camera;
-				float orthoSize = camera.GetOrthographicSize();
-				if (ImGui::DragFloat("Ortho size", &orthoSize))
-					camera.SetOrthographicSize(orthoSize);
-			}
-
-			bool* is1Main = &cameraEntity.GetComponent<CameraComponent>().primary;
-			ImGui::Checkbox("Display Camera 1", is1Main);
-
-			secondCameraEntity.GetComponent<CameraComponent>().primary = !(*is1Main);
-
 			ImGui::End();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
