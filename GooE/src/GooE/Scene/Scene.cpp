@@ -11,9 +11,6 @@ namespace GooE {
 
 	Scene::Scene() {}
 
-	Scene::~Scene() {
-	}
-
 	Entity Scene::CreateEntity(const std::string& name) {
 		Entity entity = { registry.create(), this };
 		entity.AddComponent<TransformComponent>();
@@ -42,27 +39,27 @@ namespace GooE {
 		}
 
 		Camera* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform;
 		{
 			auto group = registry.group<CameraComponent, TransformComponent>();
 			for (auto entity : group) {
 				auto [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
 				if (camera.primary) {
 					mainCamera = &camera.camera;
-					cameraTransform = &transform.transform;
+					cameraTransform = transform.GetTransform();
 					break;
 				}
 			}
 		}
 
 		if (mainCamera) {
-			Renderer2D::BeginScene(mainCamera->GetProjection(), *cameraTransform);
+			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 			{
 				auto group = registry.group<SpriteRendererComponent>(entt::get<TransformComponent>);
 				for (auto entity : group) {
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-					Renderer2D::DrawQuad(transform, sprite.color);
+					Renderer2D::DrawQuad(transform.GetTransform(), sprite.color);
 				}
 			}
 			Renderer2D::EndScene();

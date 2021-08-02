@@ -11,7 +11,7 @@ namespace GooE {
 		friend class SceneHierarchyPanel;
 	public:
 		Scene();
-		~Scene();
+		~Scene() = default;
 
 		Entity CreateEntity(const std::string& name = std::string());
 

@@ -68,8 +68,8 @@ namespace GooE {
 		class CameraController : public ScriptableEntity {
 		public:
 			void OnCreate() {
-				auto& transform = GetComponent<TransformComponent>().transform;
-				transform[3][0] = rand() % 10 - 5.0f;
+				auto& translation = GetComponent<TransformComponent>().translation;
+				translation.x = rand() % 10 - 5.0f;
 			}
 
 			void OnDestroy() {
@@ -77,18 +77,18 @@ namespace GooE {
 			}
 
 			void OnUpdate(Timestep ts) {
-				auto& transform = GetComponent<TransformComponent>().transform;
+				auto& translation = GetComponent<TransformComponent>().translation;
 				float speed = 5.0f;
 
 				if (Input::IsKeyPressed(GOOE_KEY_A))
-					transform[3][0] -= speed * ts;
+					translation.x -= speed * ts;
 				if (Input::IsKeyPressed(GOOE_KEY_D))
-					transform[3][0] += speed * ts;
+					translation.x += speed * ts;
 
 				if (Input::IsKeyPressed(GOOE_KEY_W))
-					transform[3][1] += speed * ts;
+					translation.y += speed * ts;
 				if (Input::IsKeyPressed(GOOE_KEY_S))
-					transform[3][1] -= speed * ts;
+					translation.y -= speed * ts;
 			}
 		};
 
