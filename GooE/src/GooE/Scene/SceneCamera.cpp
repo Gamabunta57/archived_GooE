@@ -10,10 +10,19 @@ namespace GooE {
 	}
 
 	void SceneCamera::SetOrthographic(float size, float nearClip, float farClip) {
+		projectionType = ProjectionType::Orthographic;
 		orthographicSize = size;
 		orthographicNear = nearClip;
 		orthographicFar = farClip;
 
+		RecalculateProjection();
+	}
+
+	void SceneCamera::SetPerspective(float verticalFov, float nearClip, float farClip) {
+		projectionType = ProjectionType::Perspective;
+		this->verticalFov = verticalFov;
+		perspectiveNear = nearClip;
+		perspectiveFar = farClip;
 		RecalculateProjection();
 	}
 
@@ -24,11 +33,15 @@ namespace GooE {
 	}
 	
 	void SceneCamera::RecalculateProjection() {
-		float orthoLeft = -orthographicSize * aspectRatio * 0.5f;
-		float orthoRight = orthographicSize * aspectRatio * 0.5f;
-		float orthoBottom = -orthographicSize * 0.5f;
-		float orthoTop = orthographicSize * 0.5f;
+		if (projectionType == ProjectionType::Perspective)
+			projection = glm::perspective(verticalFov, aspectRatio, perspectiveNear, perspectiveFar);
+		else {
+			float orthoLeft = -orthographicSize * aspectRatio * 0.5f;
+			float orthoRight = orthographicSize * aspectRatio * 0.5f;
+			float orthoBottom = -orthographicSize * 0.5f;
+			float orthoTop = orthographicSize * 0.5f;
 
-		projection = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, orthographicNear, orthographicFar);
+			projection = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop, orthographicNear, orthographicFar);
+		}
 	}
 }

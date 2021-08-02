@@ -54,8 +54,12 @@ namespace GooE {
 		squareEntity = activeScene->CreateEntity("square");
 		squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
 
+		square2 = activeScene->CreateEntity("square 2");
+		square2.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.8f, 1.0f });
+
 		cameraEntity = activeScene->CreateEntity("camera");
 		cameraEntity.AddComponent<CameraComponent>();
+		cameraEntity.GetComponent<CameraComponent>().camera.SetProjectionType(SceneCamera::ProjectionType::Orthographic);
 
 		secondCameraEntity = activeScene->CreateEntity("2nd camera");
 		secondCameraEntity.AddComponent<CameraComponent>();

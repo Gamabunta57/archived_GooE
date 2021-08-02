@@ -66,5 +66,53 @@ namespace GooE {
 				ImGui::TreePop();
 			}
 		}
+
+		if (entity.HasComponent<CameraComponent>()) {
+			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera")) {
+				auto& cameraComponent = entity.GetComponent<CameraComponent>();
+				auto& camera = cameraComponent.camera;
+
+				ImGui::Checkbox("Primary", &cameraComponent.primary);
+				ImGui::Checkbox("Fixed aspect ratio", &cameraComponent.fixedAspectRatio);
+
+				const char* projectionType[] = { "Perspective", "Orthographic" };
+				const char* currentProjectionTypeString = projectionType[(int)cameraComponent.camera.GetProjectionType()];
+
+				if (ImGui::BeginCombo("Projection", currentProjectionTypeString)) {
+					for (int i = 0; i < 2; i++) {
+						bool isSelected = currentProjectionTypeString == projectionType[i];
+						if (ImGui::Selectable(projectionType[i], isSelected)) {
+							currentProjectionTypeString = projectionType[i];
+							cameraComponent.camera.SetProjectionType((SceneCamera::ProjectionType)i);
+						}
+
+						if (isSelected) ImGui::SetItemDefaultFocus();
+					}
+
+					ImGui::EndCombo();
+				}
+
+				if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective) {
+					float perspectiveFov = glm::degrees(camera.GetPerspectiveVerticalFov());
+					float perspectiveNear = camera.GetPerspectiveNearClip();
+					float perspectiveFar = camera.GetPerspectiveFarClip();
+
+					if (ImGui::DragFloat("Fov", &perspectiveFov)) camera.SetPerspectiveVerticalFov(glm::radians(perspectiveFov));
+					if (ImGui::DragFloat("Near", &perspectiveNear)) camera.SetPerspectiveNearClip(perspectiveNear);
+					if (ImGui::DragFloat("Far", &perspectiveFar)) camera.SetPerspectiveFarClip(perspectiveFar);
+
+				} else if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
+					float orthoSize = camera.GetOrthographicSize();
+					float orthoNear = camera.GetOrthographicNearClip();
+					float orthoFar = camera.GetOrthographicFarClip();
+
+					if (ImGui::DragFloat("Size", &orthoSize)) camera.SetOrthographicSize(orthoSize);
+					if (ImGui::DragFloat("Near", &orthoNear)) camera.SetOrthographicNearClip(orthoNear);
+					if (ImGui::DragFloat("Far", &orthoFar)) camera.SetOrthographicFarClip(orthoFar);
+				}
+
+				ImGui::TreePop();
+			}
+		}
 	}
 }

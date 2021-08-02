@@ -25,6 +25,7 @@ namespace GooE {
 		bool viewportFocused = false;
 		bool viewportHovered = false;
 		Entity squareEntity;
+		Entity square2;
 		Entity cameraEntity;
 		Entity secondCameraEntity;
 
