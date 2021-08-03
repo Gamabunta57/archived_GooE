@@ -18,6 +18,7 @@ namespace GooE {
 		void End();
 		void SetBlockEvents(bool blockEvents) { this->blockEvents = blockEvents; }
 
+		static void SetDarkThemeColor();
 	private:
 		bool blockEvents = true;
 		float time = 0.0f;
