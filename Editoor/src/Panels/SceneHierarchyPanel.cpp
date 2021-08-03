@@ -24,12 +24,38 @@ namespace GooE {
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 			selectionContext = {};
 
+		//Right click on blank space
+		if (ImGui::BeginPopupContextWindow(0, 1, false)) {
+			if (ImGui::MenuItem("Create new entity"))
+				context->CreateEntity("Empty entity");
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 
 		ImGui::Begin("Properties");
 		if (selectionContext) {
 			DrawComponents(selectionContext);
+
+			if (ImGui::Button("Add component")) {
+				ImGui::OpenPopup("AddComponent");
+			}
+
+			if (ImGui::BeginPopup("AddComponent")) {
+				if (ImGui::MenuItem("Camera")) {
+					selectionContext.AddComponent<CameraComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (ImGui::MenuItem("SpriteRenderer")) {
+					selectionContext.AddComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
 		}
+
 		ImGui::End();
 	}
 
@@ -42,8 +68,22 @@ namespace GooE {
 		if (ImGui::IsItemClicked())
 			selectionContext = entity;
 
+		bool entityDeleted = false;
+		if (ImGui::BeginPopupContextItem()) {
+			if (ImGui::MenuItem("Delete entity"))
+				entityDeleted = true;
+
+			ImGui::EndPopup();
+		}
+
 		if (opened)
 			ImGui::TreePop();
+
+		if (entityDeleted) {
+			if (selectionContext == entity)
+				selectionContext = {};
+			context->DestroyEntity(entity);
+		}
 	}
 
 	void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
@@ -116,8 +156,11 @@ namespace GooE {
 			}
 		}
 
+		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+
 		if (entity.HasComponent<TransformComponent>()) {
-			if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform")) {
+			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodeFlags, "Transform");
+			if (open) {
 				auto& tc = entity.GetComponent<TransformComponent>();
 				DrawVec3Control("Position", tc.translation);
 
@@ -132,7 +175,7 @@ namespace GooE {
 		}
 
 		if (entity.HasComponent<CameraComponent>()) {
-			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera")) {
+			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodeFlags, "Camera")) {
 				auto& cameraComponent = entity.GetComponent<CameraComponent>();
 				auto& camera = cameraComponent.camera;
 
@@ -180,11 +223,30 @@ namespace GooE {
 		}
 
 		if (entity.HasComponent<SpriteRendererComponent>()) {
-			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite renderer")) {
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
+			bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodeFlags, "Sprite renderer");
+			ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+			if (ImGui::Button("+", ImVec2{ 20, 20 }))
+				ImGui::OpenPopup("ComponentSettings");
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings")) {
+				if (ImGui::MenuItem("Remove component"))
+					removeComponent = true;
+
+				ImGui::EndPopup();
+			}
+
+			if (open) {
 				auto& src = entity.GetComponent<SpriteRendererComponent>();
 				ImGui::ColorEdit4("Color", glm::value_ptr(src.color));
 				ImGui::TreePop();
 			}
+
+			if (removeComponent)
+				entity.RemoveComponent<SpriteRendererComponent>();
+
+			ImGui::PopStyleVar();
 		}
 	}
 }

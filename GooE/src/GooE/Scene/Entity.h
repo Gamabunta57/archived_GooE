@@ -15,7 +15,9 @@ namespace GooE {
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args) {
 			GOOE_CORE_ASSERT(!HasComponent<T>(), "Entity already has component!");
-			return scene->registry.emplace<T>(entityId, std::forward<Args>(args)...);
+			T& component = scene->registry.emplace<T>(entityId, std::forward<Args>(args)...);
+			scene->OnComponentAdded<T>(*this, component);
+			return component;
 		}
 
 		template<typename T>
@@ -36,6 +38,7 @@ namespace GooE {
 
 		operator bool() const { return entityId != entt::null; }
 		operator uint32_t() const { return (uint32_t)entityId; }
+		operator entt::entity() const { return entityId; }
 		bool operator==(const Entity& other) const { return entityId == other.entityId && scene == other.scene; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
 
