@@ -33,6 +33,7 @@ project "GooE"
 		"%{vendorInclude.glm}",
 		"%{vendorInclude.stb}",
 		"%{vendorInclude.entt}",
+		"%{vendorInclude.yamlcpp}",
 	}
 
 	links {

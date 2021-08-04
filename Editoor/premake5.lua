@@ -27,4 +27,5 @@ project "Editoor"
 		"%{vendorInclude.ImGui}",
 		"%{vendorInclude.ImGui}/..",
 		"%{vendorInclude.entt}",
+		"%{vendorInclude.yamlcpp}"
 	}

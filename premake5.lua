@@ -37,6 +37,7 @@ vendorInclude["ImGui"] = "%{wks.location}/GooE/vendor/imgui"
 vendorInclude["glm"] = "%{wks.location}/GooE/vendor/glm"
 vendorInclude["stb"] = "%{wks.location}/GooE/vendor/stb_image"
 vendorInclude["entt"] = "%{wks.location}/GooE/vendor/entt/single_include"
+vendorInclude["entt"] = "%{wks.location}/GooE/vendor/yamlcpp/include"
 
 include "GooE"
 include "Editoor"
@@ -150,3 +151,35 @@ project "ImGui"
 
 	filter "system:linux"
 		pic "On"
+
+project "yaml-cpp"
+	location "GooE/vendor/yaml-cpp"
+	kind "StaticLib"
+	language "C++"
+
+	targetdir ("%{wks.location}/out/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/out/intermediates/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.location}/src/**.h",
+		"%{prj.location}/src/**.cpp",
+		
+		"%{prj.location}/include/**.h"
+	}
+
+	includedirs
+	{
+		"%{prj.location}/include"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		cppdialect "C++17"
+		staticruntime "On"
+
+	filter "system:linux"
+		pic "On"
+		systemversion "latest"
+		cppdialect "C++17"
+		staticruntime "On"
