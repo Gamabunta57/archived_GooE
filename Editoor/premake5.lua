@@ -15,7 +15,8 @@ project "Editoor"
 	}
 
 	links {
-		"GooE"
+		"GooE",
+		"yaml-cpp"
 	}
 
 	includedirs

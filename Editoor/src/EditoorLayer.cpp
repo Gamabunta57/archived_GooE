@@ -6,6 +6,8 @@
 
 #include <Platform/OpenGL/OpenGLShader.h>
 
+#include <GooE/Scene/SceneSerializer.h>
+
 #include "EditoorLayer.h"
 
 static const uint32_t MAP_WIDTH = 24;
@@ -51,6 +53,7 @@ namespace GooE {
 		cameraController.SetZoomLevel(7.0f);
 
 		activeScene = CreateRef<Scene>();
+#if TESTING_DESERIALIZER
 		squareEntity = activeScene->CreateEntity("square");
 		squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
 
@@ -95,7 +98,13 @@ namespace GooE {
 		cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		secondCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 
+#endif
 		sceneHierarchyPanel.SetContext(activeScene);
+
+		SceneSerializer serializer(activeScene);
+		//serializer.Serialize("assets/scenes/example.gooe");
+
+		serializer.Deserialize("assets/scenes/example.gooe");
 	}
 
 	void EditoorLayer::OnDetach() {
@@ -197,6 +206,16 @@ namespace GooE {
 			{
 				if (ImGui::BeginMenu("File"))
 				{
+					if (ImGui::MenuItem("Serialize")) {
+						SceneSerializer serializer(activeScene);
+						serializer.Serialize("assets/scenes/example.gooe");
+					}
+
+					if (ImGui::MenuItem("Deserialize")) {
+						SceneSerializer serializer(activeScene);
+						serializer.Deserialize("assets/scenes/example.gooe");
+					}
+
 					ImGui::Separator();
 
 					if (ImGui::MenuItem("Exit")) 
