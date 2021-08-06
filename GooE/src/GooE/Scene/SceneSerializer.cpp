@@ -182,7 +182,7 @@ namespace GooE {
 				if (tagComponent)
 					name = tagComponent["Tag"].as<std::string>();
 
-				GOOE_CORE_TRACE("Deserialized entity zith ID = {0}, name {1}", uuid, name);
+				GOOE_CORE_TRACE("Deserialized entity with ID = {0}, name {1}", uuid, name);
 
 				Entity deserializedEntity = scene->CreateEntity(name);
 

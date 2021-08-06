@@ -18,6 +18,13 @@ namespace GooE {
 		virtual void OnImGuiRender() override;
 
 	private:
+		bool OnKeyPressed(const KeyPressedEvent& e);
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
+
+	private:
 
 		uint32_t mapWidth, mapHeight;
 		glm::vec2 viewportSize = { 0.0f, 0.0f };

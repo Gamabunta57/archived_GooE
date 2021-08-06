@@ -6,6 +6,7 @@
 
 #include <Platform/OpenGL/OpenGLShader.h>
 
+#include <GooE/Utils/PlatformUtils.h>
 #include <GooE/Scene/SceneSerializer.h>
 
 #include "EditoorLayer.h"
@@ -138,6 +139,9 @@ namespace GooE {
 		GOOE_PROFILE_FUNCTION();
 
 		cameraController.OnEvent(e);
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(GOOE_BIND_EVENT_FN(EditoorLayer::OnKeyPressed));
 	}
 
 	void EditoorLayer::OnImGuiRender() {
@@ -206,15 +210,14 @@ namespace GooE {
 			{
 				if (ImGui::BeginMenu("File"))
 				{
-					if (ImGui::MenuItem("Serialize")) {
-						SceneSerializer serializer(activeScene);
-						serializer.Serialize("assets/scenes/example.gooe");
-					}
+					if (ImGui::MenuItem("New", "Ctrl+N"))
+						NewScene();
 
-					if (ImGui::MenuItem("Deserialize")) {
-						SceneSerializer serializer(activeScene);
-						serializer.Deserialize("assets/scenes/example.gooe");
-					}
+					if (ImGui::MenuItem("Open...", "Ctrl+O"))
+						OpenScene();
+
+					if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+						SaveSceneAs();
 
 					ImGui::Separator();
 
@@ -251,6 +254,57 @@ namespace GooE {
 			ImGui::End();
 			ImGui::PopStyleVar();
 			ImGui::End();
+		}
+	}
+
+	bool EditoorLayer::OnKeyPressed(const KeyPressedEvent& e) {
+		if (e.GetRepeatCount() > 0) return false;
+
+		bool ctrl = Input::IsKeyPressed(GOOE_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GOOE_KEY_RIGHT_CONTROL);
+		bool shift = Input::IsKeyPressed(GOOE_KEY_LEFT_SHIFT) || Input::IsKeyPressed(GOOE_KEY_RIGHT_SHIFT);
+
+		switch (e.GetKeyCode()) {
+			case GOOE_KEY_N: {
+				if (ctrl) 
+					NewScene();
+				break;
+			}
+			case GOOE_KEY_O: {
+				if (ctrl) 
+					OpenScene();
+				break;
+			}
+			case GOOE_KEY_S: {
+				if (ctrl && shift) 
+					SaveSceneAs();
+				break;
+			}
+		}
+	}
+
+	void EditoorLayer::NewScene() {
+		activeScene = CreateRef<Scene>();
+		activeScene->SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+		sceneHierarchyPanel.SetContext(activeScene);
+	}
+
+	void EditoorLayer::OpenScene() {
+		std::string path = FileDialogs::OpenFile("Hazel Scene (*.gooe)\0*.gooe\0All Files (*.*)\0*.*\0");
+		if (!path.empty()) {
+			activeScene = CreateRef<Scene>();
+			activeScene->SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+			sceneHierarchyPanel.SetContext(activeScene);
+
+			SceneSerializer serializer(activeScene);
+			serializer.Deserialize(path);
+		}
+	}
+
+	void EditoorLayer::SaveSceneAs() {
+		std::string path = FileDialogs::SaveFile("Hazel Scene (*.gooe)\0*.gooe\0");
+		if (!path.empty()) {
+			SceneSerializer serializer(activeScene);
+			serializer.Serialize(path);
 		}
 	}
 }

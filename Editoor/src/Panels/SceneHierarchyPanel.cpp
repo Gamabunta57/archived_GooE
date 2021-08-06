@@ -12,6 +12,7 @@ namespace GooE {
 
 	void SceneHierarchyPanel::SetContext(const Ref<Scene> context) {
 		this->context = context;
+		selectionContext = {};
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender() {
