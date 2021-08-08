@@ -38,6 +38,7 @@ vendorInclude["glm"] = "%{wks.location}/GooE/vendor/glm"
 vendorInclude["stb"] = "%{wks.location}/GooE/vendor/stb_image"
 vendorInclude["entt"] = "%{wks.location}/GooE/vendor/entt/single_include"
 vendorInclude["yamlcpp"] = "%{wks.location}/GooE/vendor/yaml-cpp/include"
+vendorInclude["imguizmo"] = "%{wks.location}/GooE/vendor/ImGuizmo"
 
 include "GooE"
 include "Editoor"

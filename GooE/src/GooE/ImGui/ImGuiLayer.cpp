@@ -5,6 +5,7 @@
 #include <backends/imgui_impl_opengl3.h>
 
 #include <GooE/Core/Application.h>
+#include <ImGuizmo.h>
 
 #include "ImGuiLayer.h"
 
@@ -77,6 +78,7 @@ namespace GooE {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        ImGuizmo::BeginFrame();
     };
 
     void ImGuiLayer::End() {

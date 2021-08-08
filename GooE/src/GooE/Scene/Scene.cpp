@@ -83,6 +83,17 @@ namespace GooE {
 		}
 	}
 
+	Entity Scene::GetPrimaryCameraEntity() {
+		auto view = registry.view<CameraComponent>();
+		for (auto entity : view) {
+			const auto& camera = view.get<CameraComponent>(entity);
+			if (camera.primary)
+				return Entity(entity, this);
+		}
+
+		return {};
+	}
+
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component) {
 		static_assert(false);

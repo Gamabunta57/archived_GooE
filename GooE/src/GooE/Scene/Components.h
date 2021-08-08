@@ -2,6 +2,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 #include <GooE/Scene/SceneCamera.h>
 #include <GooE/Scene/ScriptableEntity.h>
 
@@ -25,13 +28,8 @@ namespace GooE {
 		TransformComponent(const glm::vec3& translation) : translation(translation) {};
 
 		glm::mat4 GetTransform() const {
-			glm::mat4 rotationMatrix = 
-				  glm::rotate(glm::mat4(1.0f), rotation.x, { 1, 0, 0 })
-				* glm::rotate(glm::mat4(1.0f), rotation.y, { 0, 1, 0 })
-				* glm::rotate(glm::mat4(1.0f), rotation.z, { 0, 0, 1 });
-
 			return glm::translate(glm::mat4(1.0f), translation)
-				* rotationMatrix
+				* glm::toMat4(glm::quat(rotation))
 				* glm::scale(glm::mat4(1.0f), scale);
 		}
 	};

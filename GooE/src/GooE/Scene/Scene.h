@@ -20,6 +20,8 @@ namespace GooE {
 		void OnUpdate(Timestep ts);
 		void SetViewportSize(uint32_t width, uint32_t height);
 
+		Entity GetPrimaryCameraEntity();
+
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);

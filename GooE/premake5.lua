@@ -22,6 +22,9 @@ project "GooE"
 		"%{prj.location}/src/**.cpp",
 		"%{prj.location}/vendor/stb_image/stb_image.h",
 		"%{prj.location}/vendor/stb_image/stb_image.cpp",
+
+		"%{prj.location}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.location}/vendor/ImGuizmo/ImGuizmo.cpp",
 	}
 
 	includedirs {
@@ -34,6 +37,7 @@ project "GooE"
 		"%{vendorInclude.stb}",
 		"%{vendorInclude.entt}",
 		"%{vendorInclude.yamlcpp}",
+		"%{vendorInclude.imguizmo}",
 	}
 
 	links {
@@ -42,3 +46,6 @@ project "GooE"
 		"ImGui",
 		"opengl32.lib"
 	}
+
+	filter "files:vendor/ImGuizmo/**.cpp"
+	flags {"NoPCH"}

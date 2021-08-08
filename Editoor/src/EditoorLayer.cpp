@@ -8,6 +8,9 @@
 
 #include <GooE/Utils/PlatformUtils.h>
 #include <GooE/Scene/SceneSerializer.h>
+#include <GooE/Math/Math.h>
+
+#include <ImGuizmo.h>
 
 #include "EditoorLayer.h"
 
@@ -54,21 +57,9 @@ namespace GooE {
 		cameraController.SetZoomLevel(7.0f);
 
 		activeScene = CreateRef<Scene>();
-#if TESTING_DESERIALIZER
-		squareEntity = activeScene->CreateEntity("square");
-		squareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{0.2f, 0.8f, 0.2f, 1.0f});
+		sceneHierarchyPanel.SetContext(activeScene);
 
-		square2 = activeScene->CreateEntity("square 2");
-		square2.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.8f, 0.2f, 0.8f, 1.0f });
-
-		cameraEntity = activeScene->CreateEntity("camera");
-		cameraEntity.AddComponent<CameraComponent>();
-		cameraEntity.GetComponent<CameraComponent>().camera.SetProjectionType(SceneCamera::ProjectionType::Orthographic);
-
-		secondCameraEntity = activeScene->CreateEntity("2nd camera");
-		secondCameraEntity.AddComponent<CameraComponent>();
-		secondCameraEntity.GetComponent<CameraComponent>().primary = false;
-
+		//TMP: NatvieScript Example
 		class CameraController : public ScriptableEntity {
 		public:
 			void OnCreate() {
@@ -95,17 +86,6 @@ namespace GooE {
 					translation.y -= speed * ts;
 			}
 		};
-
-		cameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-		secondCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-
-#endif
-		sceneHierarchyPanel.SetContext(activeScene);
-
-		SceneSerializer serializer(activeScene);
-		//serializer.Serialize("assets/scenes/example.gooe");
-
-		serializer.Deserialize("assets/scenes/example.gooe");
 	}
 
 	void EditoorLayer::OnDetach() {
@@ -251,6 +231,49 @@ namespace GooE {
 			viewportSize = { panelSize.x, panelSize.y };
 			uint32_t textureId = frameBuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureId, { viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			//Guizmos
+			Entity selectedEntity = sceneHierarchyPanel.GetSelectedEntity();
+			if (selectedEntity && guizmoType > -1) {
+				ImGuizmo::SetOrthographic(false);
+				ImGuizmo::SetDrawlist();
+
+				float windowWidth = (float)ImGui::GetWindowWidth();
+				float windowHeight = (float)ImGui::GetWindowHeight();
+				auto& position = ImGui::GetWindowPos();
+				ImGuizmo::SetRect(position.x, position.y, windowWidth, windowHeight);
+
+				auto cameraEntity = activeScene->GetPrimaryCameraEntity();
+				const auto& camera = cameraEntity.GetComponent<CameraComponent>().camera;
+				const glm::mat4& cameraProjection = camera.GetProjection();
+				glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+				auto& tc = selectedEntity.GetComponent<TransformComponent>();
+				glm::mat4 transform = tc.GetTransform();
+				glm::vec3 originalRotation = tc.rotation;
+
+				//snapping
+				bool snap = Input::IsKeyPressed(GOOE_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GOOE_KEY_RIGHT_CONTROL);
+				float snapValue = 0.5f;
+				if (guizmoType == ImGuizmo::OPERATION::ROTATE)
+					snapValue = 5.0f;
+
+				float snapValues[3] = { snapValue, snapValue, snapValue };
+
+				ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), (ImGuizmo::OPERATION)guizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap ? snapValues : nullptr);
+
+				if (ImGuizmo::IsUsing()) {
+					glm::vec3 translation, rotation, scale;
+					Math::decomposeTransform(transform, translation, rotation, scale);
+
+					glm::vec3 deltaRotation = rotation - tc.rotation;
+
+					tc.translation = translation;
+					tc.rotation += deltaRotation;
+					tc.scale = scale;
+				}
+			}
+
 			ImGui::End();
 			ImGui::PopStyleVar();
 			ImGui::End();
@@ -277,6 +300,28 @@ namespace GooE {
 			case GOOE_KEY_S: {
 				if (ctrl && shift) 
 					SaveSceneAs();
+				break;
+			}
+
+			//Guizmo
+			case GOOE_KEY_Q: {
+				if (!ctrl && !shift)
+					guizmoType = -1;
+				break;
+			}
+			case GOOE_KEY_W: {
+				if (!ctrl && !shift)
+					guizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			}
+			case GOOE_KEY_E: {
+				if (!ctrl && !shift)
+					guizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			}
+			case GOOE_KEY_R: {
+				if (!ctrl && !shift) 
+					guizmoType = ImGuizmo::OPERATION::SCALE;
 				break;
 			}
 		}

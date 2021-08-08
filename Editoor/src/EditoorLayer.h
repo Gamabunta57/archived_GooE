@@ -31,10 +31,6 @@ namespace GooE {
 		glm::vec4 color = { 0.4f, 0.2f, 0.8f, 1.0f };
 		bool viewportFocused = false;
 		bool viewportHovered = false;
-		Entity squareEntity;
-		Entity square2;
-		Entity cameraEntity;
-		Entity secondCameraEntity;
 
 		OrthographicCameraController cameraController;
 
@@ -51,6 +47,8 @@ namespace GooE {
 		};
 
 		std::unordered_map<char, Ref<SubTexture2D>> textureMap;
+
+		int guizmoType = -1;
 
 		SceneHierarchyPanel sceneHierarchyPanel;
 	};

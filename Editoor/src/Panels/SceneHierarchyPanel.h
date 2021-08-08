@@ -16,6 +16,8 @@ namespace GooE {
 
 		void OnImGuiRender();
 
+		Entity GetSelectedEntity() const { return selectionContext; }
+
 	private:
 
 		void DrawEntityNode(Entity entity);

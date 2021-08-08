@@ -16,3 +16,6 @@
 [submodule ".\\GooE\\vendor\\yaml-cpp"]
 	path = .\\GooE\\vendor\\yaml-cpp
 	url = git@github.com:jbeder/yaml-cpp
+[submodule ".\\GooE\\vendor\\ImGuizmo"]
+	path = .\\GooE\\vendor\\ImGuizmo
+	url = git@github.com:CedricGuillemet/ImGuizmo
