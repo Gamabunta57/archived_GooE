@@ -225,7 +225,7 @@ namespace GooE {
 			ImGui::Begin("viewport");
 			viewportFocused = ImGui::IsWindowFocused();
 			viewportHovered = ImGui::IsWindowHovered();
-			Application::Get().GetImGuiLayer()->SetBlockEvents(!viewportFocused || !viewportHovered);
+			Application::Get().GetImGuiLayer()->SetBlockEvents(!viewportFocused && !viewportHovered);
 
 			ImVec2 panelSize = ImGui::GetContentRegionAvail();
 			viewportSize = { panelSize.x, panelSize.y };

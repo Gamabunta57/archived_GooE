@@ -26,7 +26,20 @@ namespace GooE {
 		registry.destroy(entity);
 	}
 
-	void Scene::OnUpdate(Timestep ts) {
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera) {
+		Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
+		{
+			auto group = registry.group<SpriteRendererComponent>(entt::get<TransformComponent>);
+			for (auto entity : group) {
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+				Renderer2D::DrawQuad(transform.GetTransform(), sprite.color);
+			}
+		}
+		Renderer2D::EndScene();
+	}
+
+	void Scene::OnUpdateRuntime(Timestep ts) {
 		//Update scripts
 		{
 			registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
